@@ -228,13 +228,13 @@ export interface SafeCssReport {
   violations: SafeCssViolation[];
 }
 
-interface CssDeclaration {
+export interface CssDeclaration {
   property: string;
   value: string;
   important: boolean;
 }
 
-interface CssStyleRule {
+export interface CssStyleRule {
   selector: string;
   declarations: CssDeclaration[];
   atTrail: string[];
@@ -310,14 +310,14 @@ function parseDeclarations(body: string): CssDeclaration[] {
   return declarations;
 }
 
-interface ParsedCss {
+export interface ParsedCss {
   styleRules: CssStyleRule[];
   fontFaceRules: CssDeclaration[][];
   keyframeRules: number;
   blockedAtRules: string[];
 }
 
-function parseCss(css: string): ParsedCss {
+export function parseCss(css: string): ParsedCss {
   const text = maskComments(css);
   const styleRules: CssStyleRule[] = [];
   const fontFaceRules: CssDeclaration[][] = [];

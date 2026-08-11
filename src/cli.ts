@@ -11,6 +11,7 @@ import { injectTheme, restoreTarget, themeIsApplied } from "./injector.js";
 import { loadTheme } from "./theme.js";
 import { discoverThemes, themeSupportsKimi } from "./theme-catalog.js";
 import { validateSafeCss } from "./policy/safe-css.js";
+import { analyzeContrast, CONTRAST_MIN_RATIO } from "./policy/contrast.js";
 import { loadSurfaceCatalog, surfaceCoverage, surfaceProbeExpression } from "./surfaces.js";
 import type { SurfaceProbeResult } from "./surfaces.js";
 import { readFile } from "node:fs/promises";
@@ -411,6 +412,22 @@ async function checkTheme(): Promise<void> {
       console.log(`             - [${violation.kind}] ${violation.property ?? ""} @ ${violation.rule}`);
     }
     if (report.violations.length > shown.length) console.log(`             … 其余 ${report.violations.length - shown.length} 处从略`);
+  }
+
+  const contrastFindings = analyzeContrast(rawCss);
+  console.log(`\n[对比度] 启发式（只分析主题内可解析的纯色对，应用层样式不在范围内）`);
+  if (!contrastFindings.length) {
+    console.log(`  ✓ 未发现文字与底色过近的规则`);
+  } else {
+    console.log(`  ⚠ ${contrastFindings.length} 处文字与底色对比度低于 ${CONTRAST_MIN_RATIO}:1：`);
+    for (const finding of contrastFindings.slice(0, 10)) {
+      console.log(
+        `    - [${finding.via}] ${finding.selector}：对比度 ${finding.ratio.toFixed(2)}:1` +
+        `（color: ${finding.color} / background: ${finding.background}）`,
+      );
+    }
+    if (contrastFindings.length > 10) console.log(`    … 其余 ${contrastFindings.length - 10} 处从略`);
+    console.log(`  提示       告警仅供参考；继承自应用层样式的陷阱需用运行时计算样式探测`);
   }
 
   const catalog = await loadSurfaceCatalog(compatibilityDirectory, baseline.version);
