@@ -36,16 +36,22 @@ pnpm release:pack
 
 `release:pack` 会先完成检查、测试和干净构建，再生成可直接分发的 macOS zip。
 
+首次从源码使用命令行时注册一次全局命令：
+
+```bash
+npm link
+```
+
 常用命令：
 
 ```bash
-node dist/cli.js doctor                              # 检查环境
-node dist/cli.js themes                              # 查看已有主题
-node dist/cli.js apply                               # 交互选择主题
-node dist/cli.js apply --theme ./themes/dark-side    # 直接指定主题
-node dist/cli.js reload                              # 立即重新注入
-node dist/cli.js status                              # 查看状态
-node dist/cli.js restore                             # 恢复普通 Kimi
+kimi-skin doctor                              # 检查环境
+kimi-skin themes                              # 查看已有主题
+kimi-skin apply                               # 交互选择主题
+kimi-skin apply --theme ./themes/dark-side    # 直接指定主题
+kimi-skin reload                              # 立即重新注入
+kimi-skin status                              # 查看状态
+kimi-skin restore                             # 恢复普通 Kimi
 ```
 
 `apply` 会在重启 Kimi 前请求确认。主题目录中的 CSS、清单或素材变化后，Watcher 会自动热重载。
@@ -60,12 +66,12 @@ theme.css
 assets/        # 可选，本地图片素材
 ```
 
-背景图可在 `theme.json` 中通过 `background` 声明，也可完全使用 CSS。主题可使用本地 PNG、JPEG 和 WebP 素材，但不能加载远程资源、`@import` 或 JavaScript。声明 `safe-css` 能力的主题会在加载时执行白名单契约；使用 `check-theme` 查看具体违规和界面覆盖情况。
+主题素材、字体、交互能力和 CSS 接口统一记录在 [themes/README.md](./themes/README.md)。主题不能加载远程资源、`@import` 或任意 JavaScript；声明 `safe-css` 能力后，加载时会执行白名单契约。
 
 ```bash
-node dist/cli.js validate --theme ./themes/<theme-id>
-node dist/cli.js check-theme --theme ./themes/<theme-id>
-node dist/cli.js probe
+kimi-skin validate --theme ./themes/<theme-id>
+kimi-skin check-theme --theme ./themes/<theme-id>
+kimi-skin probe
 ```
 
 仓库内的 `skills/kimi-skin-theme/` 用于让 AI Agent 创建和修改主题。目前仍在整理，具体工作流以 [SKILL.md](./skills/kimi-skin-theme/SKILL.md) 为准。

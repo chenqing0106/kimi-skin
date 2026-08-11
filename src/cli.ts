@@ -216,7 +216,19 @@ async function startWatcher(state: RuntimeState): Promise<{ label: string; pid: 
 
 async function apply(): Promise<void> {
   if (process.platform !== "darwin") throw new Error("当前阶段只支持 macOS");
-  if (await readRuntimeState()) throw new Error("已经存在活动状态，请先运行 status 或 restore");
+  const existingState = await readRuntimeState();
+  if (existingState) {
+    const [recordedStillRunning, cdpReady] = await Promise.all([
+      isRecordedProcess(existingState.kimiPid, existingState.kimiStartedAt),
+      isCdpReady(existingState.port),
+    ]);
+    if (recordedStillRunning || cdpReady) {
+      throw new Error("已经存在活动状态，请先运行 status 或 restore");
+    }
+    await stopWatcher(existingState.watcherLabel);
+    await clearRuntimeState();
+    console.log("已清理过期的 kimi-skin 状态");
+  }
   const baseline = await inspectKimiBaseline();
   const identityIssue = kimiIdentityIssue(baseline);
   if (identityIssue) throw new Error(identityIssue);

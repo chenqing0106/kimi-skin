@@ -23,7 +23,7 @@
     "skills"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.json && mkdir -p dist/compatibility && cp src/compatibility/*.json dist/compatibility/",
+    "build": "rm -rf dist && tsc -p tsconfig.json && chmod +x dist/cli.js && mkdir -p dist/compatibility && cp src/compatibility/*.json dist/compatibility/",
     "check": "tsc -p tsconfig.json --noEmit",
     "dev": "node --import tsx src/cli.ts",
     "test": "node --import tsx --test 'test/**/*.test.ts'",
