@@ -40,5 +40,6 @@ Include:
 
 ## References
 
+- Read [pitfalls.md](references/pitfalls.md) before writing or editing theme CSS; it lists the mandatory rules learned from verified theme work.
 - Read [visual-iteration.md](references/visual-iteration.md) for complete theme directions, major reference-based changes, effects that do not appear, or systematic visual QA.
 - Do not load the reference for small, explicit local edits.
