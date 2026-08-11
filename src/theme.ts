@@ -56,6 +56,39 @@ function assertManifest(value: unknown): asserts value is ThemeManifest {
       }
     }
   }
+  if (manifest.widgets !== undefined) {
+    if (!Array.isArray(manifest.widgets)) {
+      throw new Error("theme.json widgets 必须是数组");
+    }
+    const widgetIds = new Set<string>();
+    const widgetPlacements = new Set<string>();
+    for (const rawWidget of manifest.widgets) {
+      if (!rawWidget || typeof rawWidget !== "object" || Array.isArray(rawWidget)) {
+        throw new Error("theme.json widgets 中的每一项必须是对象");
+      }
+      const widget = rawWidget as unknown as Record<string, unknown>;
+      const unknownWidgetKeys = Object.keys(widget).filter((key) => !["id", "type", "surface"].includes(key));
+      if (unknownWidgetKeys.length > 0) {
+        throw new Error(`theme.json widget 包含不支持的字段：${unknownWidgetKeys.join(", ")}`);
+      }
+      if (typeof widget.id !== "string" || !/^[a-z0-9][a-z0-9-]{0,31}$/.test(widget.id)) {
+        throw new Error("theme.json widget id 只能使用小写字母、数字和连字符");
+      }
+      if (widgetIds.has(widget.id)) throw new Error(`theme.json widget id 重复：${widget.id}`);
+      widgetIds.add(widget.id);
+      if (widget.type !== "kimi-work-quota") {
+        throw new Error(`theme.json widget type 不受支持：${String(widget.type)}`);
+      }
+      if (widget.surface !== "home.top-right") {
+        throw new Error(`theme.json widget surface 不受支持：${String(widget.surface)}`);
+      }
+      const placement = `${widget.type}:${widget.surface}`;
+      if (widgetPlacements.has(placement)) {
+        throw new Error(`theme.json widget 位置重复：${placement}`);
+      }
+      widgetPlacements.add(placement);
+    }
+  }
   if (!/^[a-z0-9][a-z0-9-]{1,63}$/.test(manifest.id ?? "")) {
     throw new Error("主题 id 只能使用小写字母、数字和连字符");
   }

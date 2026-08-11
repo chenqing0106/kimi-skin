@@ -54,6 +54,59 @@ test("loads the declarative pixel mode interaction", async () => {
   assert.equal(theme.manifest.interactions?.rootStateToggle?.state, "ascii");
 });
 
+test("loads a fixed Kimi Work quota widget declaration", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-theme-widget-"));
+  await writeFile(path.join(directory, "theme.json"), JSON.stringify({
+    id: "quota-theme",
+    name: "Quota Theme",
+    version: "1.0.0",
+    compatibleKimi: ["3.1.7"],
+    widgets: [{ id: "work-quota", type: "kimi-work-quota", surface: "home.top-right" }],
+  }));
+  await writeFile(path.join(directory, "theme.css"), "body { color: white; }");
+  const theme = await loadTheme(directory, "3.1.7");
+  assert.equal(theme.manifest.widgets?.[0]?.id, "work-quota");
+});
+
+test("rejects widget scripts, unknown types and duplicate ids", async () => {
+  const cases = [
+    {
+      widgets: [{ id: "work-quota", type: "kimi-work-quota", surface: "home.top-right", script: "alert(1)" }],
+      message: /不支持的字段/,
+    },
+    {
+      widgets: [{ id: "work-quota", type: "remote-widget", surface: "home.top-right" }],
+      message: /type 不受支持/,
+    },
+    {
+      widgets: [
+        { id: "work-quota", type: "kimi-work-quota", surface: "home.top-right" },
+        { id: "work-quota", type: "kimi-work-quota", surface: "home.top-right" },
+      ],
+      message: /id 重复/,
+    },
+    {
+      widgets: [
+        { id: "work-quota", type: "kimi-work-quota", surface: "home.top-right" },
+        { id: "another-quota", type: "kimi-work-quota", surface: "home.top-right" },
+      ],
+      message: /位置重复/,
+    },
+  ];
+  for (const [index, item] of cases.entries()) {
+    const directory = await mkdtemp(path.join(os.tmpdir(), `kimi-skin-theme-widget-invalid-${index}-`));
+    await writeFile(path.join(directory, "theme.json"), JSON.stringify({
+      id: "invalid-widget",
+      name: "Invalid Widget",
+      version: "1.0.0",
+      compatibleKimi: ["3.1.7"],
+      widgets: item.widgets,
+    }));
+    await writeFile(path.join(directory, "theme.css"), "body { color: white; }");
+    await assert.rejects(loadTheme(directory, "3.1.7"), item.message);
+  }
+});
+
 test("rejects unknown interaction fields", async () => {
   const directory = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-theme-unsafe-interaction-"));
   await writeFile(path.join(directory, "theme.json"), JSON.stringify({

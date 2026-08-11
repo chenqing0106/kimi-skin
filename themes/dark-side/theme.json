@@ -10,5 +10,12 @@
       "triggerSelector": ".home-view .doodle",
       "state": "ascii"
     }
-  }
+  },
+  "widgets": [
+    {
+      "id": "work-quota",
+      "type": "kimi-work-quota",
+      "surface": "home.top-right"
+    }
+  ]
 }

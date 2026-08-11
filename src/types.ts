@@ -49,6 +49,12 @@ export interface PageProbe {
 
 export type KimiPageKind = "work" | "chat" | "loading" | "unknown";
 
+export interface ThemeWidget {
+  id: string;
+  type: "kimi-work-quota";
+  surface: "home.top-right";
+}
+
 export interface AcceptedTarget {
   target: CdpTarget;
   probe: PageProbe;
@@ -69,6 +75,7 @@ export interface ThemeManifest {
       state: string;
     };
   };
+  widgets?: ThemeWidget[];
 }
 
 export interface LoadedTheme {

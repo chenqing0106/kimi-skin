@@ -33,6 +33,18 @@ test("allows restricted properties inside decorative scopes", () => {
   assert.ok(report.ok, JSON.stringify(report.violations, null, 2));
 });
 
+test("allows layout inside the owned widget root without widening native controls", () => {
+  const allowed = validateSafeCss(`
+    #kimi-skin-widgets { width: 280px; pointer-events: none; }
+    #kimi-skin-widgets .kimi-skin-widget { display: grid; padding: 12px; }
+  `);
+  assert.ok(allowed.ok, JSON.stringify(allowed.violations, null, 2));
+
+  const rejected = validateSafeCss(`#kimi-skin-widgets + .composer { display: none; }`);
+  assert.equal(rejected.ok, false);
+  assert.equal(rejected.violations[0]?.kind, "restricted-outside-decoration");
+});
+
 test("allows a state-scoped replacement for the home doodle only", () => {
   const allowed = validateSafeCss(`
     html[data-kimi-skin-state="ascii"] .home-view .doodle { content: url("assets/kimi-ascii.png"); }

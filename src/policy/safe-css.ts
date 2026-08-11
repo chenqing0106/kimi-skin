@@ -131,14 +131,26 @@ const RESTRICTED_PROPERTIES = new Set([
   "animation-play-state",
   "animation-timing-function",
   "aspect-ratio",
+  "align-items",
   "bottom",
+  "box-sizing",
   "clip-path",
+  "column-gap",
   "content",
   "display",
+  "flex",
+  "flex-basis",
+  "flex-direction",
+  "flex-grow",
+  "flex-shrink",
+  "flex-wrap",
+  "gap",
+  "grid-template-columns",
   "height",
   "inset",
   "inset-block",
   "inset-inline",
+  "justify-content",
   "left",
   "margin",
   "margin-bottom",
@@ -160,6 +172,7 @@ const RESTRICTED_PROPERTIES = new Set([
   "pointer-events",
   "position",
   "right",
+  "row-gap",
   "rotate",
   "scale",
   "top",
@@ -174,6 +187,7 @@ const RESTRICTED_PROPERTIES = new Set([
 
 // 装饰域伪元素：主题在这些位置动布局 / 可见性不会影响原生控件本体。
 const DECORATIVE_PSEUDO = /::(?:before|after|selection|placeholder|marker|backdrop|-webkit-scrollbar(?:-[a-z]+)?)/i;
+const THEME_OWNED_WIDGET = "#kimi-skin-widgets";
 
 const ALLOWED_GROUP_AT_RULES = new Set(["@media", "@supports"]);
 const KEYFRAME_AT_RULES = new Set(["@keyframes", "@-webkit-keyframes"]);
@@ -357,7 +371,13 @@ function truncate(text: string, max = 80): string {
 function selectorIsDecorative(selector: string): boolean {
   const parts = splitTopLevel(selector, ",").map((part) => part.trim()).filter(Boolean);
   if (parts.length === 0) return false;
-  return parts.every((part) => part.startsWith("#kimi-skin-bg") || DECORATIVE_PSEUDO.test(part));
+  return parts.every((part) => (
+    part.startsWith("#kimi-skin-bg")
+      || part === THEME_OWNED_WIDGET
+      || (part.startsWith(`${THEME_OWNED_WIDGET} `) && !/^#kimi-skin-widgets\s+[+~]/.test(part))
+      || part.startsWith(`${THEME_OWNED_WIDGET}>`)
+      || DECORATIVE_PSEUDO.test(part)
+  ));
 }
 
 // 受限属性的按值豁免：这些取值即使作用于原生控件也不会造成隐藏 / 移位 / 阻断。

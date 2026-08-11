@@ -1,5 +1,6 @@
 import { CdpSession } from "./cdp.js";
 import type { AcceptedTarget, LoadedTheme } from "./types.js";
+import { WIDGET_ROOT_ID, widgetRuntimeExpression } from "./widgets.js";
 
 const STYLE_ID = "kimi-skin-style";
 const BACKGROUND_ID = "kimi-skin-bg";
@@ -11,12 +12,14 @@ export function injectionExpression(theme: LoadedTheme): string {
   const rootStateToggle = theme.manifest.interactions?.rootStateToggle;
   const rootStateSelector = rootStateToggle?.triggerSelector ?? null;
   const rootState = rootStateToggle?.state ?? null;
+  const widgetRuntime = widgetRuntimeExpression(theme.manifest.widgets, theme.manifest.id);
   return `(() => {
     const root = document.documentElement;
     const runtimeKey = ${JSON.stringify(RUNTIME_KEY)};
     const rootStateAttribute = ${JSON.stringify(ROOT_STATE_ATTRIBUTE)};
     const rootStateSelector = ${JSON.stringify(rootStateSelector)};
     const rootState = ${JSON.stringify(rootState)};
+    const runtimeCleanups = [];
     if (rootStateSelector) document.querySelector(rootStateSelector);
     const previousRuntime = globalThis[runtimeKey];
     const preserveRootState = previousRuntime?.themeId === ${JSON.stringify(theme.manifest.id)}
@@ -47,17 +50,22 @@ export function injectionExpression(theme: LoadedTheme): string {
       }, { signal: controller.signal });
       if (preserveRootState) root.setAttribute(rootStateAttribute, rootState);
       else root.removeAttribute(rootStateAttribute);
+      runtimeCleanups.push(() => controller.abort());
+    } else {
+      root.removeAttribute(rootStateAttribute);
+    }
+    ${widgetRuntime}
+    if (runtimeCleanups.length > 0) {
       globalThis[runtimeKey] = {
         themeId: ${JSON.stringify(theme.manifest.id)},
         cleanup: () => {
-          controller.abort();
+          for (const cleanup of runtimeCleanups.splice(0).reverse()) {
+            try { cleanup(); } catch {}
+          }
           root.removeAttribute(rootStateAttribute);
         }
       };
-    } else {
-      root.removeAttribute(rootStateAttribute);
-      delete globalThis[runtimeKey];
-    }
+    } else delete globalThis[runtimeKey];
     return {
       stylePresent: Boolean(document.getElementById(${JSON.stringify(STYLE_ID)})),
       backgroundPresent: Boolean(document.getElementById(${JSON.stringify(BACKGROUND_ID)})),
@@ -79,6 +87,7 @@ const RESTORE_EXPRESSION = `(() => {
   delete globalThis[runtimeKey];
   document.getElementById(${JSON.stringify(STYLE_ID)})?.remove();
   document.getElementById(${JSON.stringify(BACKGROUND_ID)})?.remove();
+  document.getElementById(${JSON.stringify(WIDGET_ROOT_ID)})?.remove();
   document.documentElement.style.removeProperty('--kimi-skin-background-image');
   document.documentElement.removeAttribute(${JSON.stringify(ROOT_STATE_ATTRIBUTE)});
   delete document.documentElement.dataset.kimiSkinTheme;

@@ -697,6 +697,120 @@ html[data-kimi-skin-state="ascii"] .home-view .greeting-subtitle {
   letter-spacing: 0;
 }
 
+/* Dark Side 专属：首页右上角的只读 Kimi Work 额度监视器。
+   DOM 和数据由 harness 的固定组件提供，主题只负责这个自有区域的视觉。 */
+#kimi-skin-widgets {
+  width: 286px;
+  pointer-events: none;
+}
+
+#kimi-skin-widgets .kimi-skin-quota {
+  position: relative;
+  box-sizing: border-box;
+  width: 286px;
+  min-height: 112px;
+  padding: 12px 14px 11px;
+  overflow: hidden;
+  color: var(--lunar-paper);
+  background-color: rgba(7, 7, 7, 0.94);
+  background-image:
+    linear-gradient(rgba(243, 243, 239, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 243, 239, 0.055) 1px, transparent 1px);
+  background-size: 18px 18px;
+  border: 1px solid rgba(243, 243, 239, 0.2);
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  font-family: "Fusion Pixel 10px", ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  pointer-events: auto;
+}
+
+#kimi-skin-widgets .kimi-skin-quota__header,
+#kimi-skin-widgets .kimi-skin-quota__readout,
+#kimi-skin-widgets .kimi-skin-quota__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#kimi-skin-widgets .kimi-skin-quota__header {
+  color: rgba(243, 243, 239, 0.58);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__signal {
+  width: 7px;
+  height: 7px;
+  background: #f04432;
+  box-shadow: 0 0 8px rgba(240, 68, 50, 0.26);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__readout {
+  margin-top: 12px;
+  color: rgba(243, 243, 239, 0.66);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__value {
+  color: var(--lunar-paper);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba(243, 243, 239, 0.15);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__meter {
+  position: relative;
+  height: 7px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: repeating-linear-gradient(90deg, #242424 0 7px, transparent 7px 10px);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__meter-fill {
+  display: block;
+  height: 7px;
+  min-width: 2px;
+  background: repeating-linear-gradient(90deg, var(--lunar-paper) 0 7px, transparent 7px 10px);
+  transition: width 0.35s steps(10, end);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__footer {
+  margin-top: 9px;
+  padding-right: 48px;
+  color: rgba(243, 243, 239, 0.48);
+}
+
+#kimi-skin-widgets .kimi-skin-quota__reset {
+  color: rgba(243, 243, 239, 0.72);
+  font-family: "Fusion Pixel 10px", ui-monospace, monospace !important;
+  font-size: 10px;
+}
+
+#kimi-skin-widgets .kimi-skin-quota__status {
+  position: absolute;
+  right: 14px;
+  bottom: 11px;
+  color: rgba(243, 243, 239, 0.42);
+  font-size: 8px;
+}
+
+#kimi-skin-widgets .kimi-skin-quota[data-state="loading"] .kimi-skin-quota__signal {
+  background: var(--lunar-dust);
+}
+
+#kimi-skin-widgets .kimi-skin-quota[data-state="stale"] .kimi-skin-quota__signal,
+#kimi-skin-widgets .kimi-skin-quota[data-state="unavailable"] .kimi-skin-quota__signal {
+  background: var(--lunar-signal-gray);
+  box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  #kimi-skin-widgets {
+    display: none;
+  }
+}
+
 @media (max-width: 760px) {
   .home-view::before {
     opacity: 0.45;
