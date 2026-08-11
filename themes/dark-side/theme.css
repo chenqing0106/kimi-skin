@@ -1,0 +1,701 @@
+/* kimi-skin · dark-side 主题 · 月之暗面
+ * 视觉：官网招聘海报的 1-bit 点阵半调语言——纯黑白，点阵月球、轨道环、星芒。
+ * 骨架沿用 lunar-signal 已验证的 token 重映射；无彩色装饰。 */
+
+:root {
+  color-scheme: dark;
+  --lunar-void: #050505;
+  --lunar-graphite: #2b2b2b;
+  --lunar-signal-gray: #737373;
+  --lunar-dust: #bdbdba;
+  --lunar-paper: #f3f3ef;
+
+  /* Kimi neutral surfaces: remap once so pages, cards and root-level portals agree.
+     基础层保持近不透明（官方即不透明），避免弹层下文字透出；hover/active 做相对提亮。 */
+  --Bg-GroundPC: var(--lunar-void) !important;
+  --Bg-GroundPC-hover: rgba(43, 43, 43, 0.58) !important;
+  --Bg-GroundPC-active: rgba(43, 43, 43, 0.76) !important;
+
+  --Bg-Primary: var(--lunar-void) !important;
+  --Bg-Primary-hover: rgba(43, 43, 43, 0.58) !important;
+  --Bg-Primary-active: rgba(43, 43, 43, 0.76) !important;
+  --Bg-Primary70: rgba(8, 8, 8, 0.94) !important;
+  --Bg-Primary70-hover: rgba(30, 30, 30, 0.94) !important;
+  --Bg-Primary70-active: rgba(40, 40, 40, 0.95) !important;
+  --Bg-Primary90: rgba(10, 10, 10, 0.98) !important;
+  --Bg-Primary90-hover: rgba(32, 32, 32, 0.98) !important;
+  --Bg-Primary90-active: rgba(46, 46, 46, 0.98) !important;
+
+  --Bg-Secondary: rgba(26, 26, 26, 0.96) !important;
+  --Bg-Secondary-hover: rgba(40, 40, 40, 0.96) !important;
+  --Bg-Secondary-active: rgba(50, 50, 50, 0.97) !important;
+  --Bg-Secondary90: rgba(22, 22, 22, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(40, 40, 40, 0.98) !important;
+  --Bg-Secondary90-active: rgba(52, 52, 52, 0.98) !important;
+
+  --Bg-Tertiary: rgba(38, 38, 38, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(50, 50, 50, 0.96) !important;
+  --Bg-Tertiary-active: rgba(62, 62, 62, 0.97) !important;
+  --Bg-Tertiary90: rgba(30, 30, 30, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(46, 46, 46, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(58, 58, 58, 0.98) !important;
+
+  --Bg-Quaternary: var(--lunar-graphite) !important;
+  --Bg-Quaternary-hover: #373737 !important;
+  --Bg-Quaternary-active: #434343 !important;
+
+  --BgGp-Primary: rgba(26, 26, 26, 0.96) !important;
+  --BgGp-Primary-hover: rgba(40, 40, 40, 0.96) !important;
+  --BgGp-Primary-active: rgba(50, 50, 50, 0.97) !important;
+  --BgGp-Primary90: rgba(22, 22, 22, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(40, 40, 40, 0.98) !important;
+  --BgGp-Primary90-active: rgba(52, 52, 52, 0.98) !important;
+  --BgGp-Secondary: rgba(38, 38, 38, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(50, 50, 50, 0.96) !important;
+  --BgGp-Secondary-active: rgba(62, 62, 62, 0.97) !important;
+  --BgGp-Secondary90: rgba(30, 30, 30, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(46, 46, 46, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(58, 58, 58, 0.98) !important;
+  --BgGp-Tertiary: var(--lunar-graphite) !important;
+  --BgGp-Tertiary-hover: #373737 !important;
+  --BgGp-Tertiary-active: #434343 !important;
+
+  /* Kimi text hierarchy: paper, dust and signal gray replace black labels. */
+  --Labels-Primary: rgba(243, 243, 239, 0.94) !important;
+  --Labels-Primary-hover: var(--lunar-paper) !important;
+  --Labels-Primary-active: rgba(243, 243, 239, 0.88) !important;
+  --Labels-Secondary: rgba(189, 189, 186, 0.82) !important;
+  --Labels-Secondary-hover: rgba(243, 243, 239, 0.84) !important;
+  --Labels-Secondary-active: rgba(189, 189, 186, 0.72) !important;
+  --Labels-Tertiary: rgba(189, 189, 186, 0.62) !important;
+  --Labels-Tertiary-hover: rgba(189, 189, 186, 0.76) !important;
+  --Labels-Tertiary-active: rgba(189, 189, 186, 0.54) !important;
+  --Labels-Quaternary: rgba(115, 115, 115, 0.82) !important;
+  --Labels-Quaternary-hover: rgba(189, 189, 186, 0.62) !important;
+  --Labels-Quaternary-active: rgba(115, 115, 115, 0.7) !important;
+
+  --Separators-S1: rgba(243, 243, 239, 0.16) !important;
+  --Separators-S1-hover: rgba(243, 243, 239, 0.22) !important;
+  --Separators-S1-active: rgba(243, 243, 239, 0.28) !important;
+  --Fills-F1: rgba(243, 243, 239, 0.06) !important;
+  --Fills-F1-hover: rgba(243, 243, 239, 0.1) !important;
+  --Fills-F1-active: rgba(243, 243, 239, 0.14) !important;
+  --Fills-F2: rgba(243, 243, 239, 0.1) !important;
+  --Fills-F2-hover: rgba(243, 243, 239, 0.14) !important;
+  --Fills-F2-active: rgba(243, 243, 239, 0.18) !important;
+  --Fills-F3: rgba(243, 243, 239, 0.16) !important;
+  --Fills-F3-hover: rgba(243, 243, 239, 0.2) !important;
+  --Fills-F3-active: rgba(243, 243, 239, 0.24) !important;
+  --Fills-F4: rgba(243, 243, 239, 0.24) !important;
+  --Fills-F4-hover: rgba(243, 243, 239, 0.28) !important;
+  --Fills-F4-active: rgba(243, 243, 239, 0.32) !important;
+  --Others-SubLayerBg: rgba(243, 243, 239, 0.08) !important;
+  --Others-SubLayerBg-hover: rgba(243, 243, 239, 0.12) !important;
+  --Others-SubLayerBg-active: rgba(243, 243, 239, 0.16) !important;
+  --Colors-KMBlue: var(--lunar-paper) !important;
+  --Colors-KMBlue-hover: var(--lunar-dust) !important;
+  --Colors-KMBlue-active: var(--lunar-signal-gray) !important;
+  --Others-LightBlueBg: rgba(243, 243, 239, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(243, 243, 239, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(243, 243, 239, 0.16) !important;
+}
+
+/* 背景层：纯黑虚空 + 抖动颗粒 + 星尘（素材由 harness 注入为该变量） */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--lunar-void);
+  background-image: var(--kimi-skin-background-image);
+  background-position: center;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--lunar-paper) !important;
+}
+
+body {
+  accent-color: var(--lunar-paper);
+}
+
+aside.sidebar {
+  position: relative;
+  color: var(--lunar-paper) !important;
+  background: var(--lunar-void) !important;
+  border-right: 1px solid var(--lunar-graphite) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 半调月相序列：侧栏底部，新月到满月的网点密度渐变 */
+aside.sidebar::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: 88px;
+  z-index: 1;
+  width: 132px;
+  height: 12px;
+  background: url("assets/moons.png") no-repeat left center / contain;
+  image-rendering: pixelated;
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+/* 心跳线：1px 折角白线缓慢平移，致敬专辑开场的 heartbeat */
+aside.sidebar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  z-index: 1;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='24' viewBox='0 0 240 24'%3E%3Cpolyline points='0,13 36,13 46,9 56,13 72,13 80,2 88,21 97,13 128,13 140,7 152,13 240,13' fill='none' stroke='%23f3f3ef' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
+  opacity: 0.14;
+  pointer-events: none;
+  animation: ds-heartbeat 9s linear infinite;
+}
+
+@keyframes ds-heartbeat {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 240px;
+  }
+}
+
+main.main-pane {
+  position: relative;
+  color: var(--lunar-paper) !important;
+  background-color: rgba(10, 10, 10, 0.985) !important;
+  background-image:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.26), rgba(10, 10, 10, 0.96) 150px),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(243, 243, 239, 0.018) 24px) !important;
+  background-position: 0 0, 0 0 !important;
+  background-size: 100% 100%, 100% 24px !important;
+  border: 1px solid var(--lunar-graphite) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-view {
+  position: relative;
+  color: var(--lunar-paper) !important;
+  background-color: rgba(10, 10, 10, 0.85) !important;
+  background-image:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.3), rgba(10, 10, 10, 0) 180px),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(243, 243, 239, 0.016) 24px) !important;
+  background-position:
+    0 0,
+    0 0 !important;
+  background-size:
+    100% 100%,
+    100% 24px !important;
+  background-repeat: repeat, repeat !important;
+}
+
+/* 两侧月表纹理极慢漂移，像舷窗外的景色；动画与裁剪都在装饰层 ::before 上 */
+@keyframes ds-edge-drift {
+  from {
+    background-position:
+      left 0 top 0,
+      right 0 top -24px,
+      right 0 bottom 1%;
+  }
+  to {
+    background-position:
+      left 0 top -24px,
+      right 0 top 0,
+      right 0 bottom 1%;
+  }
+}
+
+/* 主视觉 + 舷窗纹理：整幅装饰层。月亮用固有宽高比（880×520 ≈ 220/130）按宽度定位，
+   视觉与原 aspect-ratio 盒一致；两侧月表纹理同层漂移，overflow 在装饰层内裁剪 */
+.home-view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-image:
+    url("assets/edge-left.png"),
+    url("assets/edge-right.png"),
+    url("assets/darkmoon.png");
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position:
+    left 0 top 0,
+    right 0 top -24px,
+    right 0 bottom 1%;
+  background-size:
+    auto 104%,
+    auto 104%,
+    min(60%, 640px) auto;
+  image-rendering: pixelated;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  animation: ds-edge-drift 30s ease-in-out infinite alternate;
+}
+
+/* 你打字时，月面变亮——你在向月之暗面发信号 */
+body:has(.composer:focus-within) .home-view::before {
+  opacity: 1;
+  filter: brightness(1.35);
+}
+
+/* 顶部装饰：点阵轨道弧 + 星芒 + 星尘，缓慢呼吸闪烁；流星每 13 秒划过一次 */
+.home-view::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background-image: url("assets/meteor.png"), url("assets/sky.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: -15% 12%, center top;
+  background-size: 150px auto, min(96%, 1180px) auto;
+  image-rendering: pixelated;
+  opacity: 0.6;
+  pointer-events: none;
+  animation:
+    ds-twinkle 7s ease-in-out infinite,
+    ds-meteor 13s linear infinite;
+}
+
+@keyframes ds-twinkle {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes ds-meteor {
+  0% {
+    background-position: -15% 12%, center top;
+  }
+  10% {
+    background-position: 115% 46%, center top;
+  }
+  100% {
+    background-position: 115% 46%, center top;
+  }
+}
+
+main.main-pane > .canvas-view,
+main.main-pane > section {  color: var(--lunar-paper) !important;
+  background-color: rgba(10, 10, 10, 0.94) !important;
+  background-image:
+    linear-gradient(180deg, rgba(5, 5, 5, 0.3), rgba(10, 10, 10, 0) 180px),
+    repeating-linear-gradient(180deg, transparent 0 23px, rgba(243, 243, 239, 0.016) 24px) !important;
+  background-position: 0 0, 0 0 !important;
+  background-size: 100% 100%, 100% 24px !important;
+  border-radius: 8px !important;
+}
+
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--lunar-paper) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--lunar-dust) !important;
+  opacity: 0.82 !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--lunar-paper) !important;
+  text-decoration: underline;
+  text-decoration-color: var(--lunar-signal-gray);
+  text-underline-offset: 0.2em;
+}
+
+.cron-jobs-page button {
+  color: var(--lunar-void) !important;
+  background: var(--lunar-paper) !important;
+  border: 1px solid var(--lunar-paper) !important;
+  border-radius: 4px !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--lunar-paper) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: underline;
+  text-decoration-color: var(--lunar-signal-gray);
+  text-underline-offset: 0.2em;
+}
+
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--lunar-paper) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--lunar-dust) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--lunar-paper) !important;
+  background: var(--lunar-graphite) !important;
+  border-color: var(--lunar-signal-gray) !important;
+  border-radius: 4px !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--lunar-paper) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--lunar-paper) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--lunar-dust) !important;
+  opacity: 1;
+}
+
+.plugins-hub .plugin-card {
+  color: var(--lunar-paper) !important;
+  background: rgba(43, 43, 43, 0.48) !important;
+  border: 1px solid var(--lunar-graphite) !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0 rgba(243, 243, 239, 0.08) !important;
+}
+
+/* 主页问候文案保持原生（不加装饰、不隐藏） */
+
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 5px !important;
+}
+
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"] {
+  color: var(--lunar-void) !important;
+  background: var(--lunar-paper) !important;
+  box-shadow: none !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] * {
+  color: inherit !important;
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: var(--lunar-paper) !important;
+  background: var(--lunar-graphite) !important;
+  border-radius: 5px !important;
+}
+
+/* ASCII 光标：会话行 hover 时亮起 › 指示符（绝对定位，不挤压布局） */
+aside.sidebar .conversation-row {
+  position: relative;
+}
+
+aside.sidebar .conversation-row::before {
+  content: "›";
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  color: var(--lunar-signal-gray);
+  font: 12px/1 ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  opacity: 0;
+  pointer-events: none;
+}
+
+aside.sidebar .conversation-row:hover::before,
+aside.sidebar .conversation-row:focus-within::before {
+  opacity: 0.9;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, var(--lunar-void)) !important;
+}
+
+/* 为月相与心跳线保留真实布局空间，避免它们压到最后一条会话。
+   空隙挂在滚动容器 .sidebar-scroll 的 ::after 上（装饰域）：内容少时
+   margin-top:auto 把空隙钉在侧栏底部，内容滚动时它垫在最后一条之后。 */
+aside.sidebar .sidebar-scroll::after {
+  content: "";
+  display: block;
+  height: 48px;
+  margin-top: auto;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(5, 5, 5, 0.86) 42%,
+    rgba(5, 5, 5, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, var(--lunar-void)) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: var(--lunar-dust) !important;
+  background: var(--lunar-void) !important;
+  border: 1px solid var(--lunar-graphite) !important;
+  border-radius: 3px !important;
+}
+
+/* 输入框：参考官方样式——不透明深灰面板、细边、无阴影，聚焦只轻微提亮 */
+.composer {
+  color: var(--lunar-paper) !important;
+  caret-color: var(--lunar-paper) !important;
+  background: #151515 !important;
+  border: 1px solid rgba(243, 243, 239, 0.1) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.composer:focus-within {
+  background: #191919 !important;
+  border-color: rgba(243, 243, 239, 0.2) !important;
+  box-shadow: none !important;
+}
+
+/* 输入框内部的焦点白框一并去掉 */
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--lunar-paper) !important;
+  caret-color: var(--lunar-paper) !important;
+  background: transparent !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--lunar-signal-gray) !important;
+  opacity: 1;
+}
+
+.composer-editor::before {
+  color: var(--lunar-signal-gray) !important;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, sans-serif !important;
+}
+
+/* 输入框内按钮：官方幽灵样式，无描边无底色，hover 轻微填充 */
+.composer button,
+.composer [role="button"] {
+  color: var(--lunar-paper) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: rgba(243, 243, 239, 0.08) !important;
+}
+
+/* 发送键：官方深灰圆形，不用反相白 */
+.composer .send-btn {
+  color: var(--lunar-paper) !important;
+  background: rgba(243, 243, 239, 0.14) !important;
+  border-color: transparent !important;
+}
+
+pre {
+  color: var(--lunar-paper) !important;
+  background: #111 !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%23737373'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%23737373'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%23737373'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%23737373'/%3E%3C/svg%3E") !important;
+  background-position:
+    left 5px top 5px,
+    right 5px top 5px,
+    left 5px bottom 5px,
+    right 5px bottom 5px !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid var(--lunar-graphite) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+/* 工具卡片里的亮色语法高亮块：深色底 + 纸白字，否则深压深不可读 */
+.syntax-highlighter.light,
+.syntax-highlighter.light pre,
+.syntax-highlighter.light code {
+  background: #111 !important;
+  color: rgba(243, 243, 239, 0.88) !important;
+}
+
+.syntax-highlighter.light span {
+  color: rgba(243, 243, 239, 0.88) !important;
+}
+
+/* 用户消息气泡：官方白底在暗色主题下变白纸白字，压成石墨深灰 */
+.bubble.role-user {
+  background: #1e1e1e !important;
+  color: var(--lunar-paper) !important;
+}
+
+/* 亮模式插图统一反相：空状态/引导插画（日历、文件夹等）一条规则适配暗色，
+   不用逐张处理。invert 把白底翻成黑底、深线翻成浅线，hue-rotate 恢复彩色插画的色相。 */
+.cron-jobs-page svg,
+.cron-jobs-page img,
+[class*="empty"] img,
+[class*="Empty"] img,
+[class*="empty"] > svg,
+[class*="Empty"] > svg,
+[class*="blank"] img,
+[class*="Blank"] img,
+[class*="illustration"] img,
+[class*="Illustration"] img {
+  filter: invert(0.92) hue-rotate(180deg) !important;
+}
+
+/* 弹层兜底：偶发的白底对话框/模态统一压暗 */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  background-color: #161616 !important;
+  color: var(--lunar-paper) !important;
+  border-color: var(--lunar-graphite) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--lunar-paper) !important;
+  background: var(--lunar-graphite) !important;
+  border: 1px solid #454545 !important;
+  border-radius: 3px !important;
+}
+
+blockquote {
+  border-left-color: var(--lunar-dust) !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: var(--lunar-graphite) !important;
+}
+
+a {
+  color: var(--lunar-paper);
+  text-decoration-color: var(--lunar-signal-gray);
+  text-underline-offset: 0.2em;
+}
+
+/* 选区：海报式黑白反相 */
+::selection {
+  color: var(--lunar-void);
+  background: var(--lunar-paper);
+}
+
+:focus-visible {
+  outline: 1px solid rgba(243, 243, 239, 0.45) !important;
+  outline-offset: 2px !important;
+}
+
+* {
+  scrollbar-color: var(--lunar-signal-gray) var(--lunar-void);
+}
+
+/* WebKit 滚动条：覆盖原生白色滑块 */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(115, 115, 115, 0.45);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(189, 189, 186, 0.6);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .home-view::before {
+    opacity: 0.45;
+    background-size:
+      auto 104%,
+      auto 104%,
+      70% auto;
+  }
+
+  aside.sidebar::before,
+  aside.sidebar::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg,
+  .home-view::before,
+  aside.sidebar::after,
+  .home-view::after {
+    animation: none;
+  }
+}
