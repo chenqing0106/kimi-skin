@@ -1,0 +1,568 @@
+/* kimi-skin · paper 主题 · 纸间
+ * 视觉：手工排印的纸质杂志——米白纸底、墨色文字、衬线标题，
+ * 细黑描边 + 偏移硬阴影的"活版卡片"，朱砂红印章点缀。
+ * 骨架沿用 dark-side 已验证的 token 重映射；素材全部为 CSS/SVG 程序生成。 */
+
+:root {
+  color-scheme: light;
+  --paper-ground: #f3efe4;
+  --paper-card: #faf7ee;
+  --paper-raised: #ece6d5;
+  --paper-deep: #e2dbc6;
+  --ink: #2a251b;
+  --ink-soft: #6e6552;
+  --ink-faint: #a89d83;
+  --cinnabar: #b3492e;
+  --cinnabar-deep: #8a3520;
+  --paper-line: rgba(42, 37, 27, 0.16);
+  --serif: "Songti SC", "Noto Serif CJK SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
+
+  /* Kimi neutral surfaces：纸色系，近不透明，hover/active 相对加深 */
+  --Bg-GroundPC: var(--paper-ground) !important;
+  --Bg-GroundPC-hover: rgba(226, 219, 198, 0.6) !important;
+  --Bg-GroundPC-active: rgba(226, 219, 198, 0.85) !important;
+
+  --Bg-Primary: var(--paper-card) !important;
+  --Bg-Primary-hover: #f1ecdd !important;
+  --Bg-Primary-active: #e9e3d0 !important;
+  --Bg-Primary70: rgba(250, 247, 238, 0.94) !important;
+  --Bg-Primary70-hover: rgba(241, 236, 221, 0.94) !important;
+  --Bg-Primary70-active: rgba(233, 227, 208, 0.95) !important;
+  --Bg-Primary90: rgba(250, 247, 238, 0.98) !important;
+  --Bg-Primary90-hover: rgba(241, 236, 221, 0.98) !important;
+  --Bg-Primary90-active: rgba(233, 227, 208, 0.98) !important;
+
+  --Bg-Secondary: rgba(239, 233, 218, 0.96) !important;
+  --Bg-Secondary-hover: rgba(232, 225, 207, 0.96) !important;
+  --Bg-Secondary-active: rgba(224, 216, 195, 0.97) !important;
+  --Bg-Secondary90: rgba(239, 233, 218, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(232, 225, 207, 0.98) !important;
+  --Bg-Secondary90-active: rgba(224, 216, 195, 0.98) !important;
+
+  --Bg-Tertiary: rgba(231, 224, 205, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(224, 216, 195, 0.96) !important;
+  --Bg-Tertiary-active: rgba(214, 205, 182, 0.97) !important;
+  --Bg-Tertiary90: rgba(231, 224, 205, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(224, 216, 195, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(214, 205, 182, 0.98) !important;
+
+  --Bg-Quaternary: #ded5bd !important;
+  --Bg-Quaternary-hover: #d4caae !important;
+  --Bg-Quaternary-active: #c9bd9d !important;
+
+  --BgGp-Primary: rgba(239, 233, 218, 0.96) !important;
+  --BgGp-Primary-hover: rgba(232, 225, 207, 0.96) !important;
+  --BgGp-Primary-active: rgba(224, 216, 195, 0.97) !important;
+  --BgGp-Primary90: rgba(239, 233, 218, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(232, 225, 207, 0.98) !important;
+  --BgGp-Primary90-active: rgba(224, 216, 195, 0.98) !important;
+  --BgGp-Secondary: rgba(231, 224, 205, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(224, 216, 195, 0.96) !important;
+  --BgGp-Secondary-active: rgba(214, 205, 182, 0.97) !important;
+  --BgGp-Secondary90: rgba(231, 224, 205, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(224, 216, 195, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(214, 205, 182, 0.98) !important;
+  --BgGp-Tertiary: #ded5bd !important;
+  --BgGp-Tertiary-hover: #d4caae !important;
+  --BgGp-Tertiary-active: #c9bd9d !important;
+
+  /* Kimi text hierarchy：墨色梯度 */
+  --Labels-Primary: rgba(42, 37, 27, 0.94) !important;
+  --Labels-Primary-hover: var(--ink) !important;
+  --Labels-Primary-active: rgba(42, 37, 27, 0.88) !important;
+  --Labels-Secondary: rgba(110, 101, 82, 0.88) !important;
+  --Labels-Secondary-hover: rgba(110, 101, 82, 0.96) !important;
+  --Labels-Secondary-active: rgba(110, 101, 82, 0.78) !important;
+  --Labels-Tertiary: rgba(141, 132, 110, 0.72) !important;
+  --Labels-Tertiary-hover: rgba(141, 132, 110, 0.84) !important;
+  --Labels-Tertiary-active: rgba(141, 132, 110, 0.6) !important;
+  --Labels-Quaternary: rgba(168, 157, 131, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(141, 132, 110, 0.72) !important;
+  --Labels-Quaternary-active: rgba(168, 157, 131, 0.72) !important;
+
+  --Separators-S1: rgba(42, 37, 27, 0.16) !important;
+  --Separators-S1-hover: rgba(42, 37, 27, 0.22) !important;
+  --Separators-S1-active: rgba(42, 37, 27, 0.28) !important;
+  --Fills-F1: rgba(42, 37, 27, 0.05) !important;
+  --Fills-F1-hover: rgba(42, 37, 27, 0.08) !important;
+  --Fills-F1-active: rgba(42, 37, 27, 0.12) !important;
+  --Fills-F2: rgba(42, 37, 27, 0.08) !important;
+  --Fills-F2-hover: rgba(42, 37, 27, 0.12) !important;
+  --Fills-F2-active: rgba(42, 37, 27, 0.16) !important;
+  --Fills-F3: rgba(42, 37, 27, 0.12) !important;
+  --Fills-F3-hover: rgba(42, 37, 27, 0.16) !important;
+  --Fills-F3-active: rgba(42, 37, 27, 0.2) !important;
+  --Fills-F4: rgba(42, 37, 27, 0.18) !important;
+  --Fills-F4-hover: rgba(42, 37, 27, 0.22) !important;
+  --Fills-F4-active: rgba(42, 37, 27, 0.26) !important;
+  --Others-SubLayerBg: rgba(42, 37, 27, 0.06) !important;
+  --Others-SubLayerBg-hover: rgba(42, 37, 27, 0.1) !important;
+  --Others-SubLayerBg-active: rgba(42, 37, 27, 0.14) !important;
+
+  /* 品牌蓝色位 → 朱砂红 */
+  --Colors-KMBlue: var(--cinnabar) !important;
+  --Colors-KMBlue-hover: #a03e26 !important;
+  --Colors-KMBlue-active: var(--cinnabar-deep) !important;
+  --Others-LightBlueBg: rgba(179, 73, 46, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(179, 73, 46, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(179, 73, 46, 0.16) !important;
+}
+
+/* 背景层：米白纸底 + 纤维噪点 + 淡淡横理（laid lines），全部程序生成 */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--paper-ground);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(42, 37, 27, 0.014) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(42, 37, 27, 0.01) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(42, 37, 27, 0.022) 32px);
+  background-size: 3px 3px, 4px 4px, 100% 32px;
+}
+
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+body {
+  accent-color: var(--cinnabar);
+}
+
+/* 侧栏：稍深的纸面，右边一条墨线 */
+aside.sidebar {
+  position: relative;
+  color: var(--ink) !important;
+  background: #ede8d9 !important;
+  border-right: 1px solid var(--paper-line) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 邮戳环：固定在侧栏 footer 右侧空白处（footer 不滚动，不会与列表重叠） */
+aside.sidebar .sidebar-footer {
+  position: relative;
+}
+
+aside.sidebar .sidebar-footer::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%236e6552'%3E%3Ccircle cx='17' cy='17' r='14' stroke-width='1.2'/%3E%3Ccircle cx='17' cy='17' r='10' stroke-width='0.7'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 5px !important;
+}
+
+/* 侧栏选中项：墨色块反白，像标题上的印刷色块 */
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"] {
+  color: var(--paper-card) !important;
+  background: var(--ink) !important;
+  box-shadow: 2px 2px 0 rgba(42, 37, 27, 0.25) !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] * {
+  color: inherit !important;
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: var(--ink) !important;
+  background: var(--paper-raised) !important;
+  border-radius: 5px !important;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, #ede8d9) !important;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(237, 232, 217, 0.86) 42%,
+    rgba(237, 232, 217, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, #ede8d9) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: var(--ink-soft) !important;
+  background: var(--paper-card) !important;
+  border: 1px solid var(--paper-line) !important;
+  border-radius: 3px !important;
+}
+
+/* 主内容：纸面卡片，细墨描边 */
+main.main-pane {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: var(--paper-card) !important;
+  border: 1px solid var(--paper-line) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-view {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: transparent !important;
+}
+
+/* 邮票贴图：首页右上角的标志元素——打孔边、双线框、朱砂邮戳，微微歪斜 */
+.home-view::after {
+  content: "";
+  position: absolute;
+  top: 44px;
+  right: 52px;
+  width: 96px;
+  height: 118px;
+  transform: rotate(5deg);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='118'%3E%3Crect x='5' y='5' width='86' height='108' fill='%23faf7ee' stroke='%23f3efe4' stroke-width='9' stroke-dasharray='0.1 15.2' stroke-linecap='round'/%3E%3Crect x='5' y='5' width='86' height='108' fill='none' stroke='%232a251b'/%3E%3Crect x='12' y='12' width='72' height='94' fill='none' stroke='%23b3492e' stroke-width='1.6'/%3E%3Ccircle cx='48' cy='45' r='19' fill='none' stroke='%23b3492e' stroke-width='2'/%3E%3Ccircle cx='48' cy='45' r='12' fill='none' stroke='%23b3492e'/%3E%3Cpath d='M22 82h52M22 88h52M22 94h32' stroke='%236e6552' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat center / contain;
+  filter: drop-shadow(3px 3px 0 rgba(42, 37, 27, 0.18));
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+main.main-pane > .canvas-view,
+main.main-pane > section {
+  color: var(--ink) !important;
+  background-color: var(--paper-card) !important;
+  border-radius: 8px !important;
+}
+
+/* 衬线标题：杂志排印感只给标题层，正文保持原生 */
+.home-view .greeting,
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.plugins-hub .hub-header h1,
+.plugins-hub .hub-header h2,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-heading {
+  font-family: var(--serif) !important;
+  letter-spacing: 0.01em;
+}
+
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--ink) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--ink-soft) !important;
+  opacity: 0.88 !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--cinnabar-deep) !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(179, 73, 46, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.cron-jobs-page button {
+  color: var(--paper-card) !important;
+  background: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+  border-radius: 4px !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--cinnabar-deep) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(179, 73, 46, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--ink) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--ink-soft) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--ink) !important;
+  background: var(--paper-ground) !important;
+  border-color: var(--paper-line) !important;
+  border-radius: 4px !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--ink) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--ink) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+/* 活版卡片：细墨描边 + 偏移硬阴影，本主题最有辨识度的结构语言 */
+.plugins-hub .plugin-card {
+  color: var(--ink) !important;
+  background: var(--paper-card) !important;
+  border: 1px solid rgba(42, 37, 27, 0.55) !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0 rgba(42, 37, 27, 0.16) !important;
+}
+
+/* 「使用」按钮：墨块反白（印刷色块），修复文字继承墨色导致墨压墨 */
+.plugins-hub .plugin-card .plugin-use-btn {
+  color: var(--paper-card) !important;
+  background: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn * {
+  color: inherit !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn:hover {
+  background: #443c2c !important;
+  border-color: #443c2c !important;
+}
+
+/* 主页问候文案保持原生（不加装饰、不隐藏），只换衬线 */
+
+/* 输入框：纸面便签——细墨边、聚焦时朱砂描边 */
+.composer {
+  color: var(--ink) !important;
+  caret-color: var(--cinnabar-deep) !important;
+  background: var(--paper-card) !important;
+  border: 1px solid rgba(42, 37, 27, 0.32) !important;
+  border-radius: 14px !important;
+  box-shadow: 3px 3px 0 rgba(42, 37, 27, 0.12) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.composer:focus-within {
+  background: #fdfbf4 !important;
+  border-color: var(--cinnabar) !important;
+  box-shadow: 3px 3px 0 rgba(179, 73, 46, 0.18) !important;
+}
+
+/* 输入框内部的焦点白框一并去掉 */
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--ink) !important;
+  caret-color: var(--cinnabar-deep) !important;
+  background: transparent !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.composer-editor::before {
+  color: var(--ink-faint) !important;
+}
+
+.composer button,
+.composer [role="button"] {
+  color: var(--ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: rgba(42, 37, 27, 0.07) !important;
+}
+
+/* 发送键：朱砂印章 */
+.composer .send-btn {
+  color: var(--paper-card) !important;
+  background: var(--cinnabar) !important;
+  border-color: transparent !important;
+}
+
+.composer .send-btn:hover {
+  background: #a03e26 !important;
+}
+
+/* 代码块：米色纸 + 墨框，四角十字规线（印刷对位标记） */
+pre {
+  color: var(--ink) !important;
+  background: #f6f1e3 !important;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%236e6552'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%236e6552'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%236e6552'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M3 0h1v7H3zM0 3h7v1H0z' fill='%236e6552'/%3E%3C/svg%3E") !important;
+  background-position:
+    left 5px top 5px,
+    right 5px top 5px,
+    left 5px bottom 5px,
+    right 5px bottom 5px !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid rgba(42, 37, 27, 0.4) !important;
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 rgba(42, 37, 27, 0.1) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--cinnabar-deep) !important;
+  background: var(--paper-raised) !important;
+  border: 1px solid rgba(42, 37, 27, 0.24) !important;
+  border-radius: 3px !important;
+}
+
+/* 用户消息气泡：纸面 + 墨边，与背景纸区分 */
+.bubble.role-user {
+  background: #fdfbf4 !important;
+  color: var(--ink) !important;
+  border: 1px solid rgba(42, 37, 27, 0.28) !important;
+}
+
+blockquote {
+  border-left-color: var(--cinnabar) !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: rgba(42, 37, 27, 0.28) !important;
+}
+
+a {
+  color: var(--cinnabar-deep);
+  text-decoration-color: rgba(179, 73, 46, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 弹层兜底：统一纸面 */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  background-color: var(--paper-card) !important;
+  color: var(--ink) !important;
+  border-color: rgba(42, 37, 27, 0.4) !important;
+}
+
+/* 选区：朱砂底纸白字，像红笔划的重点 */
+::selection {
+  color: var(--paper-card);
+  background: var(--cinnabar);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cinnabar) !important;
+  outline-offset: 2px !important;
+}
+
+* {
+  scrollbar-color: var(--ink-faint) var(--paper-ground);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(168, 157, 131, 0.55);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 101, 82, 0.65);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .home-view::after {
+    width: 68px;
+    height: 84px;
+    top: 32px;
+    right: 28px;
+    opacity: 0.7;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg {
+    animation: none;
+  }
+}

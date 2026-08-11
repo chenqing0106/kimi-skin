@@ -1,0 +1,7 @@
+{
+  "id": "paper",
+  "name": "Paper · 纸间",
+  "version": "0.1.0",
+  "compatibleKimi": ["3.1.7"],
+  "capabilities": ["safe-css"]
+}
