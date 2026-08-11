@@ -8,6 +8,8 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 当前只支持 **macOS、Kimi 3.1.7 和 Work 界面**。
 
+![Dark Side 主题动态效果](docs/images/dark-side-preview.gif)
+
 ## 下载与使用
 
 从 Releases 下载 `kimi-skin-<version>-macos.zip` 并解压。完整包提供三个双击入口：
