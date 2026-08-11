@@ -63,6 +63,12 @@ export interface ThemeManifest {
   compatibleKimi: string[];
   background?: string;
   capabilities?: string[];
+  interactions?: {
+    rootStateToggle?: {
+      triggerSelector: string;
+      state: string;
+    };
+  };
 }
 
 export interface LoadedTheme {

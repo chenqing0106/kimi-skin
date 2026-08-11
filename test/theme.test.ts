@@ -39,6 +39,47 @@ test("loads a theme without a background image", async () => {
   assert.equal(theme.backgroundDataUrl, undefined);
 });
 
+test("loads the declarative pixel mode interaction", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-theme-pixel-mode-"));
+  await writeFile(path.join(directory, "theme.json"), JSON.stringify({
+    id: "pixel-mode",
+    name: "Pixel Mode",
+    version: "1.0.0",
+    compatibleKimi: ["3.1.7"],
+    interactions: { rootStateToggle: { triggerSelector: ".home-view .logo", state: "ascii" } },
+  }));
+  await writeFile(path.join(directory, "theme.css"), "body { color: white; }");
+  const theme = await loadTheme(directory, "3.1.7");
+  assert.equal(theme.manifest.interactions?.rootStateToggle?.triggerSelector, ".home-view .logo");
+  assert.equal(theme.manifest.interactions?.rootStateToggle?.state, "ascii");
+});
+
+test("rejects unknown interaction fields", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-theme-unsafe-interaction-"));
+  await writeFile(path.join(directory, "theme.json"), JSON.stringify({
+    id: "unsafe-interaction",
+    name: "Unsafe Interaction",
+    version: "1.0.0",
+    compatibleKimi: ["3.1.7"],
+    interactions: { rootStateToggle: { triggerSelector: ".home-view .logo", state: "ascii", script: "alert(1)" } },
+  }));
+  await writeFile(path.join(directory, "theme.css"), "body { color: white; }");
+  await assert.rejects(loadTheme(directory, "3.1.7"), /不支持的字段/);
+});
+
+test("keeps the pixel mode trigger scoped to one home-view target", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-theme-wide-interaction-"));
+  await writeFile(path.join(directory, "theme.json"), JSON.stringify({
+    id: "wide-interaction",
+    name: "Wide Interaction",
+    version: "1.0.0",
+    compatibleKimi: ["3.1.7"],
+    interactions: { rootStateToggle: { triggerSelector: ".home-view .doodle, body", state: "ascii" } },
+  }));
+  await writeFile(path.join(directory, "theme.css"), "body { color: white; }");
+  await assert.rejects(loadTheme(directory, "3.1.7"), /单个后代选择器/);
+});
+
 test("rejects remote CSS imports", async () => {
   await assert.rejects(loadTheme(await fixture('@import "https://example.com/theme.css";'), "3.1.7"), /@import/);
 });
@@ -69,6 +110,14 @@ test("rewrites relative url() references to data URLs", async () => {
   const theme = await loadTheme(directory, "3.1.7");
   assert.match(theme.css, /url\("data:image\/png;base64,/);
   assert.doesNotMatch(theme.css, /url\("assets\//);
+});
+
+test("rewrites a local WOFF2 font reference to a data URL", async () => {
+  const directory = await fixture('@font-face { font-family: Pixel; src: url("assets/pixel.woff2"); }');
+  await mkdir(path.join(directory, "assets"));
+  await writeFile(path.join(directory, "assets", "pixel.woff2"), Buffer.from([0x77, 0x4f, 0x46, 0x32]));
+  const theme = await loadTheme(directory, "3.1.7");
+  assert.match(theme.css, /url\("data:font\/woff2;base64,/);
 });
 
 test("rejects missing relative asset references", async () => {

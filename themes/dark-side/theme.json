@@ -4,5 +4,11 @@
   "version": "0.1.0",
   "compatibleKimi": ["3.1.7"],
   "background": "background.png",
-  "capabilities": ["safe-css"]
+  "capabilities": ["safe-css"],
+  "interactions": {
+    "rootStateToggle": {
+      "triggerSelector": ".home-view .doodle",
+      "state": "ascii"
+    }
+  }
 }

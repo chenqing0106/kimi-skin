@@ -177,6 +177,15 @@ const DECORATIVE_PSEUDO = /::(?:before|after|selection|placeholder|marker|backdr
 
 const ALLOWED_GROUP_AT_RULES = new Set(["@media", "@supports"]);
 const KEYFRAME_AT_RULES = new Set(["@keyframes", "@-webkit-keyframes"]);
+const ALLOWED_FONT_FACE_PROPERTIES = new Set([
+  "font-display",
+  "font-family",
+  "font-stretch",
+  "font-style",
+  "font-weight",
+  "src",
+  "unicode-range",
+]);
 
 export type SafeCssViolationKind =
   | "unknown-property"
@@ -289,6 +298,7 @@ function parseDeclarations(body: string): CssDeclaration[] {
 
 interface ParsedCss {
   styleRules: CssStyleRule[];
+  fontFaceRules: CssDeclaration[][];
   keyframeRules: number;
   blockedAtRules: string[];
 }
@@ -296,6 +306,7 @@ interface ParsedCss {
 function parseCss(css: string): ParsedCss {
   const text = maskComments(css);
   const styleRules: CssStyleRule[] = [];
+  const fontFaceRules: CssDeclaration[][] = [];
   const blockedAtRules: string[] = [];
   let keyframeRules = 0;
 
@@ -318,6 +329,10 @@ function parseCss(css: string): ParsedCss {
         // 属性本身已受限）；只统计规模，交由 limits 兜底。
         continue;
       }
+      if (atName === "@font-face") {
+        fontFaceRules.push(parseDeclarations(body));
+        continue;
+      }
       if (atName && ALLOWED_GROUP_AT_RULES.has(atName)) {
         walk(body, [...atTrail, prelude]);
         continue;
@@ -331,7 +346,7 @@ function parseCss(css: string): ParsedCss {
   };
 
   walk(text, []);
-  return { styleRules, keyframeRules, blockedAtRules };
+  return { styleRules, fontFaceRules, keyframeRules, blockedAtRules };
 }
 
 function truncate(text: string, max = 80): string {
@@ -355,6 +370,14 @@ function restrictedValueExempted(declaration: CssDeclaration): boolean {
   return false;
 }
 
+function statefulDoodleContentExempted(selector: string, declaration: CssDeclaration): boolean {
+  if (declaration.property !== "content") return false;
+  const parts = splitTopLevel(selector, ",").map((part) => part.trim()).filter(Boolean);
+  return parts.length > 0 && parts.every((part) => (
+    /^html\[data-kimi-skin-state="[a-z0-9-]+"\]\s+\.home-view\s+\.doodle$/.test(part)
+  ));
+}
+
 export function validateSafeCss(css: string, limits: SafeCssLimits = DEFAULT_SAFE_CSS_LIMITS): SafeCssReport {
   const parsed = parseCss(css);
   const stats: SafeCssStats = { rules: 0, declarations: 0, keyframes: parsed.keyframeRules, importantCount: 0 };
@@ -364,8 +387,31 @@ export function validateSafeCss(css: string, limits: SafeCssLimits = DEFAULT_SAF
     violations.push({
       kind: "blocked-at-rule",
       rule: atRule,
-      message: `契约不允许 at 规则 ${atRule}（只允许 @media / @supports / @keyframes）`,
+      message: `契约不允许 at 规则 ${atRule}（只允许 @font-face / @media / @supports / @keyframes）`,
     });
+  }
+
+  for (const declarations of parsed.fontFaceRules) {
+    stats.rules++;
+    stats.declarations += declarations.length;
+    for (const declaration of declarations) {
+      if (declaration.important) stats.importantCount++;
+      if (declaration.value.length > limits.maxValueCharacters) {
+        violations.push({
+          kind: "limit-exceeded",
+          rule: "@font-face",
+          property: declaration.property,
+          message: `属性值超过 ${limits.maxValueCharacters} 字符`,
+        });
+      } else if (!ALLOWED_FONT_FACE_PROPERTIES.has(declaration.property)) {
+        violations.push({
+          kind: "unknown-property",
+          rule: "@font-face",
+          property: declaration.property,
+          message: `@font-face 不允许属性 ${declaration.property}`,
+        });
+      }
+    }
   }
 
   for (const rule of parsed.styleRules) {
@@ -394,7 +440,7 @@ export function validateSafeCss(css: string, limits: SafeCssLimits = DEFAULT_SAF
       if (declaration.property.startsWith("--")) continue;
       if (ALLOWED_PROPERTIES.has(declaration.property)) continue;
       if (RESTRICTED_PROPERTIES.has(declaration.property)) {
-        if (!decorative && !restrictedValueExempted(declaration)) {
+        if (!decorative && !restrictedValueExempted(declaration) && !statefulDoodleContentExempted(rule.selector, declaration)) {
           violations.push({
             kind: "restricted-outside-decoration",
             rule: truncate(label),

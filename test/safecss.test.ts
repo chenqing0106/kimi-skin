@@ -33,6 +33,18 @@ test("allows restricted properties inside decorative scopes", () => {
   assert.ok(report.ok, JSON.stringify(report.violations, null, 2));
 });
 
+test("allows a state-scoped replacement for the home doodle only", () => {
+  const allowed = validateSafeCss(`
+    html[data-kimi-skin-state="ascii"] .home-view .doodle { content: url("assets/kimi-ascii.png"); }
+  `);
+  assert.ok(allowed.ok, JSON.stringify(allowed.violations, null, 2));
+
+  const rejected = validateSafeCss(`
+    html[data-kimi-skin-state="ascii"] .composer { content: "hidden"; }
+  `);
+  assert.equal(rejected.ok, false);
+});
+
 test("rejects restricted properties on native controls", () => {
   const report = validateSafeCss(`
     .composer { display: none; }
@@ -57,9 +69,10 @@ test("rejects unknown properties", () => {
   assert.equal(report.violations[0]?.kind, "unknown-property");
 });
 
-test("blocks disallowed at-rules but allows media/supports/keyframes", () => {
+test("blocks disallowed at-rules but allows local fonts, media, supports and keyframes", () => {
   const report = validateSafeCss(`
-    @font-face { font-family: x; src: url("a.woff2"); }
+    @font-face { font-family: x; src: url("assets/x.woff2") format("woff2"); font-display: swap; }
+    @page { margin: 0; }
     @media (max-width: 760px) { .home-view::after { display: none; } }
     @supports (backdrop-filter: blur(1px)) { .composer { backdrop-filter: blur(8px); } }
     @keyframes drift { from { transform: translateX(0); opacity: 0; } to { transform: translateX(10px); opacity: 1; } }
@@ -67,7 +80,7 @@ test("blocks disallowed at-rules but allows media/supports/keyframes", () => {
   assert.equal(report.stats.keyframes, 1);
   assert.deepEqual(
     report.violations.filter((v) => v.kind === "blocked-at-rule").map((v) => v.rule),
-    ["@font-face"],
+    ["@page"],
   );
 });
 

@@ -21,6 +21,8 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 - Produce themes under `themes/<theme-id>/` and never overwrite an existing theme directory.
 - Use the template and CLI provided by the local kimi-skin project; do not reproduce their implementation inside this Skill.
 - Keep `DESIGN.md` aligned with the visual direction and record generated or external assets when used.
+- Themes are CSS-only by default. When a requested theme needs interaction, use only the declarative capabilities documented in `themes/README.md`; never add theme-authored JavaScript.
+- Keep optional interactions out of the shared template unless the user explicitly asks for them. Document each enabled interaction and its visual meaning in that theme's own README.
 - Do not use Dark Side as the default template or inherit its visual style unless requested.
 - Do not modify Kimi.app, `src/`, `macos/`, other themes, or original user assets.
 - Do not read or record chat content, credentials, or other private data.

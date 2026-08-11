@@ -2,6 +2,14 @@
  * 视觉：官网招聘海报的 1-bit 点阵半调语言——纯黑白，点阵月球、轨道环、星芒。
  * 骨架沿用 lunar-signal 已验证的 token 重映射；无彩色装饰。 */
 
+@font-face {
+  font-family: "Fusion Pixel 10px";
+  src: url("assets/fonts/fusion-pixel-10px-zh-hans.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
 :root {
   color-scheme: dark;
   --lunar-void: #050505;
@@ -674,6 +682,19 @@ a {
 *::-webkit-scrollbar-track,
 *::-webkit-scrollbar-corner {
   background: transparent;
+}
+
+/* Dark Side 专属：双击首页小人切换 ASCII 像素状态 */
+html[data-kimi-skin-state="ascii"] .home-view .doodle {
+  content: url("assets/kimi-ascii.png");
+  image-rendering: pixelated;
+}
+
+html[data-kimi-skin-state="ascii"] .home-view .greeting,
+html[data-kimi-skin-state="ascii"] .home-view .greeting-subtitle {
+  font-family: "Fusion Pixel 10px", monospace !important;
+  font-weight: 400 !important;
+  letter-spacing: 0;
 }
 
 @media (max-width: 760px) {

@@ -26,6 +26,36 @@ function assertManifest(value: unknown): asserts value is ThemeManifest {
   if (manifest.capabilities !== undefined && (!Array.isArray(manifest.capabilities) || !manifest.capabilities.every((item) => typeof item === "string"))) {
     throw new Error("theme.json capabilities 必须是字符串数组");
   }
+  if (manifest.interactions !== undefined) {
+    if (!manifest.interactions || typeof manifest.interactions !== "object" || Array.isArray(manifest.interactions)) {
+      throw new Error("theme.json interactions 必须是对象");
+    }
+    const interactions = manifest.interactions as Record<string, unknown>;
+    const unknownInteractions = Object.keys(interactions).filter((key) => key !== "rootStateToggle");
+    if (unknownInteractions.length > 0) {
+      throw new Error(`theme.json 包含不支持的交互：${unknownInteractions.join(", ")}`);
+    }
+    if (interactions.rootStateToggle !== undefined) {
+      if (!interactions.rootStateToggle || typeof interactions.rootStateToggle !== "object" || Array.isArray(interactions.rootStateToggle)) {
+        throw new Error("theme.json interactions.rootStateToggle 必须是对象");
+      }
+      const rootStateToggle = interactions.rootStateToggle as Record<string, unknown>;
+      const unknownToggleKeys = Object.keys(rootStateToggle).filter((key) => key !== "triggerSelector" && key !== "state");
+      if (unknownToggleKeys.length > 0) {
+        throw new Error(`theme.json interactions.rootStateToggle 包含不支持的字段：${unknownToggleKeys.join(", ")}`);
+      }
+      if (typeof rootStateToggle.triggerSelector !== "string" || rootStateToggle.triggerSelector.trim() === "" || rootStateToggle.triggerSelector.length > 512) {
+        throw new Error("theme.json interactions.rootStateToggle.triggerSelector 必须是 1–512 字符的 CSS 选择器");
+      }
+      const triggerSelector = rootStateToggle.triggerSelector.trim();
+      if (!triggerSelector.startsWith(".home-view ") || triggerSelector.includes(",")) {
+        throw new Error("theme.json interactions.rootStateToggle.triggerSelector 必须是 .home-view 内的单个后代选择器");
+      }
+      if (typeof rootStateToggle.state !== "string" || !/^[a-z0-9][a-z0-9-]{0,31}$/.test(rootStateToggle.state)) {
+        throw new Error("theme.json interactions.rootStateToggle.state 只能使用小写字母、数字和连字符");
+      }
+    }
+  }
   if (!/^[a-z0-9][a-z0-9-]{1,63}$/.test(manifest.id ?? "")) {
     throw new Error("主题 id 只能使用小写字母、数字和连字符");
   }
@@ -56,13 +86,23 @@ function validateCss(css: string): void {
   }
 }
 
-function mimeFor(file: string): string {
+function mimeForImage(file: string): string {
   switch (path.extname(file).toLowerCase()) {
     case ".png": return "image/png";
     case ".jpg":
     case ".jpeg": return "image/jpeg";
     case ".webp": return "image/webp";
     default: throw new Error("图片素材只支持 PNG、JPEG 或 WebP");
+  }
+}
+
+function mimeForCssAsset(file: string): string {
+  switch (path.extname(file).toLowerCase()) {
+    case ".woff2": return "font/woff2";
+    case ".woff": return "font/woff";
+    case ".ttf": return "font/ttf";
+    case ".otf": return "font/otf";
+    default: return mimeForImage(file);
   }
 }
 
@@ -103,7 +143,7 @@ async function resolveCssAssets(css: string, themeDirectory: string): Promise<st
       throw new Error(`CSS 素材总量超过 12 MiB（含 ${ref}）`);
     }
     const data = await readFile(assetPath);
-    resolved.set(ref, `data:${mimeFor(assetPath)};base64,${data.toString("base64")}`);
+    resolved.set(ref, `data:${mimeForCssAsset(assetPath)};base64,${data.toString("base64")}`);
   }
   return css.replace(CSS_URL_PATTERN, (whole, _quote: string, rawRef: string) => {
     const dataUrl = resolved.get(rawRef.trim());
@@ -146,7 +186,7 @@ export async function loadTheme(directory: string, kimiVersion?: string): Promis
       throw new Error("背景图片为空或超过 10 MiB");
     }
     const data = await readFile(backgroundPath);
-    backgroundDataUrl = `data:${mimeFor(backgroundPath)};base64,${data.toString("base64")}`;
+    backgroundDataUrl = `data:${mimeForImage(backgroundPath)};base64,${data.toString("base64")}`;
   }
   return { directory: themeDirectory, manifest, css, backgroundDataUrl };
 }

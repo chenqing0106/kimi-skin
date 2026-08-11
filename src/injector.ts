@@ -3,10 +3,26 @@ import type { AcceptedTarget, LoadedTheme } from "./types.js";
 
 const STYLE_ID = "kimi-skin-style";
 const BACKGROUND_ID = "kimi-skin-bg";
+const RUNTIME_KEY = "__kimiSkinRuntime";
+const ROOT_STATE_ATTRIBUTE = "data-kimi-skin-state";
 
-function injectionExpression(theme: LoadedTheme): string {
+export function injectionExpression(theme: LoadedTheme): string {
   const backgroundImage = theme.backgroundDataUrl ? `url("${theme.backgroundDataUrl}")` : "none";
+  const rootStateToggle = theme.manifest.interactions?.rootStateToggle;
+  const rootStateSelector = rootStateToggle?.triggerSelector ?? null;
+  const rootState = rootStateToggle?.state ?? null;
   return `(() => {
+    const root = document.documentElement;
+    const runtimeKey = ${JSON.stringify(RUNTIME_KEY)};
+    const rootStateAttribute = ${JSON.stringify(ROOT_STATE_ATTRIBUTE)};
+    const rootStateSelector = ${JSON.stringify(rootStateSelector)};
+    const rootState = ${JSON.stringify(rootState)};
+    if (rootStateSelector) document.querySelector(rootStateSelector);
+    const previousRuntime = globalThis[runtimeKey];
+    const preserveRootState = previousRuntime?.themeId === ${JSON.stringify(theme.manifest.id)}
+      && rootState !== null
+      && root.getAttribute(rootStateAttribute) === rootState;
+    if (typeof previousRuntime?.cleanup === 'function') previousRuntime.cleanup();
     document.getElementById(${JSON.stringify(STYLE_ID)})?.remove();
     document.getElementById(${JSON.stringify(BACKGROUND_ID)})?.remove();
     const style = document.createElement('style');
@@ -20,6 +36,28 @@ function injectionExpression(theme: LoadedTheme): string {
     document.documentElement.appendChild(background);
     document.documentElement.style.setProperty('--kimi-skin-background-image', ${JSON.stringify(backgroundImage)});
     document.documentElement.dataset.kimiSkinTheme = ${JSON.stringify(theme.manifest.id)};
+    if (rootStateSelector && rootState) {
+      const controller = new AbortController();
+      document.addEventListener('dblclick', (event) => {
+        const origin = event.target;
+        if (!(origin instanceof Element) || !origin.closest(rootStateSelector)) return;
+        if (root.getAttribute(rootStateAttribute) === rootState) root.removeAttribute(rootStateAttribute);
+        else root.setAttribute(rootStateAttribute, rootState);
+        globalThis.getSelection?.()?.removeAllRanges();
+      }, { signal: controller.signal });
+      if (preserveRootState) root.setAttribute(rootStateAttribute, rootState);
+      else root.removeAttribute(rootStateAttribute);
+      globalThis[runtimeKey] = {
+        themeId: ${JSON.stringify(theme.manifest.id)},
+        cleanup: () => {
+          controller.abort();
+          root.removeAttribute(rootStateAttribute);
+        }
+      };
+    } else {
+      root.removeAttribute(rootStateAttribute);
+      delete globalThis[runtimeKey];
+    }
     return {
       stylePresent: Boolean(document.getElementById(${JSON.stringify(STYLE_ID)})),
       backgroundPresent: Boolean(document.getElementById(${JSON.stringify(BACKGROUND_ID)})),
@@ -35,9 +73,14 @@ const VERIFY_EXPRESSION = `(() => ({
 }))()`;
 
 const RESTORE_EXPRESSION = `(() => {
+  const runtimeKey = ${JSON.stringify(RUNTIME_KEY)};
+  const runtime = globalThis[runtimeKey];
+  if (typeof runtime?.cleanup === 'function') runtime.cleanup();
+  delete globalThis[runtimeKey];
   document.getElementById(${JSON.stringify(STYLE_ID)})?.remove();
   document.getElementById(${JSON.stringify(BACKGROUND_ID)})?.remove();
   document.documentElement.style.removeProperty('--kimi-skin-background-image');
+  document.documentElement.removeAttribute(${JSON.stringify(ROOT_STATE_ATTRIBUTE)});
   delete document.documentElement.dataset.kimiSkinTheme;
   return {
     stylePresent: Boolean(document.getElementById(${JSON.stringify(STYLE_ID)})),
