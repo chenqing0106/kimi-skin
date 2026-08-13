@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "kimiVersion": "3.1.8",
+  "capturedAt": "2026-08-13",
+  "verified": false,
+  "derivedFrom": "3.1.7",
+  "surfaces": [
+    {
+      "id": "page-shell",
+      "selector": ".page",
+      "required": true,
+      "note": "页面外壳，主题背景透明的最外层"
+    },
+    {
+      "id": "sidebar",
+      "selector": "aside.sidebar",
+      "required": true,
+      "note": "左侧栏"
+    },
+    {
+      "id": "sidebar-conversation-row",
+      "selector": "aside.sidebar .conversation-row",
+      "required": false,
+      "conditional": true,
+      "note": "侧栏会话条目，无任何会话时不存在"
+    },
+    {
+      "id": "sidebar-footer",
+      "selector": "aside.sidebar .sidebar-footer",
+      "required": false,
+      "note": "侧栏底部区域"
+    },
+    {
+      "id": "main-pane",
+      "selector": "main.main-pane",
+      "required": true,
+      "note": "主区域"
+    },
+    {
+      "id": "home-view",
+      "selector": ".home-view",
+      "required": true,
+      "conditional": true,
+      "note": "主页（新建任务页），仅主页路由存在"
+    },
+    {
+      "id": "conversation-view",
+      "selector": ".conversation-view",
+      "required": true,
+      "conditional": true,
+      "note": "会话视图，仅会话路由存在"
+    },
+    {
+      "id": "canvas-view",
+      "selector": ".canvas-view",
+      "required": false,
+      "conditional": true,
+      "note": "看板视图，仅看板路由存在"
+    },
+    {
+      "id": "user-bubble",
+      "selector": ".bubble.role-user",
+      "required": true,
+      "conditional": true,
+      "note": "用户消息气泡，不覆盖会白纸白字；会话无用户消息时不存在"
+    },
+    {
+      "id": "composer",
+      "selector": ".composer",
+      "required": true,
+      "note": "输入框外壳"
+    },
+    {
+      "id": "composer-editor",
+      "selector": ".composer [contenteditable], .composer textarea, .composer input",
+      "required": true,
+      "note": "输入框编辑区"
+    },
+    {
+      "id": "composer-send",
+      "selector": ".composer .send-btn, .composer [role=\"button\"]",
+      "required": false,
+      "note": "发送按钮"
+    },
+    {
+      "id": "code-block",
+      "selector": ".syntax-highlighter.light",
+      "required": false,
+      "conditional": true,
+      "note": "工具卡代码块（注意是 .light 类），无代码卡时不存在"
+    },
+    {
+      "id": "dialog",
+      "selector": "[role=\"dialog\"], [role=\"alertdialog\"]",
+      "required": false,
+      "conditional": true,
+      "note": "弹层，无弹层时不存在"
+    },
+    {
+      "id": "cron-page",
+      "selector": ".cron-jobs-page",
+      "required": false,
+      "conditional": true,
+      "note": "定时任务页，仅该路由存在"
+    }
+  ]
+}

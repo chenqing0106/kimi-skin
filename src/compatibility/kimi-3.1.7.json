@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "kimiVersion": "3.1.7",
   "capturedAt": "2026-08-11",
+  "verified": true,
   "surfaces": [
     { "id": "page-shell", "selector": ".page", "required": true, "note": "页面外壳，主题背景透明的最外层" },
     { "id": "sidebar", "selector": "aside.sidebar", "required": true, "note": "左侧栏" },

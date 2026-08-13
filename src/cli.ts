@@ -12,8 +12,8 @@ import { loadTheme } from "./theme.js";
 import { discoverThemes, themeSupportsKimi } from "./theme-catalog.js";
 import { validateSafeCss } from "./policy/safe-css.js";
 import { analyzeContrast, CONTRAST_MIN_RATIO } from "./policy/contrast.js";
-import { loadSurfaceCatalog, surfaceCoverage, surfaceProbeExpression } from "./surfaces.js";
-import type { SurfaceProbeResult } from "./surfaces.js";
+import { loadSurfaceCatalog, bumpSurfaceCatalog, markCatalogVerified, surfaceCoverage, surfaceProbeExpression } from "./surfaces.js";
+import type { SurfaceCatalog, SurfaceProbeResult } from "./surfaces.js";
 import { readFile } from "node:fs/promises";
 import { clearRuntimeState, readRuntimeState, stateDirectory, writeRuntimeState } from "./state.js";
 import type { RuntimeState } from "./types.js";
@@ -104,8 +104,11 @@ async function doctorSurfaceCheck(state: RuntimeState | null, kimiVersion: strin
   console.log(`\n表面清单   Kimi ${kimiVersion}`);
   const catalog = await loadSurfaceCatalog(compatibilityDirectory, kimiVersion);
   if (!catalog) {
-    console.log("  △ 该版本没有兼容清单，跳过（Kimi 升级后需先补 compatibility/kimi-<version>.json）");
+    console.log("  △ 该版本没有兼容清单，跳过（运行 kimi-skin compat bump 可从上一版本继承）");
     return;
+  }
+  if (catalog.verified !== true) {
+    console.log(`  △ 清单尚未在该版本上验证${catalog.derivedFrom ? `（继承自 ${catalog.derivedFrom}）` : ""}；apply 后会自动探测，或手动运行 probe`);
   }
   if (!state || !(await isCdpReady(state.port)) || !(await portBelongsToProcessFamily(state.port, state.kimiPid))) {
     console.log("  ○ Kimi 未在调试模式运行，跳过活页面探测（apply 后 doctor 会自动巡检）");
@@ -149,6 +152,76 @@ async function doctorSurfaceCheck(state: RuntimeState | null, kimiVersion: strin
     }
   } catch {
     console.log("  ○ 探测失败（CDP 暂不可用），跳过");
+  }
+}
+
+// 在活动调试会话里探测清单，返回缺失的核心表面 id；无法探测时返回 null。
+// 条件表面（特定路由/状态才渲染）缺席不算缺失。
+async function probeCatalogCoreMissing(port: number, catalog: SurfaceCatalog): Promise<string[] | null> {
+  if (!(await isCdpReady(port))) return null;
+  const targets = await probeTargets(port);
+  if (!targets.length) return null;
+  const expression = surfaceProbeExpression(catalog);
+  const missing = new Set<string>();
+  let probed = 0;
+  for (const target of targets) {
+    const url = target.target.webSocketDebuggerUrl;
+    if (!url) continue;
+    const session = new CdpSession(url);
+    try {
+      await session.open();
+      const results = await session.evaluate<SurfaceProbeResult[]>(expression);
+      probed += 1;
+      for (const result of results) {
+        const surface = catalog.surfaces.find((entry) => entry.id === result.id);
+        if (!result.present && !surface?.conditional) missing.add(result.id);
+      }
+    } catch {
+      // 单个目标暂时不可评估时跳过，等其余目标的结果
+    } finally {
+      session.close();
+    }
+  }
+  return probed ? [...missing] : null;
+}
+
+// probe 通过后回写 verified 标记并打印结论；有缺失时提示需要更新清单。
+async function reportCatalogVerification(kimiVersion: string, coreMissing: string[]): Promise<void> {
+  if (coreMissing.length === 0) {
+    await markCatalogVerified(compatibilityDirectory, kimiVersion, true, new Date().toISOString().slice(0, 10));
+    console.log(`表面清单   Kimi ${kimiVersion} 核心表面全部存在，已标记为已验证`);
+  } else {
+    console.log(`⚠ 表面清单   Kimi ${kimiVersion} 缺失核心表面：${coreMissing.join(", ")}`);
+    console.log("  → Kimi 可能已改版，主题会静默退化；请更新兼容清单与对应主题 CSS");
+  }
+}
+
+// compat bump：Kimi 升级后自动继承上一版本的表面清单。
+// 若当前已有该版本的调试会话，立即探测并回写验证结果；否则等下次 apply 自动验证。
+async function compatBump(): Promise<void> {
+  const override = argument("--version");
+  const target = override ?? (await inspectKimiBaseline()).version;
+  const existing = await loadSurfaceCatalog(compatibilityDirectory, target);
+  if (existing) {
+    console.log(`Kimi ${target} 的兼容清单已存在（${existing.verified === true ? "已验证" : "未验证"}${existing.derivedFrom ? `，继承自 ${existing.derivedFrom}` : ""}）`);
+    return;
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  const result = await bumpSurfaceCatalog(compatibilityDirectory, target, today);
+  if (!result) return;
+  console.log(`已生成 compatibility/kimi-${target}.json（继承自 ${result.derivedFrom}，标记为未验证）`);
+  const state = await readRuntimeState();
+  if (state && state.kimiVersion === target && (await isCdpReady(state.port))) {
+    const catalog = await loadSurfaceCatalog(compatibilityDirectory, target);
+    if (!catalog) return;
+    const coreMissing = await probeCatalogCoreMissing(state.port, catalog);
+    if (coreMissing === null) {
+      console.log("○ 未能完成活页面探测，清单保持未验证；下次 apply 后会自动重试");
+      return;
+    }
+    await reportCatalogVerification(target, coreMissing);
+  } else {
+    console.log("○ 当前没有该版本的调试会话；下次 apply 后会自动探测验证，或手动运行 kimi-skin probe");
   }
 }
 
@@ -286,6 +359,12 @@ async function apply(): Promise<void> {
     await writeRuntimeState(state);
     console.log(`主题 ${theme.manifest.name} 已应用并通过验证`);
     console.log(`CDP 127.0.0.1:${port}，Watcher PID ${watcherJob.pid}`);
+    // 版本继承的清单尚未验证时，趁调试会话在场自动探测一次
+    const catalog = await loadSurfaceCatalog(compatibilityDirectory, baseline.version);
+    if (catalog && catalog.verified !== true) {
+      const coreMissing = await probeCatalogCoreMissing(port, catalog);
+      if (coreMissing !== null) await reportCatalogVerification(baseline.version, coreMissing);
+    }
   } catch (error) {
     console.error(`应用失败，正在恢复普通 Kimi：${(error as Error).message}`);
     try { await quitKimi(); } catch { /* report original failure */ }
@@ -364,6 +443,66 @@ async function reload(): Promise<void> {
   if (!targets.length) throw new Error("没有找到可注入的 Work Renderer");
   for (const target of targets) await injectTheme(target, theme);
   console.log(`主题 ${theme.manifest.name} 已重新注入 ${targets.length} 个目标，无需重启 Kimi`);
+}
+
+// 热切换：不重启 Kimi，在同一调试会话内把当前主题换成另一个主题。
+// 注入表达式自身会清理旧主题的样式、交互监听与组件 DOM，因此切换等价于
+// "换主题路径的 reload"，额外处理 Watcher 迁移与失败回滚。
+async function switchTheme(): Promise<void> {
+  if (process.platform !== "darwin") throw new Error("当前阶段只支持 macOS");
+  const state = await readRuntimeState();
+  if (!state) throw new Error("没有活动状态，请先 apply");
+  const [recordedStillRunning, cdpReady] = await Promise.all([
+    isRecordedProcess(state.kimiPid, state.kimiStartedAt),
+    isCdpReady(state.port),
+  ]);
+  if (!recordedStillRunning || !cdpReady) {
+    throw new Error("调试会话已失效，请先运行 status 确认，再 apply 或 restore");
+  }
+  if (!(await portBelongsToProcessFamily(state.port, state.kimiPid))) {
+    throw new Error("CDP 端口不属于记录的 Kimi 进程树，拒绝注入");
+  }
+  const explicitTheme = argument("--theme");
+  const themePath = explicitTheme ? path.resolve(explicitTheme) : await chooseBundledTheme(state.kimiVersion);
+  // loadTheme 内含 manifest、兼容性、safe-css 与素材校验，不通过则中止
+  const theme = await loadTheme(themePath, state.kimiVersion);
+  // 回滚依赖旧主题目录仍可读；读不出来就没有安全回退，直接拒绝切换
+  const previousTheme = await loadTheme(state.themePath, state.kimiVersion).catch(() => null);
+  if (!previousTheme) throw new Error("无法读取当前主题目录，没有回滚保障，拒绝切换");
+  const targets = await probeTargets(state.port);
+  if (!targets.length) throw new Error("没有找到可注入的 Work Renderer");
+
+  // 先停旧 Watcher：它按旧主题巡检，切换中途会把旧主题重新注入回去
+  await stopWatcher(state.watcherLabel);
+  const restartWatcher = async (): Promise<void> => {
+    const job = await startWatcher(state);
+    state.watcherPid = job.pid;
+    state.watcherLabel = job.label;
+    await writeRuntimeState(state);
+  };
+  try {
+    for (const target of targets) await injectTheme(target, theme);
+  } catch (error) {
+    let rolledBack = true;
+    try {
+      for (const target of targets) await injectTheme(target, previousTheme);
+    } catch {
+      rolledBack = false;
+    }
+    try { await restartWatcher(); } catch { /* 原主题仍在，Watcher 可稍后由 restore/apply 重建 */ }
+    throw new Error(
+      `切换失败：${(error as Error).message}；` +
+      (rolledBack ? "已回滚到原主题" : "回滚也失败，请运行 reload 重新注入或 restore 恢复"),
+    );
+  }
+
+  state.themePath = theme.directory;
+  state.themeId = theme.manifest.id;
+  state.watcherPid = null;
+  state.watcherLabel = null;
+  await writeRuntimeState(state);
+  await restartWatcher();
+  console.log(`主题已切换为 ${theme.manifest.name}（${theme.manifest.id}），无需重启 Kimi`);
 }
 
 async function validate(): Promise<void> {
@@ -458,11 +597,13 @@ async function probe(): Promise<void> {
     throw new Error("CDP 端口不属于记录的 Kimi 进程树，拒绝探测");
   }
   const catalog = await loadSurfaceCatalog(compatibilityDirectory, state.kimiVersion);
-  if (!catalog) throw new Error(`没有 compatibility/kimi-${state.kimiVersion}.json，无法探测该版本`);
+  if (!catalog) throw new Error(`没有 compatibility/kimi-${state.kimiVersion}.json，无法探测该版本；可先运行 kimi-skin compat bump 继承上一版本`);
   const targets = await probeTargets(state.port);
   if (!targets.length) throw new Error("没有找到可探测的 Work Renderer");
   const expression = surfaceProbeExpression(catalog);
   console.log(`表面探测   Kimi ${state.kimiVersion}，清单记录于 ${catalog.capturedAt ?? "未知日期"}\n`);
+  const allCoreMissing = new Set<string>();
+  let probedTargets = 0;
   for (const target of targets) {
     console.log(`目标       ${target.target.title || target.target.url}`);
     const url = target.target.webSocketDebuggerUrl;
@@ -475,8 +616,10 @@ async function probe(): Promise<void> {
     } finally {
       session.close();
     }
+    probedTargets += 1;
     const missing = results.filter((result) => !result.present);
     const coreMissing = missing.filter((result) => !catalog.surfaces.find((entry) => entry.id === result.id)?.conditional);
+    for (const result of coreMissing) allCoreMissing.add(result.id);
     for (const result of results) {
       const surface = catalog.surfaces.find((entry) => entry.id === result.id);
       const mark = !result.present
@@ -492,6 +635,7 @@ async function probe(): Promise<void> {
           : `  → ${results.length}/${results.length} 个表面全部存在\n`,
     );
   }
+  if (probedTargets > 0) await reportCatalogVerification(state.kimiVersion, [...allCoreMissing]);
 }
 
 async function stopWatcher(label: string | null): Promise<void> {
@@ -546,10 +690,15 @@ async function main(): Promise<void> {
     case "themes": await listBundledThemes(); break;
     case "apply": await apply(); break;
     case "reload": await reload(); break;
+    case "switch": await switchTheme(); break;
     case "restore": await restore(); break;
     case "validate": await validate(); break;
     case "check-theme": await checkTheme(); break;
     case "probe": await probe(); break;
+    case "compat":
+      if (process.argv[3] === "bump") await compatBump();
+      else console.log("用法：kimi-skin compat bump [--version <x.y.z>]   为当前（或指定）Kimi 版本继承上一版表面清单");
+      break;
     case "_watch": await watcher(); break;
     default:
       console.log(`用法：
@@ -557,10 +706,12 @@ async function main(): Promise<void> {
   kimi-skin status
   kimi-skin themes
   kimi-skin apply [--theme <目录>] [--yes]
+  kimi-skin switch [--theme <目录>]
   kimi-skin reload
   kimi-skin validate [--theme <目录>]
   kimi-skin check-theme [--theme <目录>]
   kimi-skin probe
+  kimi-skin compat bump [--version <x.y.z>]
   kimi-skin restore`);
   }
 }

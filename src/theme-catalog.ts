@@ -1,6 +1,6 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
-import { readThemeManifest } from "./theme.js";
+import { kimiVersionMatches, readThemeManifest } from "./theme.js";
 import type { ThemeDescriptor } from "./theme.js";
 
 export interface SkippedTheme {
@@ -14,8 +14,7 @@ export interface ThemeCatalog {
 }
 
 export function themeSupportsKimi(theme: ThemeDescriptor, kimiVersion: string): boolean {
-  const versions = theme.manifest.compatibleKimi;
-  return versions.includes("*") || versions.includes(kimiVersion);
+  return theme.manifest.compatibleKimi.some((pattern) => kimiVersionMatches(pattern, kimiVersion));
 }
 
 export async function discoverThemes(themesDirectory: string): Promise<ThemeCatalog> {

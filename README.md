@@ -49,12 +49,14 @@ kimi-skin doctor                              # 检查环境
 kimi-skin themes                              # 查看已有主题
 kimi-skin apply                               # 交互选择主题
 kimi-skin apply --theme ./themes/dark-side    # 直接指定主题
+kimi-skin switch --theme ./themes/paper       # 不重启热切换主题
 kimi-skin reload                              # 立即重新注入
 kimi-skin status                              # 查看状态
+kimi-skin compat bump                         # Kimi 升级后继承上一版表面清单
 kimi-skin restore                             # 恢复普通 Kimi
 ```
 
-`apply` 会在重启 Kimi 前请求确认。主题目录中的 CSS、清单或素材变化后，Watcher 会自动热重载。
+`apply` 会在重启 Kimi 前请求确认。主题目录中的 CSS、清单或素材变化后，Watcher 会自动热重载。已激活状态下用 `switch` 换主题不需要重启 Kimi，切换失败会自动回滚到原主题。
 
 ## 主题
 

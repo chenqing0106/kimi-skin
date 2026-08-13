@@ -2,7 +2,7 @@
   "id": "dark-side",
   "name": "Dark Side · 月之暗面",
   "version": "0.1.0",
-  "compatibleKimi": ["3.1.7"],
+  "compatibleKimi": ["3.1.*"],
   "background": "background.png",
   "capabilities": ["safe-css"],
   "interactions": {

@@ -45,3 +45,22 @@ test("checks Kimi version compatibility from the manifest", async () => {
   assert.ok(theme);
   assert.equal(themeSupportsKimi(theme, "3.1.7"), false);
 });
+
+test("prefix wildcard patterns cover patch releases of the same minor", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-catalog-wildcard-"));
+  await writeManifest(root, "wild", "wild", ["3.1.*"]);
+  const theme = (await discoverThemes(root)).themes[0];
+  assert.ok(theme);
+  assert.equal(themeSupportsKimi(theme, "3.1.7"), true);
+  assert.equal(themeSupportsKimi(theme, "3.1.8"), true);
+  assert.equal(themeSupportsKimi(theme, "3.2.0"), false);
+  assert.equal(themeSupportsKimi(theme, "3.1"), false, "3.1.* 不应误配两位版本号");
+});
+
+test("star pattern still matches every version", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "kimi-skin-catalog-star-"));
+  await writeManifest(root, "star", "star", ["*"]);
+  const theme = (await discoverThemes(root)).themes[0];
+  assert.ok(theme);
+  assert.equal(themeSupportsKimi(theme, "9.9.9"), true);
+});

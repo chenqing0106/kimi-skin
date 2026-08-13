@@ -3,7 +3,7 @@ import test from "node:test";
 import { mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { loadSurfaceCatalog, surfaceCoverage, surfaceProbeExpression } from "../src/surfaces.js";
+import { bumpSurfaceCatalog, listCatalogVersions, loadSurfaceCatalog, markCatalogVerified, nearestCatalogVersion, surfaceCoverage, surfaceProbeExpression } from "../src/surfaces.js";
 
 const catalogJson = JSON.stringify({
   schemaVersion: 1,
@@ -71,4 +71,47 @@ test("bundled 3.1.7 catalog is valid and covers the documented required surfaces
   for (const id of ["page-shell", "sidebar", "main-pane", "home-view", "conversation-view", "user-bubble", "composer", "composer-editor"]) {
     assert.ok(requiredIds.includes(id), `缺少必需表面 ${id}`);
   }
+});
+
+test("nearestCatalogVersion prefers the newest catalog in the same minor", () => {
+  const versions = ["3.0.9", "3.1.5", "3.1.7", "2.9.9"];
+  assert.equal(nearestCatalogVersion(versions, "3.1.8"), "3.1.7");
+  assert.equal(nearestCatalogVersion(versions, "3.2.0"), "3.1.7", "没有同 minor 时退回全局最新");
+  assert.equal(nearestCatalogVersion(versions, "3.1.7"), "3.1.5", "目标版本自身不参与继承");
+  assert.equal(nearestCatalogVersion([], "3.1.8"), null);
+});
+
+test("bumpSurfaceCatalog inherits surfaces and marks the copy unverified", async () => {
+  const dir = await fixtureCatalog();
+  const result = await bumpSurfaceCatalog(dir, "3.1.8", "2026-08-13");
+  assert.ok(result);
+  assert.equal(result.derivedFrom, "3.1.7");
+
+  const bumped = await loadSurfaceCatalog(dir, "3.1.8");
+  assert.ok(bumped);
+  assert.equal(bumped.verified, false);
+  assert.equal(bumped.derivedFrom, "3.1.7");
+  assert.equal(bumped.capturedAt, "2026-08-13");
+  assert.equal(bumped.surfaces.length, 4, "表面定义应完整继承");
+
+  assert.equal(await bumpSurfaceCatalog(dir, "3.1.8", "2026-08-13"), null, "已存在时不覆盖");
+  await assert.rejects(bumpSurfaceCatalog(dir, "not-a-version", "2026-08-13"), /版本号/);
+});
+
+test("listCatalogVersions returns sorted versions from catalog filenames", async () => {
+  const dir = await fixtureCatalog();
+  await bumpSurfaceCatalog(dir, "3.1.8", "2026-08-13");
+  await writeFile(path.join(dir, "notes.txt"), "not a catalog");
+  assert.deepEqual(await listCatalogVersions(dir), ["3.1.7", "3.1.8"]);
+});
+
+test("markCatalogVerified flips the verified flag in place", async () => {
+  const dir = await fixtureCatalog();
+  await markCatalogVerified(dir, "3.1.7", true, "2026-08-13");
+  const catalog = await loadSurfaceCatalog(dir, "3.1.7");
+  assert.equal(catalog?.verified, true);
+  assert.equal(catalog?.capturedAt, "2026-08-13");
+  assert.equal(catalog?.surfaces.length, 4);
+  await markCatalogVerified(dir, "9.9.9", true, "2026-08-13");
+  assert.equal(await loadSurfaceCatalog(dir, "9.9.9"), null, "缺清单时静默跳过");
 });

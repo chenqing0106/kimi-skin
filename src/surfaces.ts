@@ -5,7 +5,7 @@
 //   2. `check-theme` 对照目录报告主题覆盖了哪些表面、漏了哪些必需表面
 // 兼容目录按 Kimi 版本分文件：compatibility/kimi-<version>.json。
 
-import { readFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 export interface SurfaceDefinition {
@@ -20,6 +20,10 @@ export interface SurfaceCatalog {
   schemaVersion: 1;
   kimiVersion: string;
   capturedAt?: string;
+  // 是否已在该版本 Kimi 的活页面上通过 probe 验证；false/缺省 = 继承而来、尚未验证
+  verified?: boolean;
+  // 从哪个版本的清单复制继承而来（compat bump 生成时记录）
+  derivedFrom?: string;
   surfaces: SurfaceDefinition[];
 }
 
@@ -61,6 +65,72 @@ export async function loadSurfaceCatalog(selectorsDirectory: string, kimiVersion
   const catalog = JSON.parse(raw) as unknown;
   assertCatalog(catalog);
   return catalog;
+}
+
+// —— 版本继承：Kimi 升级后从最近版本复制清单，probe 验证前标记为未验证 ——
+
+const CATALOG_FILE_PATTERN = /^kimi-(\d+\.\d+\.\d+)\.json$/;
+
+export function compareKimiVersions(left: string, right: string): number {
+  const a = left.split(".").map(Number);
+  const b = right.split(".").map(Number);
+  for (let index = 0; index < Math.max(a.length, b.length); index += 1) {
+    const diff = (a[index] ?? 0) - (b[index] ?? 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
+}
+
+// 目录中已有清单覆盖的 Kimi 版本，按版本号升序。
+export async function listCatalogVersions(selectorsDirectory: string): Promise<string[]> {
+  const entries = await readdir(selectorsDirectory);
+  return entries
+    .map((entry) => CATALOG_FILE_PATTERN.exec(entry)?.[1])
+    .filter((version): version is string => typeof version === "string")
+    .sort(compareKimiVersions);
+}
+
+// 继承来源：优先同一 major.minor 下的最新版本（DOM 最可能一致），否则取已有的最新版本。
+export function nearestCatalogVersion(versions: string[], target: string): string | null {
+  const candidates = versions.filter((version) => version !== target);
+  if (!candidates.length) return null;
+  const minor = target.split(".").slice(0, 2).join(".");
+  const sameMinor = candidates.filter((version) => version.split(".").slice(0, 2).join(".") === minor);
+  const pool = sameMinor.length ? sameMinor : candidates;
+  return pool.reduce((best, version) => (compareKimiVersions(version, best) > 0 ? version : best));
+}
+
+// 从最近版本复制生成目标版本的清单；已存在时返回 null 不覆盖。
+export async function bumpSurfaceCatalog(
+  selectorsDirectory: string,
+  targetVersion: string,
+  capturedAt: string,
+): Promise<{ file: string; derivedFrom: string } | null> {
+  if (!/^\d+\.\d+\.\d+$/.test(targetVersion)) throw new Error(`无效的 Kimi 版本号：${targetVersion}`);
+  if (await loadSurfaceCatalog(selectorsDirectory, targetVersion)) return null;
+  const source = nearestCatalogVersion(await listCatalogVersions(selectorsDirectory), targetVersion);
+  if (!source) throw new Error("兼容目录中没有任何可继承的清单");
+  const catalog = await loadSurfaceCatalog(selectorsDirectory, source);
+  if (!catalog) throw new Error(`无法读取继承来源清单 kimi-${source}.json`);
+  const next: SurfaceCatalog = {
+    schemaVersion: 1,
+    kimiVersion: targetVersion,
+    capturedAt,
+    verified: false,
+    derivedFrom: source,
+    surfaces: catalog.surfaces,
+  };
+  const file = path.join(selectorsDirectory, `kimi-${targetVersion}.json`);
+  await writeFile(file, `${JSON.stringify(next, null, 2)}\n`, "utf8");
+  return { file, derivedFrom: source };
+}
+
+// probe 通过后回写 verified 标记（缺清单时静默跳过）。
+export async function markCatalogVerified(selectorsDirectory: string, kimiVersion: string, verified: boolean, capturedAt?: string): Promise<void> {
+  const catalog = await loadSurfaceCatalog(selectorsDirectory, kimiVersion);
+  if (!catalog) return;
+  const next: SurfaceCatalog = { ...catalog, verified, ...(capturedAt ? { capturedAt } : {}) };
+  await writeFile(path.join(selectorsDirectory, `kimi-${kimiVersion}.json`), `${JSON.stringify(next, null, 2)}\n`, "utf8");
 }
 
 // 在活页面上探测每个表面：是否存在、是否有任一匹配真实可见

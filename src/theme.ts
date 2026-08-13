@@ -9,6 +9,14 @@ const MAX_BACKGROUND_BYTES = 10 * 1024 * 1024;
 const MAX_ASSET_BYTES = 2 * 1024 * 1024;
 const MAX_ASSET_TOTAL_BYTES = 12 * 1024 * 1024;
 
+// Kimi 版本匹配：精确版本、"*" 全匹配，或 "3.1.*" 形式的前缀通配
+// （覆盖同一 minor 下的所有补丁版本，主题不必为每次补丁升级改清单）。
+export function kimiVersionMatches(pattern: string, kimiVersion: string): boolean {
+  if (pattern === "*") return true;
+  if (pattern.endsWith(".*")) return kimiVersion.startsWith(pattern.slice(0, -1));
+  return pattern === kimiVersion;
+}
+
 function assertManifest(value: unknown): asserts value is ThemeManifest {
   if (!value || typeof value !== "object") throw new Error("theme.json 必须是对象");
   const manifest = value as Partial<ThemeManifest>;
@@ -187,7 +195,7 @@ async function resolveCssAssets(css: string, themeDirectory: string): Promise<st
 export async function loadTheme(directory: string, kimiVersion?: string): Promise<LoadedTheme> {
   const { directory: themeDirectory, manifest } = await readThemeManifest(directory);
 
-  if (kimiVersion && !manifest.compatibleKimi.includes("*") && !manifest.compatibleKimi.includes(kimiVersion)) {
+  if (kimiVersion && !manifest.compatibleKimi.some((pattern) => kimiVersionMatches(pattern, kimiVersion))) {
     throw new Error(`主题不支持 Kimi ${kimiVersion}`);
   }
 
