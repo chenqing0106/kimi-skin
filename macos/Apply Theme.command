@@ -1,16 +1,11 @@
 #!/bin/bash
-# 双击：基线检查 + 从已有主题中选择并应用。
+# 双击：检查环境，从已有主题中选择并应用；活动会话会直接热切换。
 source "$(dirname "$0")/lib/bootstrap.sh"
 
-echo "① 基线检查"
+echo "选择并应用主题"
 echo "────────────────────────────────"
-if ! "$KNODE" "$KIMI_SKIN_ROOT/dist/cli.js" doctor; then
-  fail "基线检查未通过（见上方原因）。按项目安全约定，此时不会注入主题。"
-fi
-
+echo "对应命令   kimi-skin apply"
 echo
-echo "② 选择并应用主题"
-echo "────────────────────────────────"
 "$KNODE" "$KIMI_SKIN_ROOT/dist/cli.js" apply
 
 echo

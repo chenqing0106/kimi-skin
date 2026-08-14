@@ -8,13 +8,13 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 ## 下载与使用
 
-从 Releases 下载 `kimi-skin-<version>-macos.zip` 并解压。完整包提供三个双击入口：
+普通用户从 Releases 下载 `kimi-skin-<version>-macos.zip` 并解压，直接使用下面三个双击入口，不需要在终端输入 `kimi-skin`：
 
-- `macos/Apply Theme.command`：检查环境、选择并应用 `themes/` 中的主题
-- `macos/Check Status.command`：查看 Kimi、主题和 Watcher 状态
-- `macos/Restore Kimi.command`：移除主题并恢复普通 Kimi
+- `macos/Apply Theme.command` → `kimi-skin apply`：检查环境、选择并应用主题；已有主题会话时直接热切换
+- `macos/Check Status.command` → `kimi-skin status`：查看 Kimi、主题和 Watcher 状态
+- `macos/Restore Kimi.command` → `kimi-skin restore`：移除主题并恢复普通 Kimi
 
-这些脚本复用 Kimi 自带的签名 Node 运行时，不要求普通用户另外安装 Node.js。切换主题前需要先恢复当前主题会话。
+`.command` 是对应 CLI 命令的双击包装，复用 Kimi 自带的签名 Node 运行时，不要求普通用户安装 Node.js 或注册全局命令。首次从普通模式启用主题需要重启 Kimi；之后再次运行应用入口会直接热切换，无需先恢复。
 
 仓库当前包含三个主题：
 
@@ -30,7 +30,7 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 也支持自定义主题：下载 `skills/kimi-skin-theme/` 技能，让 AI Agent 帮你完成主题创作与调试。首次使用时 Kimi 会把该技能同步到官方 skill 目录（`~/Library/Application Support/kimi-desktop/daimon-share/daimon/skills/`），之后每次在仓库中工作都会通过 `scripts/sync-skill.sh` 自动再同步，保证 Kimi 加载的始终是仓库里的最新版本。
 
-## 从源码运行
+## 从源码运行与开发
 
 要求 Node.js 22+ 和 pnpm：
 
@@ -44,13 +44,13 @@ pnpm release:pack
 
 `release:pack` 会先完成检查、测试和干净构建，再生成可直接分发的 macOS zip。
 
-首次从源码使用命令行时注册一次全局命令：
+下面的 `kimi-skin ...` 命令面向源码开发和调试。首次使用前注册一次全局命令：
 
 ```bash
 npm link
 ```
 
-常用命令：
+开发命令：
 
 ```bash
 kimi-skin doctor                              # 检查环境
@@ -64,7 +64,7 @@ kimi-skin compat bump                         # Kimi 升级后继承上一版表
 kimi-skin restore                             # 恢复普通 Kimi
 ```
 
-`apply` 会在重启 Kimi 前请求确认。主题目录中的 CSS、清单或素材变化后，Watcher 会自动热重载。已激活状态下用 `switch` 换主题不需要重启 Kimi，切换失败会自动回滚到原主题。
+`apply` 会自动识别当前状态：普通模式下会在重启 Kimi 前请求确认，已激活主题模式时直接热切换。主题目录中的 CSS、清单或素材变化后，Watcher 会自动热重载。`switch` 也可以显式热切换主题，切换失败会自动回滚到原主题。
 
 ## 主题
 

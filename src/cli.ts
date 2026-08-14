@@ -296,13 +296,24 @@ async function apply(): Promise<void> {
       isRecordedProcess(existingState.kimiPid, existingState.kimiStartedAt),
       isCdpReady(existingState.port),
     ]);
-    if (recordedStillRunning || cdpReady) {
-      throw new Error("已经存在活动状态，请先运行 status 或 restore");
+    if (cdpReady) {
+      if (!recordedStillRunning) {
+        throw new Error("CDP 仍可连接，但记录的 Kimi 进程身份已经变化；拒绝连接未知进程，请先运行 status");
+      }
+      if (!(await portBelongsToProcessFamily(existingState.port, existingState.kimiPid))) {
+        throw new Error("CDP 端口不再属于记录的 Kimi 进程树；拒绝继续应用主题");
+      }
+      console.log("Kimi 已处于主题模式，直接热切换，无需重启");
+      await switchTheme();
+      return;
     }
     await stopWatcher(existingState.watcherLabel);
     await clearRuntimeState();
-    console.log("已清理过期的 kimi-skin 状态");
+    console.log(recordedStillRunning
+      ? "原调试会话已失效，将重新启动 Kimi 以恢复主题模式"
+      : "已清理过期的 kimi-skin 状态");
   }
+  console.log("正在检查 Kimi 与主题…");
   const baseline = await inspectKimiBaseline();
   const identityIssue = kimiIdentityIssue(baseline);
   if (identityIssue) throw new Error(identityIssue);
@@ -310,6 +321,8 @@ async function apply(): Promise<void> {
   const explicitTheme = argument("--theme");
   const themePath = explicitTheme ? path.resolve(explicitTheme) : await chooseBundledTheme(baseline.version);
   const theme = await loadTheme(themePath, baseline.version);
+  // 先完成端口准备，尽量缩短退出普通 Kimi 后的空窗期。
+  const port = await chooseLoopbackPort();
   const existingPids = await listKimiPids();
   const prompt = existingPids.length
     ? "应用主题需要重启当前 Kimi，是否继续？"
@@ -325,7 +338,6 @@ async function apply(): Promise<void> {
       );
     }
   }
-  const port = await chooseLoopbackPort();
   let kimiPid = 0;
   try {
     kimiPid = await launchKimiDebug(baseline.appPath, port);

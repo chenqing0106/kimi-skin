@@ -2,6 +2,10 @@
 # 双击：移除主题、关闭调试会话、以普通方式重新启动 Kimi。
 source "$(dirname "$0")/lib/bootstrap.sh"
 
+echo "恢复普通 Kimi"
+echo "────────────────────────────────"
+echo "对应命令   kimi-skin restore"
+echo
 "$KNODE" "$KIMI_SKIN_ROOT/dist/cli.js" restore
 
 echo
