@@ -28,7 +28,7 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 ![哞哞牧场主题动态效果](docs/images/pasture-preview.gif)
 
-也支持自定义主题：下载 `skills/kimi-skin-theme/` 技能，让 AI Agent 帮你完成主题创作与调试。
+也支持自定义主题：下载 `skills/kimi-skin-theme/` 技能，让 AI Agent 帮你完成主题创作与调试。首次使用时 Kimi 会把该技能同步到官方 skill 目录（`~/Library/Application Support/kimi-desktop/daimon-share/daimon/skills/`），之后每次在仓库中工作都会通过 `scripts/sync-skill.sh` 自动再同步，保证 Kimi 加载的始终是仓库里的最新版本。
 
 ## 从源码运行
 
@@ -84,7 +84,7 @@ kimi-skin check-theme --theme ./themes/<theme-id>
 kimi-skin probe
 ```
 
-仓库内的 `skills/kimi-skin-theme/` 用于让 AI Agent 创建和修改主题。目前仍在整理，具体工作流以 [SKILL.md](./skills/kimi-skin-theme/SKILL.md) 为准。
+仓库内的 `skills/kimi-skin-theme/` 用于让 AI Agent 创建和修改主题，是 skill 的事实源；官方 skill 目录中的副本由 `scripts/sync-skill.sh` 单向同步生成，不要直接编辑。具体工作流以 [SKILL.md](./skills/kimi-skin-theme/SKILL.md) 为准。
 
 ## 边界
 
