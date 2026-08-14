@@ -1,14 +1,10 @@
 # kimi-skin
 
-> 非官方社区实验项目，与 Moonshot AI（月之暗面）没有关联，也未获其授权或认可。“Kimi”商标归其所有者所有。项目仍处于 alpha 阶段。
 
-为 Kimi macOS 桌面端提供可恢复、低侵入的自定义主题能力。
+为 Kimi macOS 桌面端提供可恢复、低侵入的自定义主题能力。想换风格不必手写 CSS——下载 [kimi-skin-theme 技能](./skills/kimi-skin-theme/SKILL.md) 交给 Kimi，让它帮你创作和调试自己的主题。
 
 kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受限 CSS，不修改 Kimi.app、不解包 `app.asar`，恢复后会关闭调试会话并以普通方式启动 Kimi。
 
-当前只支持 **macOS、Kimi 3.1.7 和 Work 界面**。
-
-![Dark Side 主题动态效果](docs/images/dark-side-preview.gif)
 
 ## 下载与使用
 
@@ -20,7 +16,19 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 这些脚本复用 Kimi 自带的签名 Node 运行时，不要求普通用户另外安装 Node.js。切换主题前需要先恢复当前主题会话。
 
-仓库当前包含 **Dark Side · 月之暗面**：黑白半调点阵、月相序列和 ECG 心跳线。
+仓库当前包含三个主题：
+
+- **Dark Side · 月之暗面**：黑白半调点阵、月相序列和 ECG 心跳线
+![Dark Side 主题动态效果](docs/images/dark-side-preview.gif)
+
+- **Paper · 纸间**：手工排印的纸质杂志，米白纸底、衬线标题、活版卡片硬阴影
+![Paper · 纸间主题效果](docs/images/paper-preview.png)
+
+- **哞哞牧场 · MooMoo Meadow**：蓝天白云下的绿色牧场，双击首页切换昼夜，含飘动云朵、萤火虫和眨眼奶牛
+
+![哞哞牧场主题动态效果](docs/images/pasture-preview.gif)
+
+也支持自定义主题：下载 `skills/kimi-skin-theme/` 技能，让 AI Agent 帮你完成主题创作与调试。
 
 ## 从源码运行
 
