@@ -70,6 +70,32 @@ html[data-kimi-skin-state="alternate"] .home-view .doodle {
 `html[data-kimi-skin-state="..."]` 两处各定义一份同名变量，组件规则只引用变量；
 状态块只覆盖变量和个别组件特例，不为每个组件重写整套规则。
 
+## 可选功能组件
+
+主题可以在 `theme.json` 中选择 harness 已实现并审核过的固定 widget。当前只支持首页右上角的 Kimi Work 额度组件：
+
+```json
+{
+  "widgets": [
+    {
+      "id": "work-quota",
+      "type": "kimi-work-quota",
+      "surface": "home.top-right"
+    }
+  ]
+}
+```
+
+主题可以通过 `#kimi-skin-widgets` 下的类名设计组件外观，但不能在 manifest 中提供 HTML、JavaScript、接口名或自定义数据源。组件 DOM、读取、刷新和清理由 harness 统一管理。完整行为与样式示例见 [dark-side/README.md](./dark-side/README.md)。
+
+约束：
+
+- `id` 只能使用小写字母、数字和连字符，在主题内不能重复。
+- `type` 当前只能是 `kimi-work-quota`。
+- `surface` 当前只能是 `home.top-right`。
+- 同一组件与位置组合不能重复。
+- 未声明 `widgets` 的主题不会创建组件运行时。
+
 ## 检查
 
 ```bash

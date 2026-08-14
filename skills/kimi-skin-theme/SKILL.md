@@ -1,6 +1,6 @@
 ---
 name: kimi-skin-theme
-description: Create, modify, diagnose, and visually iterate themes for kimi-skin. Use when Kimi needs to design a new theme, adjust an existing theme, follow a visual reference, fix an effect that is not appearing, or review theme completeness.
+description: Create, modify, diagnose, and visually iterate themes for kimi-skin, including guided requirement calibration, optional image-generated assets, controlled interactions, and supported widgets. Use when Kimi needs to design a new theme, adjust an existing theme, follow a visual reference, fix an effect that is not appearing, or review theme completeness.
 ---
 
 # Kimi Skin Theme
@@ -33,11 +33,13 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 ### A. 创建新主题
 
 1. 读取 [themes/README.md](themes/README.md) 和 [themes/_template/](themes/_template/)，了解主题结构、theme.json 字段和 safe-css 声明。
-2. 定义视觉系统（核心概念、语义颜色、字体、表面层级、主要材质、辨识度元素），写入 `themes/<theme-id>/DESIGN.md`。
-3. 复制 `themes/_template/` 到 `themes/<theme-id>/`，修改 `theme.json`。
-4. 按层实现：根背景 → 页面外壳/侧栏/主内容 → 输入框/按钮/交互状态 → 内容页/代码块/弹层 → 装饰/动效 → 小窗口/reduced-motion。
-5. 每轮只改一个假设，运行 `validate` 和 `check-theme`，等热重载后截图复核。
-6. 用户确认视觉方向成立后，报告已检查范围与已知遗漏。
+2. 先从用户描述中提取已经明确的复杂程度、背景、动效、交互、组件和页面范围。只对仍缺失且会明显改变成品的事项提问；不要重复询问已经明确的内容，也不要发送固定长问卷。具体选择与推荐规则见 [references/creation-options.md](references/creation-options.md)。
+3. 通常集中询问 2–3 个问题。用户说“你决定”时直接给出推荐，不继续追问。给出一段简短设计摘要，包含复杂程度、背景方案和可选增强，得到用户确认后再创建或修改主题文件。
+4. 定义视觉系统（核心概念、语义颜色、字体、表面层级、主要材质、辨识度元素），把已确认的选择写入 `themes/<theme-id>/DESIGN.md`。
+5. 复制 `themes/_template/` 到 `themes/<theme-id>/`，修改 `theme.json`。用户选择 AI 图片时，按 creation-options 中的素材流程生成、落盘并记录来源。
+6. 按层实现：根背景 → 页面外壳/侧栏/主内容 → 输入框/按钮/交互状态 → 内容页/代码块/弹层 → 装饰/动效 → 小窗口/reduced-motion。
+7. 每轮只改一个假设，运行 `validate` 和 `check-theme`，等热重载后截图复核。
+8. 用户确认视觉方向成立后，报告已检查范围与已知遗漏。
 
 ### B. 修改现有主题
 
@@ -94,6 +96,7 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 - 保持 `DESIGN.md` 与视觉方向对齐，记录生成或外部素材。
 - 主题默认纯 CSS。需要交互时，只使用 `themes/README.md` 中声明的受控能力（如 `rootStateToggle`），**禁止添加主题级 JavaScript**。
 - 可选交互不要放进共享模板，除非用户明确要求。每个启用的交互要在该主题自己的 README 中说明触发元素、状态名和视觉含义。
+- 功能组件只能从 `themes/README.md` 已列出的内置 widget 中选择。可以按主题语境推荐，但不要为每个主题固定询问，也不要通过主题文件发明新组件、数据源或脚本。
 - **不要把 Dark Side 当作默认模板或继承其视觉风格**，除非用户明确要求。
 - 不修改 Kimi.app、`src/`、`macos/`、其他主题或原始用户素材。
 - 不读取或记录聊天内容、凭证或其他私有数据。
@@ -105,11 +108,12 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 包含：
 
 - 完整主题目录 `themes/<theme-id>/`
-- 与设计对齐的 `DESIGN.md` 和素材记录
+- 与用户确认结果和设计对齐的 `DESIGN.md` 与素材记录
 - `validate` 和 `check-theme` 通过的结果
 - 视觉检查范围与已知遗漏
 
 ## References
 
 - 创建、大修或诊断"效果没改出来"时，读取 [references/visual-iteration.md](references/visual-iteration.md) 中的视觉系统定义、按层实现顺序和排查逻辑。
+- 创建新主题或大幅改变主题方向时，读取 [references/creation-options.md](references/creation-options.md) 中的渐进提问、推荐规则、图片生成和可选能力边界。
 - 编写或编辑主题 CSS 前，读取 [references/pitfalls.md](references/pitfalls.md) 中的验证经验和常见陷阱。
