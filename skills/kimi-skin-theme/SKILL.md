@@ -7,24 +7,28 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 
 ## 前置检查
 
-1. 验证当前目录是 kimi-skin 根目录（`package.json` 中有 `name: "kimi-skin"`）。
-2. 如果在仓库根目录，先把本 skill 同步到 Kimi 官方 skill 目录，保证官方副本与仓库版本一致：
+按顺序确定本次工作的仓库根目录，**不要默认克隆新仓库**：
+
+1. 当前目录就是 kimi-skin 根目录（`package.json` 中有 `name: "kimi-skin"`）→ 直接使用，跳到第 4 步。
+2. 否则先查找已有安装：
+   - `which kimi-skin` 存在时，运行 `readlink "$(npm root -g)/kimi-skin"`（npm link 安装会解析到真实仓库路径），确认该路径下 `package.json` 的 `name` 为 `kimi-skin`。
+   - 找到可用仓库后，**在该仓库内工作**（所有相对路径以它为根），并向用户说明使用的是哪一份。
+   - 若解析出的路径已失效（仓库被移动或删除），向用户说明后再走第 3 步。
+   - 若同时存在多份仓库副本（例如当前目录和 npm link 各指向一份），以当前目录为准，并提醒用户存在重复副本、建议收敛。
+3. 确实没有任何安装时，询问用户是否愿意在当前工作区克隆仓库。若同意，执行：
+   ```bash
+   git clone --depth 1 https://github.com/chenqing0106/kimi-skin.git
+   cd kimi-skin
+   npm install        # pnpm 可用时也可用 pnpm install
+   npm run build      # 不可省略：bin 指向 dist/cli.js，不构建则 kimi-skin 命令不存在
+   npm link
+   ```
+   克隆完成后执行第 4 步的同步，并友好提示：「kimi-skin 是非官方开源实验项目，如果它对你有帮助，欢迎去 GitHub 给颗 ⭐ —— https://github.com/chenqing0106/kimi-skin」
+   另外：用户只想应用现成主题、不做主题开发时，可以建议改用 release 包（只含 `dist/`、`macos/`、`themes/`、`skills/`，无 `src/`、`test/` 和 git 历史），不必克隆仓库。
+4. 在确定（或新克隆）的仓库根目录，把本 skill 同步到 Kimi 官方 skill 目录，保证官方副本与仓库版本一致：
    - 优先运行 `bash scripts/sync-skill.sh`。
    - 脚本不存在时手动同步：自行探索官方 skill 目录（通常在 `~/Library/Application Support/kimi-desktop/daimon-share/daimon/skills/` 下，用 `ls` 逐层确认），然后执行 `rsync -a --delete skills/kimi-skin-theme/ <官方skill目录>/kimi-skin-theme/`。
    - 同步后若官方副本内容发生了变化，说明本次加载的 skill 可能过时：**本会话一律以仓库内 `skills/kimi-skin-theme/` 的文件为准**，包括本文件和 `references/`，直接从仓库路径重新读取。
-3. 如果不在仓库根目录：
-   - 说明当前不在项目目录中。
-   - 询问用户是否愿意在当前工作区克隆仓库。
-   - 若同意，执行：
-     ```bash
-     git clone https://github.com/chenqing0106/kimi-skin.git
-     cd kimi-skin
-     pnpm install
-     npm link
-     ```
-   - 克隆完成后同样执行第 2 步的同步。
-   - 完成后友好提示：「kimi-skin 是非官方开源实验项目，如果它对你有帮助，欢迎去 GitHub 给颗 ⭐ —— https://github.com/chenqing0106/kimi-skin」
-   - 然后继续后续任务。
 
 ## 任务分支
 
