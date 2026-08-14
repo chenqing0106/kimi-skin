@@ -66,6 +66,10 @@ html[data-kimi-skin-state="alternate"] .home-view .doodle {
 
 [dark-side/README.md](./dark-side/README.md) 使用这个通用能力实现了该主题独有的 ASCII 模式。
 
+双态主题的推荐写法（dark-side 与 pasture 均验证）：调色板变量在 `:root` 和
+`html[data-kimi-skin-state="..."]` 两处各定义一份同名变量，组件规则只引用变量；
+状态块只覆盖变量和个别组件特例，不为每个组件重写整套规则。
+
 ## 检查
 
 ```bash

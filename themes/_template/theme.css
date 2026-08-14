@@ -14,7 +14,9 @@
   --theme-border: rgba(28, 28, 28, 0.14);
   --theme-focus: #3267d6;
 
-  /* 只映射已经确认的基础角色；新组件规则应来自实际界面观察。 */
+  /* 只映射已经确认的基础角色；新组件规则应来自实际界面观察。
+     完整 token 集（--Bg-* / --Labels-* / --Fills-* 等含 hover/active）
+     参考 themes/dark-side/theme.css 的 :root 块，按需抄录。 */
   --Bg-GroundPC: var(--theme-ground) !important;
   --Bg-Primary: var(--theme-surface) !important;
   --Bg-Secondary: var(--theme-raised) !important;

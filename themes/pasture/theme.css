@@ -1,0 +1,1143 @@
+/* kimi-skin · 哞哞牧场 · MooMoo Meadow v0.2
+ * 视觉：蓝天白云下的绿色牧场，可爱奶牛主题。
+ * 特色：双击首页切换昼夜，云朵飘动，萤火虫闪烁，奶牛自动眨眼。
+ * 交互：双击 .home-view 切换 html[data-kimi-skin-state="night"] */
+
+/* ============================================
+   基础调色盘 · 白天默认
+   ============================================ */
+:root {
+  color-scheme: light;
+
+  --pasture-sky: #c8e6f5;
+  --pasture-sky-top: #a8d8f0;
+  --pasture-sun: rgba(255, 230, 150, 0.6);
+  --pasture-moon: rgba(255, 255, 220, 0.5);
+  --pasture-grass: #e8f5e8;
+  --pasture-grass-deep: #c8e8c8;
+  --pasture-milk: #fdfcf8;
+  --pasture-cream: #f5f0e8;
+  --pasture-spot: #7a8a9a;
+  --pasture-ink: #3a4a52;
+  --pasture-ink-soft: #5a6a72;
+  --pasture-ink-faint: #8a9aa2;
+  --pasture-pink: #e89080;
+  --pasture-pink-deep: #d07060;
+  --pasture-line: rgba(58, 74, 82, 0.12);
+  --pasture-star: rgba(255, 255, 255, 0);
+  --pasture-firefly: rgba(255, 220, 100, 0);
+
+  /* Kimi neutral surfaces */
+  --Bg-GroundPC: var(--pasture-sky) !important;
+  --Bg-GroundPC-hover: rgba(184, 220, 240, 0.6) !important;
+  --Bg-GroundPC-active: rgba(184, 220, 240, 0.85) !important;
+
+  --Bg-Primary: var(--pasture-milk) !important;
+  --Bg-Primary-hover: #f5f0e8 !important;
+  --Bg-Primary-active: #ece6d8 !important;
+  --Bg-Primary70: rgba(253, 252, 248, 0.94) !important;
+  --Bg-Primary70-hover: rgba(245, 240, 232, 0.94) !important;
+  --Bg-Primary70-active: rgba(236, 230, 216, 0.95) !important;
+  --Bg-Primary90: rgba(253, 252, 248, 0.98) !important;
+  --Bg-Primary90-hover: rgba(245, 240, 232, 0.98) !important;
+  --Bg-Primary90-active: rgba(236, 230, 216, 0.98) !important;
+
+  --Bg-Secondary: rgba(232, 245, 232, 0.96) !important;
+  --Bg-Secondary-hover: rgba(220, 238, 220, 0.96) !important;
+  --Bg-Secondary-active: rgba(208, 230, 208, 0.97) !important;
+  --Bg-Secondary90: rgba(232, 245, 232, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(220, 238, 220, 0.98) !important;
+  --Bg-Secondary90-active: rgba(208, 230, 208, 0.98) !important;
+
+  --Bg-Tertiary: rgba(200, 232, 200, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(188, 224, 188, 0.96) !important;
+  --Bg-Tertiary-active: rgba(176, 216, 176, 0.97) !important;
+  --Bg-Tertiary90: rgba(200, 232, 200, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(188, 224, 188, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(176, 216, 176, 0.98) !important;
+
+  --Bg-Quaternary: #b8dcc8 !important;
+  --Bg-Quaternary-hover: #a8d0b8 !important;
+  --Bg-Quaternary-active: #98c4a8 !important;
+
+  --BgGp-Primary: rgba(232, 245, 232, 0.96) !important;
+  --BgGp-Primary-hover: rgba(220, 238, 220, 0.96) !important;
+  --BgGp-Primary-active: rgba(208, 230, 208, 0.97) !important;
+  --BgGp-Primary90: rgba(232, 245, 232, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(220, 238, 220, 0.98) !important;
+  --BgGp-Primary90-active: rgba(208, 230, 208, 0.98) !important;
+  --BgGp-Secondary: rgba(200, 232, 200, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(188, 224, 188, 0.96) !important;
+  --BgGp-Secondary-active: rgba(176, 216, 176, 0.97) !important;
+  --BgGp-Secondary90: rgba(200, 232, 200, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(188, 224, 188, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(176, 216, 176, 0.98) !important;
+  --BgGp-Tertiary: #b8dcc8 !important;
+  --BgGp-Tertiary-hover: #a8d0b8 !important;
+  --BgGp-Tertiary-active: #98c4a8 !important;
+
+  --Labels-Primary: rgba(58, 74, 82, 0.94) !important;
+  --Labels-Primary-hover: var(--pasture-ink) !important;
+  --Labels-Primary-active: rgba(58, 74, 82, 0.88) !important;
+  --Labels-Secondary: rgba(90, 106, 114, 0.88) !important;
+  --Labels-Secondary-hover: rgba(90, 106, 114, 0.96) !important;
+  --Labels-Secondary-active: rgba(90, 106, 114, 0.78) !important;
+  --Labels-Tertiary: rgba(122, 138, 146, 0.72) !important;
+  --Labels-Tertiary-hover: rgba(122, 138, 146, 0.84) !important;
+  --Labels-Tertiary-active: rgba(122, 138, 146, 0.6) !important;
+  --Labels-Quaternary: rgba(154, 170, 174, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(122, 138, 146, 0.72) !important;
+  --Labels-Quaternary-active: rgba(154, 170, 174, 0.72) !important;
+
+  --Separators-S1: rgba(58, 74, 82, 0.12) !important;
+  --Separators-S1-hover: rgba(58, 74, 82, 0.18) !important;
+  --Separators-S1-active: rgba(58, 74, 82, 0.24) !important;
+  --Fills-F1: rgba(58, 74, 82, 0.04) !important;
+  --Fills-F1-hover: rgba(58, 74, 82, 0.07) !important;
+  --Fills-F1-active: rgba(58, 74, 82, 0.1) !important;
+  --Fills-F2: rgba(58, 74, 82, 0.07) !important;
+  --Fills-F2-hover: rgba(58, 74, 82, 0.1) !important;
+  --Fills-F2-active: rgba(58, 74, 82, 0.14) !important;
+  --Fills-F3: rgba(58, 74, 82, 0.1) !important;
+  --Fills-F3-hover: rgba(58, 74, 82, 0.14) !important;
+  --Fills-F3-active: rgba(58, 74, 82, 0.18) !important;
+  --Fills-F4: rgba(58, 74, 82, 0.15) !important;
+  --Fills-F4-hover: rgba(58, 74, 82, 0.19) !important;
+  --Fills-F4-active: rgba(58, 74, 82, 0.23) !important;
+  --Others-SubLayerBg: rgba(58, 74, 82, 0.04) !important;
+  --Others-SubLayerBg-hover: rgba(58, 74, 82, 0.08) !important;
+  --Others-SubLayerBg-active: rgba(58, 74, 82, 0.12) !important;
+
+  --Colors-KMBlue: var(--pasture-pink) !important;
+  --Colors-KMBlue-hover: #d87868 !important;
+  --Colors-KMBlue-active: var(--pasture-pink-deep) !important;
+  --Others-LightBlueBg: rgba(232, 144, 128, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(232, 144, 128, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(232, 144, 128, 0.16) !important;
+}
+
+/* ============================================
+   夜晚模式 · 全局变量覆盖
+   ============================================ */
+html[data-kimi-skin-state="night"] {
+  color-scheme: dark;
+  --pasture-sky: #1a2a3a;
+  --pasture-sky-top: #0d1b2a;
+  --pasture-star: rgba(255, 255, 255, 0.9);
+  --pasture-firefly: rgba(255, 220, 100, 0.85);
+
+  --Bg-GroundPC: var(--pasture-sky) !important;
+  --Bg-GroundPC-hover: rgba(30, 50, 70, 0.6) !important;
+  --Bg-GroundPC-active: rgba(30, 50, 70, 0.85) !important;
+
+  --Bg-Primary: #1e2e3e !important;
+  --Bg-Primary-hover: #263848 !important;
+  --Bg-Primary-active: #2e4252 !important;
+  --Bg-Primary70: rgba(30, 46, 62, 0.94) !important;
+  --Bg-Primary70-hover: rgba(38, 56, 72, 0.94) !important;
+  --Bg-Primary70-active: rgba(46, 66, 82, 0.95) !important;
+  --Bg-Primary90: rgba(30, 46, 62, 0.98) !important;
+  --Bg-Primary90-hover: rgba(38, 56, 72, 0.98) !important;
+  --Bg-Primary90-active: rgba(46, 66, 82, 0.98) !important;
+
+  --Bg-Secondary: rgba(35, 55, 75, 0.96) !important;
+  --Bg-Secondary-hover: rgba(45, 68, 90, 0.96) !important;
+  --Bg-Secondary-active: rgba(55, 80, 105, 0.97) !important;
+  --Bg-Secondary90: rgba(35, 55, 75, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(45, 68, 90, 0.98) !important;
+  --Bg-Secondary90-active: rgba(55, 80, 105, 0.98) !important;
+
+  --Bg-Tertiary: rgba(45, 70, 95, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(55, 82, 110, 0.96) !important;
+  --Bg-Tertiary-active: rgba(65, 95, 125, 0.97) !important;
+  --Bg-Tertiary90: rgba(45, 70, 95, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(55, 82, 110, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(65, 95, 125, 0.98) !important;
+
+  --Bg-Quaternary: #2d4a5e !important;
+  --Bg-Quaternary-hover: #355468 !important;
+  --Bg-Quaternary-active: #3d5e72 !important;
+
+  --BgGp-Primary: rgba(35, 55, 75, 0.96) !important;
+  --BgGp-Primary-hover: rgba(45, 68, 90, 0.96) !important;
+  --BgGp-Primary-active: rgba(55, 80, 105, 0.97) !important;
+  --BgGp-Primary90: rgba(35, 55, 75, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(45, 68, 90, 0.98) !important;
+  --BgGp-Primary90-active: rgba(55, 80, 105, 0.98) !important;
+  --BgGp-Secondary: rgba(45, 70, 95, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(55, 82, 110, 0.96) !important;
+  --BgGp-Secondary-active: rgba(65, 95, 125, 0.97) !important;
+  --BgGp-Secondary90: rgba(45, 70, 95, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(55, 82, 110, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(65, 95, 125, 0.98) !important;
+  --BgGp-Tertiary: #2d4a5e !important;
+  --BgGp-Tertiary-hover: #355468 !important;
+  --BgGp-Tertiary-active: #3d5e72 !important;
+
+  --Labels-Primary: rgba(220, 235, 245, 0.94) !important;
+  --Labels-Primary-hover: #e0eef5 !important;
+  --Labels-Primary-active: rgba(220, 235, 245, 0.88) !important;
+  --Labels-Secondary: rgba(180, 200, 215, 0.88) !important;
+  --Labels-Secondary-hover: rgba(200, 220, 235, 0.96) !important;
+  --Labels-Secondary-active: rgba(180, 200, 215, 0.78) !important;
+  --Labels-Tertiary: rgba(150, 175, 195, 0.72) !important;
+  --Labels-Tertiary-hover: rgba(150, 175, 195, 0.84) !important;
+  --Labels-Tertiary-active: rgba(150, 175, 195, 0.6) !important;
+  --Labels-Quaternary: rgba(120, 150, 175, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(150, 175, 195, 0.72) !important;
+  --Labels-Quaternary-active: rgba(120, 150, 175, 0.72) !important;
+
+  --Separators-S1: rgba(220, 235, 245, 0.12) !important;
+  --Separators-S1-hover: rgba(220, 235, 245, 0.18) !important;
+  --Separators-S1-active: rgba(220, 235, 245, 0.24) !important;
+  --Fills-F1: rgba(220, 235, 245, 0.04) !important;
+  --Fills-F1-hover: rgba(220, 235, 245, 0.07) !important;
+  --Fills-F1-active: rgba(220, 235, 245, 0.1) !important;
+  --Fills-F2: rgba(220, 235, 245, 0.07) !important;
+  --Fills-F2-hover: rgba(220, 235, 245, 0.1) !important;
+  --Fills-F2-active: rgba(220, 235, 245, 0.14) !important;
+  --Fills-F3: rgba(220, 235, 245, 0.1) !important;
+  --Fills-F3-hover: rgba(220, 235, 245, 0.14) !important;
+  --Fills-F3-active: rgba(220, 235, 245, 0.18) !important;
+  --Fills-F4: rgba(220, 235, 245, 0.15) !important;
+  --Fills-F4-hover: rgba(220, 235, 245, 0.19) !important;
+  --Fills-F4-active: rgba(220, 235, 245, 0.23) !important;
+  --Others-SubLayerBg: rgba(220, 235, 245, 0.04) !important;
+  --Others-SubLayerBg-hover: rgba(220, 235, 245, 0.08) !important;
+  --Others-SubLayerBg-active: rgba(220, 235, 245, 0.12) !important;
+
+  --Colors-KMBlue: #f0b890 !important;
+  --Colors-KMBlue-hover: #e8a878 !important;
+  --Colors-KMBlue-active: #d89860 !important;
+  --Others-LightBlueBg: rgba(240, 184, 144, 0.1) !important;
+  --Others-LightBlueBg-hover: rgba(240, 184, 144, 0.14) !important;
+  --Others-LightBlueBg-active: rgba(240, 184, 144, 0.18) !important;
+}
+
+/* ============================================
+   关键帧动画
+   ============================================ */
+@keyframes cloud-drift-1 {
+  from { background-position-x: 0; }
+  to   { background-position-x: 800px; }
+}
+@keyframes cloud-drift-2 {
+  from { background-position-x: 200px; }
+  to   { background-position-x: 1000px; }
+}
+@keyframes cloud-drift-3 {
+  from { background-position-x: -100px; }
+  to   { background-position-x: 700px; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes firefly-glow {
+  0%, 100% { opacity: 0; transform: translate(0, 0); }
+  25% { opacity: 0.8; transform: translate(5px, -8px); }
+  50% { opacity: 0.2; transform: translate(12px, -3px); }
+  75% { opacity: 0.9; transform: translate(8px, -12px); }
+}
+
+@keyframes cow-blink {
+  0%, 90%, 100% { background-image: url("assets/cow-icon.png"); }
+  92%, 98% { background-image: url("assets/cow-sleep.png"); }
+}
+
+/* ============================================
+   背景层 · 天空 + 草地（简短属性，safe-css 合规）
+   ============================================ */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--pasture-sky);
+  background-image: linear-gradient(
+    180deg,
+    var(--pasture-sky-top) 0%,
+    var(--pasture-sky) 55%,
+    transparent 70%,
+    rgba(124, 184, 124, 0.25) 80%,
+    rgba(90, 150, 90, 0.5) 100%
+  );
+  transition: background-color 0.8s ease;
+}
+
+/* 太阳/月亮 */
+#kimi-skin-bg::before {
+  content: "";
+  position: fixed;
+  top: 5%;
+  right: 10%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--pasture-sun);
+  box-shadow: 0 0 50px 25px var(--pasture-sun);
+  z-index: -1;
+  pointer-events: none;
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+}
+
+/* 大云层（慢速飘动） */
+#kimi-skin-bg::after {
+  content: "";
+  position: fixed;
+  top: 6%;
+  left: -10%;
+  width: 120px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow:
+    140px 10px 0 -8px rgba(255, 255, 255, 0.72),
+    260px -5px 0 rgba(255, 255, 255, 0.68),
+    400px 15px 0 -10px rgba(255, 255, 255, 0.65),
+    550px -8px 0 rgba(255, 255, 255, 0.7),
+    680px 8px 0 -5px rgba(255, 255, 255, 0.62),
+    820px -3px 0 rgba(255, 255, 255, 0.68),
+    950px 12px 0 -8px rgba(255, 255, 255, 0.6);
+  z-index: -1;
+  pointer-events: none;
+  animation: cloud-drift-1 55s linear infinite;
+}
+
+/* 小云层（快速飘动） */
+body::before {
+  content: "";
+  position: fixed;
+  top: 12%;
+  left: -5%;
+  width: 60px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    80px 5px 0 -3px rgba(255, 255, 255, 0.5),
+    160px -4px 0 rgba(255, 255, 255, 0.48),
+    280px 6px 0 -5px rgba(255, 255, 255, 0.45),
+    380px -2px 0 rgba(255, 255, 255, 0.42),
+    480px 4px 0 -3px rgba(255, 255, 255, 0.4);
+  z-index: -1;
+  pointer-events: none;
+  animation: cloud-drift-2 35s linear infinite;
+}
+
+/* 星星 + 萤火虫层 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 10% 15%, var(--pasture-star), transparent),
+    radial-gradient(1.5px 1.5px at 30% 10%, var(--pasture-star), transparent),
+    radial-gradient(2px 2px at 50% 18%, var(--pasture-star), transparent),
+    radial-gradient(1px 1px at 70% 12%, var(--pasture-star), transparent),
+    radial-gradient(2px 2px at 85% 20%, var(--pasture-star), transparent),
+    radial-gradient(1.5px 1.5px at 20% 25%, var(--pasture-star), transparent),
+    radial-gradient(2px 2px at 60% 8%, var(--pasture-star), transparent),
+    radial-gradient(1px 1px at 90% 10%, var(--pasture-star), transparent),
+    radial-gradient(3px 3px at 15% 75%, var(--pasture-firefly), transparent),
+    radial-gradient(2.5px 2.5px at 40% 82%, var(--pasture-firefly), transparent),
+    radial-gradient(3px 3px at 65% 78%, var(--pasture-firefly), transparent),
+    radial-gradient(2px 2px at 80% 85%, var(--pasture-firefly), transparent),
+    radial-gradient(2.5px 2.5px at 55% 68%, var(--pasture-firefly), transparent);
+  background-repeat: no-repeat;
+  animation: firefly-glow 4s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+/* 夜晚模式：月亮替代太阳 */
+html[data-kimi-skin-state="night"] #kimi-skin-bg::before {
+  background: var(--pasture-moon);
+  box-shadow: 0 0 40px 15px var(--pasture-moon);
+}
+
+/* 夜晚模式：萤火虫更明显 */
+html[data-kimi-skin-state="night"] body::after {
+  animation: firefly-glow 3s ease-in-out infinite;
+  opacity: 1;
+}
+
+/* ============================================
+   基础透明与文字色
+   ============================================ */
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--pasture-ink) !important;
+  transition: color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] body,
+html[data-kimi-skin-state="night"] .page,
+html[data-kimi-skin-state="night"] .conversation-view {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+body {
+  accent-color: var(--pasture-pink);
+}
+
+/* ============================================
+   侧栏 · 草绿色底 + 奶牛装饰
+   ============================================ */
+aside.sidebar {
+  position: relative;
+  color: var(--pasture-ink) !important;
+  background: rgba(200, 232, 200, 0.65) !important;
+  border-right: 1px solid rgba(124, 184, 124, 0.35) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(12px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: rgba(25, 45, 65, 0.7) !important;
+  border-right-color: rgba(80, 120, 150, 0.3) !important;
+}
+
+/* 侧栏底部小奶牛 · 自动眨眼 */
+aside.sidebar .sidebar-footer {
+  position: relative;
+}
+
+aside.sidebar .sidebar-footer::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  background: url("assets/cow-icon.png") no-repeat center / contain;
+  animation: cow-blink 5s ease-in-out infinite;
+  opacity: 0.7;
+  pointer-events: none;
+  image-rendering: auto;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .sidebar-footer::after {
+  animation: none;
+  background-image: url("assets/cow-sleep.png");
+  opacity: 0.6;
+}
+
+/* 侧栏交互元素 */
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 6px !important;
+  transition: background 0.2s ease;
+}
+
+/* 侧栏选中项 */
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"] {
+  color: var(--pasture-milk) !important;
+  background: #5a9a5a !important;
+  box-shadow: 2px 2px 0 rgba(90, 154, 90, 0.3) !important;
+  transition: all 0.2s ease;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar [aria-current="page"],
+html[data-kimi-skin-state="night"] aside.sidebar [aria-selected="true"],
+html[data-kimi-skin-state="night"] aside.sidebar [data-state="active"] {
+  color: #1a2a3a !important;
+  background: #a0c8d8 !important;
+  box-shadow: 2px 2px 0 rgba(160, 200, 216, 0.3) !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] * {
+  color: inherit !important;
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: var(--pasture-ink) !important;
+  background: var(--pasture-grass-deep) !important;
+  border-radius: 6px !important;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .conversation-row:hover,
+html[data-kimi-skin-state="night"] aside.sidebar .conversation-row:focus-within {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: rgba(45, 68, 90, 0.6) !important;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, rgba(200, 232, 200, 0.65)) !important;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, rgba(25, 45, 65, 0.7)) !important;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(200, 232, 200, 0.86) 42%,
+    rgba(200, 232, 200, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(25, 45, 65, 0.86) 42%,
+    rgba(25, 45, 65, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, rgba(200, 232, 200, 0.65)) !important;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, rgba(25, 45, 65, 0.7)) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: var(--pasture-ink-soft) !important;
+  background: var(--pasture-milk) !important;
+  border: 1px solid var(--pasture-line) !important;
+  border-radius: 4px !important;
+}
+
+html[data-kimi-skin-state="night"] aside.sidebar .membership-badge {
+  color: rgba(180, 200, 215, 0.88) !important;
+  background: rgba(30, 46, 62, 0.9) !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+}
+
+/* ============================================
+   主面板 · 半透明毛玻璃（透出牧场背景）
+   ============================================ */
+main.main-pane {
+  position: relative;
+  color: var(--pasture-ink) !important;
+  background-color: rgba(253, 252, 248, 0.78) !important;
+  border: 1px solid rgba(124, 184, 124, 0.25) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(58, 74, 82, 0.08) !important;
+  backdrop-filter: blur(20px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.1) !important;
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] main.main-pane {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background-color: rgba(20, 36, 52, 0.78) !important;
+  border-color: rgba(80, 120, 150, 0.25) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* 会话顶栏：透明化，与主面板毛玻璃融为同一表面（原生为不透明奶白，显得突兀） */
+.conv-header,
+.conv-header > * {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--pasture-ink) !important;
+}
+
+/* 输入框停靠条：原生不透明奶白，与聊天区底色断层，透明化后透出主面板 */
+.composer-dock {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html[data-kimi-skin-state="night"] .composer-dock {
+  background: transparent !important;
+}
+
+html[data-kimi-skin-state="night"] .conv-header,
+html[data-kimi-skin-state="night"] .conv-header > * {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+/* ============================================
+   首页 · 牧场视觉中心
+   ============================================ */
+.home-view {
+  position: relative;
+  color: var(--pasture-ink) !important;
+  background-color: transparent !important;
+  transition: color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] .home-view {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+/* 首页提示：双击切换昼夜 */
+.home-view::before {
+  content: "双击切换昼夜";
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 2;
+  padding: 4px 10px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--pasture-ink-faint);
+  background: rgba(253, 252, 248, 0.6);
+  border: 1px solid rgba(124, 184, 124, 0.3);
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.home-view:hover::before {
+  opacity: 1;
+}
+
+html[data-kimi-skin-state="night"] .home-view::before {
+  color: rgba(150, 175, 195, 0.7);
+  background: rgba(25, 45, 65, 0.6);
+  border-color: rgba(80, 120, 150, 0.25);
+}
+
+/* 主内容区域 */
+main.main-pane > .canvas-view,
+main.main-pane > section {
+  color: var(--pasture-ink) !important;
+  background-color: transparent !important;
+  border-radius: 16px !important;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] main.main-pane > .canvas-view,
+html[data-kimi-skin-state="night"] main.main-pane > section {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background-color: transparent !important;
+}
+
+/* ============================================
+   定时任务页
+   ============================================ */
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--pasture-ink) !important;
+  transition: color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] .cron-jobs-page h1,
+html[data-kimi-skin-state="night"] .cron-jobs-page h2,
+html[data-kimi-skin-state="night"] .cron-jobs-page h3,
+html[data-kimi-skin-state="night"] .cron-jobs-page p,
+html[data-kimi-skin-state="night"] .cron-jobs-page [class*="empty"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--pasture-ink-soft) !important;
+  opacity: 0.88 !important;
+}
+
+html[data-kimi-skin-state="night"] .cron-jobs-page .page-subtitle {
+  color: rgba(180, 200, 215, 0.88) !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--pasture-pink-deep) !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(232, 144, 128, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+html[data-kimi-skin-state="night"] .cron-jobs-page a {
+  color: #f0b890 !important;
+  text-decoration-color: rgba(240, 184, 144, 0.45);
+}
+
+.cron-jobs-page button {
+  color: var(--pasture-milk) !important;
+  background: #5a9a5a !important;
+  border: 1px solid #5a9a5a !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
+}
+
+html[data-kimi-skin-state="night"] .cron-jobs-page button {
+  color: #1a2a3a !important;
+  background: #a0c8d8 !important;
+  border-color: #a0c8d8 !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--pasture-pink-deep) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(232, 144, 128, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+html[data-kimi-skin-state="night"] .cron-jobs-page .empty-link {
+  color: #f0b890 !important;
+  text-decoration-color: rgba(240, 184, 144, 0.45);
+}
+
+/* ============================================
+   插件中心
+   ============================================ */
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--pasture-ink) !important;
+  transition: color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub .hub-header,
+html[data-kimi-skin-state="night"] .plugins-hub .hub-header *,
+html[data-kimi-skin-state="night"] .plugins-hub .market-header,
+html[data-kimi-skin-state="night"] .plugins-hub .market-heading,
+html[data-kimi-skin-state="night"] .plugins-hub .market-header h1,
+html[data-kimi-skin-state="night"] .plugins-hub .market-header h2,
+html[data-kimi-skin-state="night"] .plugins-hub .market-header h3 {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--pasture-ink-soft) !important;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub .market-subtitle {
+  color: rgba(180, 200, 215, 0.88) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--pasture-ink) !important;
+  background: var(--pasture-cream) !important;
+  border-color: var(--pasture-line) !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub input,
+html[data-kimi-skin-state="night"] .plugins-hub [role="searchbox"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: rgba(25, 45, 65, 0.8) !important;
+  border-color: rgba(80, 120, 150, 0.25) !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--pasture-ink) !important;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub [role="tab"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--pasture-ink) !important;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub [class*="tab"],
+html[data-kimi-skin-state="night"] .plugins-hub [class*="tab"] * {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--pasture-ink-faint) !important;
+  opacity: 1;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub input::placeholder,
+html[data-kimi-skin-state="night"] .plugins-hub [role="searchbox"]::placeholder {
+  color: rgba(120, 150, 175, 0.7) !important;
+}
+
+/* 插件卡片 */
+.plugins-hub .plugin-card {
+  color: var(--pasture-ink) !important;
+  background: var(--pasture-milk) !important;
+  border: 1px solid rgba(124, 184, 124, 0.5) !important;
+  border-radius: 8px !important;
+  box-shadow: 3px 3px 0 rgba(124, 184, 124, 0.15) !important;
+  transition: all 0.3s ease;
+}
+
+html[data-kimi-skin-state="night"] .plugins-hub .plugin-card {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: rgba(30, 46, 62, 0.9) !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+  box-shadow: 3px 3px 0 rgba(80, 120, 150, 0.15) !important;
+}
+
+/* ============================================
+   输入框 · 奶白圆润便签
+   ============================================ */
+.composer {
+  color: var(--pasture-ink) !important;
+  caret-color: var(--pasture-pink-deep) !important;
+  background: rgba(253, 252, 248, 0.6) !important;
+  border: 1px solid rgba(124, 184, 124, 0.35) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px rgba(58, 74, 82, 0.06) !important;
+  backdrop-filter: blur(16px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.1) !important;
+  transition: all 0.3s ease;
+}
+
+/* 内部结构必须透明无边框，否则出现嵌套描边 */
+.composer > *,
+.composer [class*="editor"],
+.composer [class*="input"],
+.composer [class*="container"] {
+  color: var(--pasture-ink) !important;
+  caret-color: var(--pasture-pink-deep) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-kimi-skin-state="night"] .composer {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: rgba(20, 36, 52, 0.6) !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+html[data-kimi-skin-state="night"] .composer > *,
+html[data-kimi-skin-state="night"] .composer [class*="editor"],
+html[data-kimi-skin-state="night"] .composer [class*="input"],
+html[data-kimi-skin-state="night"] .composer [class*="container"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.composer:focus-within {
+  background: rgba(253, 252, 248, 0.6) !important;
+  border-color: var(--pasture-pink) !important;
+  box-shadow: 0 4px 20px rgba(232, 144, 128, 0.25) !important;
+}
+
+html[data-kimi-skin-state="night"] .composer:focus-within {
+  background: rgba(30, 46, 62, 0.78) !important;
+  border-color: #f0b890 !important;
+  box-shadow: 0 4px 20px rgba(240, 184, 144, 0.2) !important;
+}
+
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--pasture-ink) !important;
+  caret-color: var(--pasture-pink-deep) !important;
+  background: transparent !important;
+}
+
+html[data-kimi-skin-state="night"] .composer input,
+html[data-kimi-skin-state="night"] .composer textarea,
+html[data-kimi-skin-state="night"] .composer [contenteditable="true"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+  caret-color: #f0b890 !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--pasture-ink-faint) !important;
+  opacity: 1;
+}
+
+html[data-kimi-skin-state="night"] .composer input::placeholder,
+html[data-kimi-skin-state="night"] .composer textarea::placeholder {
+  color: rgba(120, 150, 175, 0.7) !important;
+}
+
+.composer-editor::before {
+  color: var(--pasture-ink-faint) !important;
+}
+
+html[data-kimi-skin-state="night"] .composer-editor::before {
+  color: rgba(120, 150, 175, 0.7) !important;
+}
+
+.composer button,
+.composer [role="button"] {
+  color: var(--pasture-ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  transition: background 0.2s ease;
+}
+
+html[data-kimi-skin-state="night"] .composer button,
+html[data-kimi-skin-state="night"] .composer [role="button"] {
+  color: rgba(220, 235, 245, 0.94) !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: rgba(124, 184, 124, 0.12) !important;
+}
+
+html[data-kimi-skin-state="night"] .composer button:hover,
+html[data-kimi-skin-state="night"] .composer [role="button"]:hover {
+  background: rgba(80, 120, 150, 0.2) !important;
+}
+
+/* 发送键 */
+.composer .send-btn {
+  color: var(--pasture-milk) !important;
+  background: var(--pasture-pink) !important;
+  border-color: transparent !important;
+  transition: background 0.2s ease;
+}
+
+.composer .send-btn:hover {
+  background: #d87868 !important;
+}
+
+html[data-kimi-skin-state="night"] .composer .send-btn {
+  background: #f0b890 !important;
+  color: #1a2a3a !important;
+}
+
+html[data-kimi-skin-state="night"] .composer .send-btn:hover {
+  background: #e8a878 !important;
+}
+
+/* ============================================
+   代码块
+   ============================================ */
+pre {
+  color: var(--pasture-ink) !important;
+  background: #f0f8f0 !important;
+  border: 1px solid rgba(124, 184, 124, 0.35) !important;
+  border-radius: 6px !important;
+  box-shadow: 2px 2px 0 rgba(124, 184, 124, 0.1) !important;
+  transition: all 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] pre {
+  color: rgba(220, 235, 245, 0.94) !important;
+  background: #152535 !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+  box-shadow: 2px 2px 0 rgba(80, 120, 150, 0.1) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--pasture-pink-deep) !important;
+  background: var(--pasture-cream) !important;
+  border: 1px solid rgba(124, 184, 124, 0.3) !important;
+  border-radius: 4px !important;
+}
+
+html[data-kimi-skin-state="night"] :not(pre) > code,
+html[data-kimi-skin-state="night"] kbd {
+  color: #f0b890 !important;
+  background: rgba(25, 45, 65, 0.8) !important;
+  border-color: rgba(80, 120, 150, 0.25) !important;
+}
+
+/* ============================================
+   用户消息气泡
+   ============================================ */
+.bubble.role-user {
+  background: #fffefa !important;
+  color: var(--pasture-ink) !important;
+  border: 1px solid rgba(122, 138, 154, 0.25) !important;
+  transition: all 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] .bubble.role-user {
+  background: rgba(38, 56, 72, 0.9) !important;
+  color: rgba(220, 235, 245, 0.94) !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+}
+
+blockquote {
+  border-left-color: var(--pasture-pink) !important;
+}
+
+html[data-kimi-skin-state="night"] blockquote {
+  border-left-color: #f0b890 !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: rgba(124, 184, 124, 0.25) !important;
+}
+
+html[data-kimi-skin-state="night"] hr,
+html[data-kimi-skin-state="night"] table,
+html[data-kimi-skin-state="night"] th,
+html[data-kimi-skin-state="night"] td {
+  border-color: rgba(80, 120, 150, 0.25) !important;
+}
+
+a {
+  color: var(--pasture-pink-deep);
+  text-decoration-color: rgba(232, 144, 128, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+html[data-kimi-skin-state="night"] a {
+  color: #f0b890;
+  text-decoration-color: rgba(240, 184, 144, 0.45);
+}
+
+/* ============================================
+   弹层兜底
+   ============================================ */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  background-color: var(--pasture-milk) !important;
+  color: var(--pasture-ink) !important;
+  border-color: rgba(124, 184, 124, 0.4) !important;
+  transition: all 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] [role="dialog"],
+html[data-kimi-skin-state="night"] [role="alertdialog"],
+html[data-kimi-skin-state="night"] [class*="modal"],
+html[data-kimi-skin-state="night"] [class*="Modal"] {
+  background-color: rgba(30, 46, 62, 0.98) !important;
+  color: rgba(220, 235, 245, 0.94) !important;
+  border-color: rgba(80, 120, 150, 0.3) !important;
+}
+
+/* ============================================
+   选区与焦点
+   ============================================ */
+::selection {
+  color: var(--pasture-milk);
+  background: var(--pasture-pink);
+}
+
+html[data-kimi-skin-state="night"] ::selection {
+  color: #1a2a3a;
+  background: #f0b890;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pasture-pink) !important;
+  outline-offset: 2px !important;
+}
+
+html[data-kimi-skin-state="night"] :focus-visible {
+  outline-color: #f0b890 !important;
+}
+
+/* ============================================
+   滚动条
+   ============================================ */
+* {
+  scrollbar-color: var(--pasture-spot-faint) var(--pasture-sky);
+  transition: scrollbar-color 0.5s ease;
+}
+
+html[data-kimi-skin-state="night"] * {
+  scrollbar-color: rgba(80, 120, 150, 0.5) var(--pasture-sky);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(154, 170, 174, 0.55);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 138, 146, 0.65);
+}
+
+html[data-kimi-skin-state="night"] *::-webkit-scrollbar-thumb {
+  background: rgba(80, 120, 150, 0.5);
+}
+
+html[data-kimi-skin-state="night"] *::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 140, 170, 0.6);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 760px) {
+  .home-view::before {
+    display: none;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg,
+  #kimi-skin-bg::after,
+  aside.sidebar .sidebar-footer::after {
+    animation: none !important;
+  }
+
+  * {
+    transition: none !important;
+  }
+}
+
