@@ -1,0 +1,872 @@
+/* kimi-skin · sweet-trip 主题
+ * 视觉：复古未来主义专辑封面——奶白网格大地、消失点放射的彩虹光束、
+ * 深靛蓝粗体排版。骨架沿用 paper 已验证的 token 重映射；
+ * 光束与网格全部为 CSS 程序生成，无图片素材。 */
+
+:root {
+  color-scheme: light;
+  --milk: #f5f6f2;
+  --panel: #ffffff;
+  --panel-hover: #f2f4fb;
+  --panel-active: #e9ecf7;
+  --side: #e9ecf7;
+  --ink: #1b1e4e;
+  --ink-soft: #4a4e7d;
+  --ink-faint: #8b8fb3;
+  --accent: #e5007e;
+  --accent-deep: #b30066;
+  --blue: #2e7fd9;
+  --beam-line: rgba(27, 30, 78, 0.16);
+  --rainbow-x: linear-gradient(90deg, #e63329, #f07c00, #ffd900, #43b02a, #2e7fd9, #e5007e);
+
+  /* Kimi neutral surfaces：奶白到浅蓝白的日光系 */
+  --Bg-GroundPC: var(--milk) !important;
+  --Bg-GroundPC-hover: rgba(233, 236, 247, 0.6) !important;
+  --Bg-GroundPC-active: rgba(233, 236, 247, 0.85) !important;
+
+  --Bg-Primary: var(--panel) !important;
+  --Bg-Primary-hover: var(--panel-hover) !important;
+  --Bg-Primary-active: var(--panel-active) !important;
+  --Bg-Primary70: rgba(255, 255, 255, 0.94) !important;
+  --Bg-Primary70-hover: rgba(242, 244, 251, 0.94) !important;
+  --Bg-Primary70-active: rgba(233, 236, 247, 0.95) !important;
+  --Bg-Primary90: rgba(255, 255, 255, 0.98) !important;
+  --Bg-Primary90-hover: rgba(242, 244, 251, 0.98) !important;
+  --Bg-Primary90-active: rgba(233, 236, 247, 0.98) !important;
+
+  --Bg-Secondary: rgba(233, 236, 247, 0.96) !important;
+  --Bg-Secondary-hover: rgba(226, 230, 244, 0.96) !important;
+  --Bg-Secondary-active: rgba(218, 223, 240, 0.97) !important;
+  --Bg-Secondary90: rgba(233, 236, 247, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(226, 230, 244, 0.98) !important;
+  --Bg-Secondary90-active: rgba(218, 223, 240, 0.98) !important;
+
+  --Bg-Tertiary: rgba(224, 228, 243, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(216, 221, 239, 0.96) !important;
+  --Bg-Tertiary-active: rgba(206, 212, 234, 0.97) !important;
+  --Bg-Tertiary90: rgba(224, 228, 243, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(216, 221, 239, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(206, 212, 234, 0.98) !important;
+
+  --Bg-Quaternary: #d6dcee !important;
+  --Bg-Quaternary-hover: #c9d1e9 !important;
+  --Bg-Quaternary-active: #bcc5e3 !important;
+
+  --BgGp-Primary: rgba(233, 236, 247, 0.96) !important;
+  --BgGp-Primary-hover: rgba(226, 230, 244, 0.96) !important;
+  --BgGp-Primary-active: rgba(218, 223, 240, 0.97) !important;
+  --BgGp-Primary90: rgba(233, 236, 247, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(226, 230, 244, 0.98) !important;
+  --BgGp-Primary90-active: rgba(218, 223, 240, 0.98) !important;
+  --BgGp-Secondary: rgba(224, 228, 243, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(216, 221, 239, 0.96) !important;
+  --BgGp-Secondary-active: rgba(206, 212, 234, 0.97) !important;
+  --BgGp-Secondary90: rgba(224, 228, 243, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(216, 221, 239, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(206, 212, 234, 0.98) !important;
+  --BgGp-Tertiary: #d6dcee !important;
+  --BgGp-Tertiary-hover: #c9d1e9 !important;
+  --BgGp-Tertiary-active: #bcc5e3 !important;
+
+  /* Kimi text hierarchy：深靛蓝墨色梯度 */
+  --Labels-Primary: rgba(27, 30, 78, 0.94) !important;
+  --Labels-Primary-hover: var(--ink) !important;
+  --Labels-Primary-active: rgba(27, 30, 78, 0.88) !important;
+  --Labels-Secondary: rgba(74, 78, 125, 0.88) !important;
+  --Labels-Secondary-hover: rgba(74, 78, 125, 0.96) !important;
+  --Labels-Secondary-active: rgba(74, 78, 125, 0.78) !important;
+  --Labels-Tertiary: rgba(111, 115, 156, 0.72) !important;
+  --Labels-Tertiary-hover: rgba(111, 115, 156, 0.84) !important;
+  --Labels-Tertiary-active: rgba(111, 115, 156, 0.6) !important;
+  --Labels-Quaternary: rgba(139, 143, 179, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(111, 115, 156, 0.72) !important;
+  --Labels-Quaternary-active: rgba(139, 143, 179, 0.72) !important;
+
+  --Separators-S1: rgba(27, 30, 78, 0.16) !important;
+  --Separators-S1-hover: rgba(27, 30, 78, 0.22) !important;
+  --Separators-S1-active: rgba(27, 30, 78, 0.28) !important;
+  --Fills-F1: rgba(27, 30, 78, 0.05) !important;
+  --Fills-F1-hover: rgba(27, 30, 78, 0.08) !important;
+  --Fills-F1-active: rgba(27, 30, 78, 0.12) !important;
+  --Fills-F2: rgba(27, 30, 78, 0.08) !important;
+  --Fills-F2-hover: rgba(27, 30, 78, 0.12) !important;
+  --Fills-F2-active: rgba(27, 30, 78, 0.16) !important;
+  --Fills-F3: rgba(27, 30, 78, 0.12) !important;
+  --Fills-F3-hover: rgba(27, 30, 78, 0.16) !important;
+  --Fills-F3-active: rgba(27, 30, 78, 0.2) !important;
+  --Fills-F4: rgba(27, 30, 78, 0.18) !important;
+  --Fills-F4-hover: rgba(27, 30, 78, 0.22) !important;
+  --Fills-F4-active: rgba(27, 30, 78, 0.26) !important;
+  --Others-SubLayerBg: rgba(27, 30, 78, 0.06) !important;
+  --Others-SubLayerBg-hover: rgba(27, 30, 78, 0.1) !important;
+  --Others-SubLayerBg-active: rgba(27, 30, 78, 0.14) !important;
+
+  /* 品牌蓝色位 → 玫红（彩虹条主色） */
+  --Colors-KMBlue: var(--accent) !important;
+  --Colors-KMBlue-hover: #c7006f !important;
+  --Colors-KMBlue-active: var(--accent-deep) !important;
+  --Others-LightBlueBg: rgba(229, 0, 126, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(229, 0, 126, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(229, 0, 126, 0.16) !important;
+}
+
+/* 背景层：深靛夜空 + 消失点（36% 46%）放射的彩虹硬切光束 + 霓虹地平线（带红蓝色散边）。
+   顶部 90px 压暗渐变，避免光束在标题栏边缘裁出脏边；扫描线置顶营造 CRT 质感。 */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #14164a;
+  background-image:
+    linear-gradient(180deg, rgba(13, 15, 56, 0.55) 0, rgba(13, 15, 56, 0) 90px),
+    repeating-linear-gradient(0deg, rgba(10, 10, 40, 0.06) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 36% 46%, rgba(255, 240, 252, 0.85) 0%, rgba(255, 240, 252, 0) 12%),
+    conic-gradient(from -54deg at 36% 46%,
+      #e63329 0deg 9deg, #f07c00 9deg 18deg, #ffd900 18deg 27deg,
+      #43b02a 27deg 36deg, #2e7fd9 36deg 45deg, #e5007e 45deg 54deg,
+      #e63329 54deg 63deg, #f07c00 63deg 72deg, #ffd900 72deg 81deg,
+      #43b02a 81deg 90deg, #2e7fd9 90deg 99deg, #e5007e 99deg 108deg,
+      transparent 108deg 360deg),
+    linear-gradient(180deg, transparent 43.5%, rgba(255, 92, 210, 0.6) 45.2%, rgba(120, 220, 255, 0.65) 46%, transparent 47.8%),
+    linear-gradient(180deg, #0d0f38 0%, #1b1e4e 24%, #322f7e 38%, #57449f 44.5%, #8a5cc0 46%, #3a2f7e 52%, #191c54 100%);
+  animation: beam-drift 26s ease-in-out infinite;
+}
+
+/* 夜空星点 + 地平线红蓝色散边（CRT 聚焦不良的 fringe） */
+#kimi-skin-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(180deg, transparent 44.6%, rgba(255, 60, 74, 0.42) 45%, transparent 45.4%),
+    linear-gradient(180deg, transparent 46.7%, rgba(64, 140, 255, 0.42) 47.1%, transparent 47.5%),
+    radial-gradient(circle 1.5px at 8% 7%, rgba(255, 255, 255, 0.95) 50%, transparent 52%),
+    radial-gradient(circle 1px at 19% 15%, rgba(255, 255, 255, 0.8) 50%, transparent 52%),
+    radial-gradient(circle 1.5px at 30% 5%, rgba(255, 255, 255, 0.85) 50%, transparent 52%),
+    radial-gradient(circle 1px at 52% 11%, rgba(255, 255, 255, 0.7) 50%, transparent 52%),
+    radial-gradient(circle 1.5px at 71% 6%, rgba(255, 255, 255, 0.9) 50%, transparent 52%),
+    radial-gradient(circle 1px at 88% 14%, rgba(255, 255, 255, 0.75) 50%, transparent 52%);
+}
+
+/* 透视铬网格地板：格线向地平线消失点汇聚（封面下半的签名构图） */
+#kimi-skin-bg::before {
+  content: "";
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -14%;
+  height: 68%;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(150, 232, 255, 0.85) 0 3px, transparent 3px 44px),
+    repeating-linear-gradient(90deg, rgba(140, 228, 255, 0.55) 0 2px, transparent 2px 44px),
+    linear-gradient(180deg, rgba(90, 68, 160, 0.15), rgba(13, 15, 56, 0.42));
+  transform: perspective(720px) rotateX(50deg);
+  transform-origin: 50% 100%;
+}
+
+@keyframes beam-drift {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(22deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+body {
+  accent-color: var(--accent);
+}
+
+/* 侧栏：并入夜空——深靛玻璃 + 白字（封面左半的构图角色）；
+   作用域内把文字/填充 token 翻成亮色系，保证深色玻璃上的条目可读 */
+aside.sidebar {
+  position: relative;
+  color: var(--milk) !important;
+  background: rgba(13, 15, 56, 0.78) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  --Labels-Primary: rgba(255, 255, 255, 0.95) !important;
+  --Labels-Primary-hover: #ffffff !important;
+  --Labels-Primary-active: rgba(255, 255, 255, 0.88) !important;
+  --Labels-Secondary: rgba(226, 232, 252, 0.82) !important;
+  --Labels-Secondary-hover: rgba(226, 232, 252, 0.94) !important;
+  --Labels-Secondary-active: rgba(226, 232, 252, 0.72) !important;
+  --Labels-Tertiary: rgba(200, 208, 240, 0.62) !important;
+  --Labels-Tertiary-hover: rgba(200, 208, 240, 0.74) !important;
+  --Labels-Tertiary-active: rgba(200, 208, 240, 0.52) !important;
+  --Labels-Quaternary: rgba(180, 190, 228, 0.68) !important;
+  --Labels-Quaternary-hover: rgba(200, 208, 240, 0.62) !important;
+  --Labels-Quaternary-active: rgba(180, 190, 228, 0.6) !important;
+  --Separators-S1: rgba(255, 255, 255, 0.16) !important;
+  --Separators-S1-hover: rgba(255, 255, 255, 0.22) !important;
+  --Separators-S1-active: rgba(255, 255, 255, 0.28) !important;
+  --Fills-F1: rgba(255, 255, 255, 0.07) !important;
+  --Fills-F1-hover: rgba(255, 255, 255, 0.11) !important;
+  --Fills-F1-active: rgba(255, 255, 255, 0.15) !important;
+  --Fills-F2: rgba(255, 255, 255, 0.1) !important;
+  --Fills-F2-hover: rgba(255, 255, 255, 0.14) !important;
+  --Fills-F2-active: rgba(255, 255, 255, 0.18) !important;
+  --Fills-F3: rgba(255, 255, 255, 0.14) !important;
+  --Fills-F3-hover: rgba(255, 255, 255, 0.18) !important;
+  --Fills-F3-active: rgba(255, 255, 255, 0.22) !important;
+  --Fills-F4: rgba(255, 255, 255, 0.18) !important;
+  --Fills-F4-hover: rgba(255, 255, 255, 0.22) !important;
+  --Fills-F4-active: rgba(255, 255, 255, 0.26) !important;
+  --Others-SubLayerBg: rgba(255, 255, 255, 0.08) !important;
+  --Others-SubLayerBg-hover: rgba(255, 255, 255, 0.12) !important;
+  --Others-SubLayerBg-active: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* 侧栏 footer 右侧：迷你彩条测试卡（电视测试信号图腾，呼应彩虹光束 + CRT 质感；
+   footer 不滚动，位置固定） */
+aside.sidebar .sidebar-footer {
+  position: relative;
+}
+
+aside.sidebar .sidebar-footer::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 46px;
+  height: 32px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  /* 彩条测试卡：上部 6 条竖彩条（主题彩虹序），下部灰阶，叠一层细扫描线 */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(8, 10, 36, 0.16) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, #141414 0 25%, #4c4c4c 25% 50%, #8f8f8f 50% 75%, #dcdcdc 75% 100%),
+    linear-gradient(90deg,
+      #e63329 0 16.67%, #f07c00 16.67% 33.33%, #ffd900 33.33% 50%,
+      #43b02a 50% 66.67%, #2e7fd9 66.67% 83.33%, #e5007e 83.33% 100%);
+  background-size: 100% 100%, 100% 30%, 100% 72%;
+  background-position: 0 0, left bottom, left top;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 10px rgba(120, 220, 255, 0.4), inset 0 0 5px rgba(0, 0, 0, 0.5);
+  opacity: 0.95;
+  pointer-events: none;
+  animation: testcard-flicker 7s steps(2, jump-none) infinite;
+}
+
+@keyframes testcard-flicker {
+  0%, 93%, 100% { opacity: 0.95; }
+  94%, 96% { opacity: 0.72; }
+  97%, 99% { opacity: 0.88; }
+}
+
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 5px !important;
+}
+
+/* 侧栏选中项：玫红霓虹块 + 黄色内描边 */
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"],
+aside.sidebar .conversation-row.active {
+  color: #ffffff !important;
+  background: rgba(229, 0, 126, 0.85) !important;
+  box-shadow: inset 4px 0 0 0 #ffd900, 0 0 16px rgba(229, 0, 126, 0.55) !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] *,
+aside.sidebar .conversation-row.active * {
+  color: inherit !important;
+}
+
+/* 账户弹层（footer 上方浮出的 ul.user-nav）：默认吃全局 --Bg-Primary 白底，
+   又继承侧栏的白字 token → 白上白（"设置/会员计划"整层隐形）。
+   统一成与侧栏一致的深靛玻璃，白字 token 直接沿用侧栏作用域。 */
+aside.sidebar .user-nav {
+  background: rgba(17, 20, 62, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 8px 28px rgba(8, 10, 36, 0.55) !important;
+  color: var(--milk) !important;
+}
+
+aside.sidebar .user-nav li:hover,
+aside.sidebar .user-nav [role="menuitem"]:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 侧栏滚动条：深底上压暗，白竖条消失（thumb 与 track 都要压） */
+aside.sidebar,
+aside.sidebar * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+aside.sidebar *::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+aside.sidebar *::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 5px !important;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, rgba(13, 15, 56, 0.95)) !important;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(13, 15, 56, 0.82) 42%,
+    rgba(13, 15, 56, 0.34) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, rgba(13, 15, 56, 0.95)) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 3px !important;
+}
+
+/* 主内容：近不透明白面板——阅读区保持干净，光束氛围退到面板外侧。
+   面板顶缘一条 3px 彩虹渐变带，作为明暗两半之间的"缝合线"。 */
+main.main-pane {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(27, 30, 78, 0.3) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 28px rgba(13, 15, 56, 0.25) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+main.main-pane::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 3px;
+  border-radius: 10px 10px 0 0;
+  background: var(--rainbow-x);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.home-view {
+  position: relative;
+  color: var(--milk) !important;
+  background-color: transparent !important;
+}
+
+/* 主页路由：主面板切换为深色玻璃，让夜空、光束和地平线透进来；
+   同时在作用域内把文字/填充 token 翻成亮色系，保证玻璃上的内容可读 */
+main.main-pane:has(> .home-view) {
+  background-color: rgba(13, 15, 56, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+
+  --Labels-Primary: rgba(255, 255, 255, 0.95) !important;
+  --Labels-Primary-hover: #ffffff !important;
+  --Labels-Primary-active: rgba(255, 255, 255, 0.88) !important;
+  --Labels-Secondary: rgba(226, 232, 252, 0.82) !important;
+  --Labels-Secondary-hover: rgba(226, 232, 252, 0.94) !important;
+  --Labels-Secondary-active: rgba(226, 232, 252, 0.72) !important;
+  --Labels-Tertiary: rgba(200, 208, 240, 0.66) !important;
+  --Labels-Tertiary-hover: rgba(200, 208, 240, 0.78) !important;
+  --Labels-Tertiary-active: rgba(200, 208, 240, 0.56) !important;
+  --Labels-Quaternary: rgba(180, 190, 228, 0.7) !important;
+  --Fills-F1: rgba(255, 255, 255, 0.08) !important;
+  --Fills-F1-hover: rgba(255, 255, 255, 0.12) !important;
+  --Fills-F1-active: rgba(255, 255, 255, 0.16) !important;
+  --Fills-F2: rgba(255, 255, 255, 0.12) !important;
+  --Fills-F2-hover: rgba(255, 255, 255, 0.16) !important;
+  --Fills-F2-active: rgba(255, 255, 255, 0.2) !important;
+  --Others-SubLayerBg: rgba(255, 255, 255, 0.1) !important;
+  --Others-SubLayerBg-hover: rgba(255, 255, 255, 0.14) !important;
+  --Others-SubLayerBg-active: rgba(255, 255, 255, 0.18) !important;
+  --Separators-S1: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* 主页问候：封面同款白色粗字 + 玫红霓虹辉光 */
+.home-view .greeting {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  text-shadow: 1.5px 0 rgba(255, 60, 74, 0.32), -1.5px 0 rgba(64, 140, 255, 0.32), 0 0 18px rgba(229, 0, 126, 0.65), 0 2px 0 rgba(13, 15, 56, 0.5) !important;
+}
+
+/* 主页玻璃上的次级文字提亮了才能读 */
+.home-view p,
+.home-view span,
+.home-view div {
+  text-shadow: 0 1px 2px rgba(13, 15, 56, 0.35);
+}
+
+/* Beta 徽章：亮粉霓虹字，修复 12px 深玫红压深底 */
+.home-view .greeting-subtitle {
+  color: #ff4fb0 !important;
+  background: transparent !important;
+  text-shadow: 0 0 10px rgba(229, 0, 126, 0.6);
+}
+
+/* 底部入口与提醒区：深色玻璃上提到近白 */
+.home-view .foot-chip-label {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.home-view .reminders-header {
+  color: rgba(226, 232, 252, 0.9) !important;
+}
+
+/* 主页亮色 token 只服务深色玻璃区；输入框是白色卡片，
+   作用域内把文字 token 还原成深色系，防止白字压白卡 */
+.home-view .composer {
+  --Labels-Primary: rgba(27, 30, 78, 0.94) !important;
+  --Labels-Secondary: rgba(74, 78, 125, 0.88) !important;
+  --Labels-Tertiary: rgba(111, 115, 156, 0.72) !important;
+  --Labels-Quaternary: rgba(139, 143, 179, 0.85) !important;
+}
+
+/* 首页 CRT 屏幕质感：不贴任何"物件"，整块主页做成一块老显像管。
+   ::after = 四角暗角 + RGB 荫罩竖纹（透明度极低，只贡献颗粒感）；
+   ::before = 缓慢下滚的电子束刷新亮带。 */
+.home-view::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 118% 104% at 50% 42%, transparent 70%, rgba(8, 10, 36, 0.26) 100%),
+    repeating-linear-gradient(90deg,
+      rgba(230, 51, 41, 0.045) 0 1px,
+      rgba(67, 176, 42, 0.045) 1px 2px,
+      rgba(46, 127, 217, 0.045) 2px 3px);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.home-view::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -18%;
+  height: 18%;
+  background: linear-gradient(180deg,
+    transparent 0%, rgba(255, 255, 255, 0.05) 55%,
+    rgba(180, 220, 255, 0.09) 82%, transparent 100%);
+  animation: crt-refresh 9s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes crt-refresh {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(680%); }
+}
+
+main.main-pane > .canvas-view,
+main.main-pane > section {
+  color: var(--ink) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-radius: 10px !important;
+}
+
+/* 封面式粗体标题：加粗收紧，只动标题层 */
+.home-view .greeting,
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.plugins-hub .hub-header h1,
+.plugins-hub .hub-header h2,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-heading {
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--ink) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--ink-soft) !important;
+  opacity: 0.88 !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--blue) !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(46, 127, 217, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.cron-jobs-page button {
+  color: var(--milk) !important;
+  background: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+  border-radius: 4px !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--blue) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(46, 127, 217, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--ink) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--ink-soft) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--ink) !important;
+  background: var(--milk) !important;
+  border-color: var(--beam-line) !important;
+  border-radius: 4px !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--ink) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--ink) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+/* 插件卡：白面 + 靛蓝描边 + 偏移硬阴影（封面拼贴感） */
+.plugins-hub .plugin-card {
+  color: var(--ink) !important;
+  background: var(--panel) !important;
+  border: 1px solid rgba(27, 30, 78, 0.55) !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0 rgba(27, 30, 78, 0.16) !important;
+}
+
+/* 「使用」按钮：靛蓝色块反白，修复文字继承导致墨压墨。
+   通用化到所有 *use-btn*（技能卡与插件卡共用该命名，容器类名不同） */
+[class*="use-btn"] {
+  color: var(--milk) !important;
+  background: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+}
+
+[class*="use-btn"] * {
+  color: inherit !important;
+}
+
+[class*="use-btn"]:hover {
+  background: #2c3170 !important;
+  border-color: #2c3170 !important;
+}
+
+/* 技能页卡片按钮（SkillsView 的 .card-btn）：显式成对声明，
+   不依赖 token 层叠——未安装=玫红实底白字，已安装=白底靛蓝描边 */
+.skill-card .card-btn:not(.installed),
+.store-card .card-btn:not(.installed) {
+  color: #ffffff !important;
+  background: var(--accent) !important;
+  border: 1px solid var(--accent) !important;
+}
+
+.skill-card .card-btn:not(.installed):hover,
+.store-card .card-btn:not(.installed):hover {
+  background: #c7006f !important;
+  border-color: #c7006f !important;
+}
+
+.skill-card .card-btn.installed,
+.store-card .card-btn.installed {
+  color: var(--ink) !important;
+  background: transparent !important;
+  border: 1px solid rgba(27, 30, 78, 0.32) !important;
+}
+
+/* 主页问候文案保持原生内容，只换字重 */
+
+/* 输入框：白面便签 + 靛蓝细边；聚焦时玫红描边 + 彩虹底条 */
+.composer {
+  position: relative;
+  color: var(--ink) !important;
+  caret-color: var(--accent-deep) !important;
+  background: var(--panel) !important;
+  border: 1px solid rgba(27, 30, 78, 0.32) !important;
+  border-radius: 14px !important;
+  box-shadow: 3px 3px 0 rgba(27, 30, 78, 0.12) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.composer:focus-within {
+  background: var(--panel) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 3px 3px 0 rgba(229, 0, 126, 0.2), 0 0 0 2px rgba(229, 0, 126, 0.3), 0 0 22px rgba(229, 0, 126, 0.35) !important;
+}
+
+/* 输入框内部的焦点白框一并去掉 */
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--ink) !important;
+  caret-color: var(--accent-deep) !important;
+  background: transparent !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.composer-editor::before {
+  color: var(--ink-faint) !important;
+}
+
+.composer button,
+.composer [role="button"] {
+  color: var(--ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: rgba(27, 30, 78, 0.07) !important;
+}
+
+/* 发送键：玫红霓虹 */
+.composer .send-btn {
+  color: var(--milk) !important;
+  background: var(--accent) !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 10px rgba(229, 0, 126, 0.55) !important;
+}
+
+.composer .send-btn:hover {
+  background: #c7006f !important;
+  box-shadow: 0 0 16px rgba(229, 0, 126, 0.7) !important;
+}
+
+/* 代码块：浅蓝白面 + 靛蓝框，顶部一条彩虹色带（磁带贴标） */
+pre {
+  color: var(--ink) !important;
+  background: #eef1fb !important;
+  background-image: var(--rainbow-x) !important;
+  background-size: 100% 3px !important;
+  background-position: left top !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid rgba(27, 30, 78, 0.4) !important;
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 rgba(27, 30, 78, 0.1) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--accent-deep) !important;
+  background: #e3e9f9 !important;
+  border: 1px solid rgba(27, 30, 78, 0.24) !important;
+  border-radius: 3px !important;
+}
+
+/* 用户消息气泡：白面 + 靛蓝边 + 玫红左缘 */
+.bubble.role-user {
+  background: var(--panel) !important;
+  color: var(--ink) !important;
+  border: 1px solid rgba(27, 30, 78, 0.28) !important;
+  border-left: 3px solid var(--accent) !important;
+}
+
+blockquote {
+  border-left-color: var(--accent) !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: rgba(27, 30, 78, 0.28) !important;
+}
+
+a {
+  color: var(--blue);
+  text-decoration-color: rgba(46, 127, 217, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 弹层兜底：统一白面 */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  background-color: var(--panel) !important;
+  color: var(--ink) !important;
+  border-color: rgba(27, 30, 78, 0.4) !important;
+}
+
+/* 侧栏展开按钮：.page 的直接子级（不在 aside.sidebar 内），
+   悬浮在深色夜空上，需要显式亮色 + 深色玻璃底 */
+.sidebar-expand-btn {
+  color: var(--milk) !important;
+  background: rgba(13, 15, 56, 0.6) !important;
+  border-radius: 50% !important;
+}
+
+/* 正文链接：玫红压白底只有 4.19:1，加深到 accent-deep */
+.markdown-container a,
+.bubble a {
+  color: var(--accent-deep) !important;
+}
+
+/* 选区：玫红底白字 */
+::selection {
+  color: var(--milk);
+  background: var(--accent);
+}
+
+/* 工具卡外壳：白面 + 靛蓝描边 + 偏移硬阴影，与插件卡同一语言；
+   内部 pre 的彩虹顶条不动，只给外壳 */
+.tool-section {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid rgba(27, 30, 78, 0.32) !important;
+  box-shadow: 3px 3px 0 rgba(27, 30, 78, 0.12) !important;
+}
+
+.tool-section [class*="header"],
+.tool-section [class*="title"] {
+  color: var(--ink-soft) !important;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+}
+
+* {
+  scrollbar-color: var(--ink-faint) var(--milk);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(139, 143, 179, 0.55);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 78, 125, 0.65);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .home-view::after {
+    width: 92px;
+    height: 68px;
+    top: 30px;
+    right: 26px;
+    opacity: 0.7;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    display: none;
+  }
+}
+
+/* composer-dock：原生纯白容器，盖在半透明主面板上形成色块断层；
+   透明化让主面板底色透出，与周围融合 */
+.composer-dock {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg {
+    animation: none;
+  }
+
+  .home-view::before {
+    animation: none;
+    opacity: 0.4;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    animation: none;
+  }
+}

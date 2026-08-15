@@ -1,0 +1,7 @@
+{
+  "id": "sweet-trip",
+  "name": "Sweet Trip · 甜蜜旅程",
+  "version": "0.1.0",
+  "compatibleKimi": ["3.1.*"],
+  "capabilities": ["safe-css"]
+}
