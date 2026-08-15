@@ -7,22 +7,99 @@
 
 :root {
   --theme-ground: #f4f4f2;
+  --theme-ground-hover: #eeeeeb;
+  --theme-ground-active: #e7e7e3;
   --theme-surface: #ffffff;
+  --theme-surface-hover: #f7f7f5;
+  --theme-surface-active: #efefec;
   --theme-raised: #ececea;
+  --theme-raised-hover: #e4e4e1;
+  --theme-raised-active: #dcdcd8;
   --theme-text-primary: #1c1c1c;
   --theme-text-secondary: #666666;
+  --theme-text-tertiary: #8a8a86;
+  --theme-text-quaternary: #aaaaa5;
   --theme-border: rgba(28, 28, 28, 0.14);
   --theme-focus: #3267d6;
 
-  /* 只映射已经确认的基础角色；新组件规则应来自实际界面观察。
-     完整 token 集（--Bg-* / --Labels-* / --Fills-* 等含 hover/active）
-     参考 themes/dark-side/theme.css 的 :root 块，按需抄录。 */
+  /* 中性 token 骨架：只复用角色结构，不从任何内置主题复制颜色、材质、
+     构图或装饰。创建主题时先改上方语义变量，再按真实页面补组件规则。 */
   --Bg-GroundPC: var(--theme-ground) !important;
+  --Bg-GroundPC-hover: var(--theme-ground-hover) !important;
+  --Bg-GroundPC-active: var(--theme-ground-active) !important;
+
   --Bg-Primary: var(--theme-surface) !important;
+  --Bg-Primary-hover: var(--theme-surface-hover) !important;
+  --Bg-Primary-active: var(--theme-surface-active) !important;
+  --Bg-Primary70: var(--theme-surface) !important;
+  --Bg-Primary70-hover: var(--theme-surface-hover) !important;
+  --Bg-Primary70-active: var(--theme-surface-active) !important;
+  --Bg-Primary90: var(--theme-surface) !important;
+  --Bg-Primary90-hover: var(--theme-surface-hover) !important;
+  --Bg-Primary90-active: var(--theme-surface-active) !important;
+
   --Bg-Secondary: var(--theme-raised) !important;
+  --Bg-Secondary-hover: var(--theme-raised-hover) !important;
+  --Bg-Secondary-active: var(--theme-raised-active) !important;
+  --Bg-Secondary90: var(--theme-raised) !important;
+  --Bg-Secondary90-hover: var(--theme-raised-hover) !important;
+  --Bg-Secondary90-active: var(--theme-raised-active) !important;
+  --Bg-Tertiary: var(--theme-raised) !important;
+  --Bg-Tertiary-hover: var(--theme-raised-hover) !important;
+  --Bg-Tertiary-active: var(--theme-raised-active) !important;
+  --Bg-Quaternary: var(--theme-raised-active) !important;
+  --Bg-Quaternary-hover: var(--theme-raised-hover) !important;
+  --Bg-Quaternary-active: var(--theme-raised-active) !important;
+
+  --BgGp-Primary: var(--theme-surface) !important;
+  --BgGp-Primary-hover: var(--theme-surface-hover) !important;
+  --BgGp-Primary-active: var(--theme-surface-active) !important;
+  --BgGp-Secondary: var(--theme-raised) !important;
+  --BgGp-Secondary-hover: var(--theme-raised-hover) !important;
+  --BgGp-Secondary-active: var(--theme-raised-active) !important;
+  --BgGp-Tertiary: var(--theme-raised-active) !important;
+  --BgGp-Tertiary-hover: var(--theme-raised-hover) !important;
+  --BgGp-Tertiary-active: var(--theme-raised-active) !important;
+
   --Labels-Primary: var(--theme-text-primary) !important;
+  --Labels-Primary-hover: var(--theme-text-primary) !important;
+  --Labels-Primary-active: var(--theme-text-primary) !important;
   --Labels-Secondary: var(--theme-text-secondary) !important;
+  --Labels-Secondary-hover: var(--theme-text-secondary) !important;
+  --Labels-Secondary-active: var(--theme-text-secondary) !important;
+  --Labels-Tertiary: var(--theme-text-tertiary) !important;
+  --Labels-Tertiary-hover: var(--theme-text-tertiary) !important;
+  --Labels-Tertiary-active: var(--theme-text-tertiary) !important;
+  --Labels-Quaternary: var(--theme-text-quaternary) !important;
+  --Labels-Quaternary-hover: var(--theme-text-quaternary) !important;
+  --Labels-Quaternary-active: var(--theme-text-quaternary) !important;
+
   --Separators-S1: var(--theme-border) !important;
+  --Separators-S1-hover: var(--theme-border) !important;
+  --Separators-S1-active: var(--theme-border) !important;
+  --Fills-F1: rgba(28, 28, 28, 0.04) !important;
+  --Fills-F1-hover: rgba(28, 28, 28, 0.07) !important;
+  --Fills-F1-active: rgba(28, 28, 28, 0.1) !important;
+  --Fills-F2: rgba(28, 28, 28, 0.07) !important;
+  --Fills-F2-hover: rgba(28, 28, 28, 0.1) !important;
+  --Fills-F2-active: rgba(28, 28, 28, 0.13) !important;
+  --Fills-F3: rgba(28, 28, 28, 0.1) !important;
+  --Fills-F3-hover: rgba(28, 28, 28, 0.13) !important;
+  --Fills-F3-active: rgba(28, 28, 28, 0.16) !important;
+  --Fills-F4: rgba(28, 28, 28, 0.14) !important;
+  --Fills-F4-hover: rgba(28, 28, 28, 0.18) !important;
+  --Fills-F4-active: rgba(28, 28, 28, 0.22) !important;
+
+  --Others-SubLayerBg: var(--theme-raised) !important;
+  --Others-SubLayerBg-hover: var(--theme-raised-hover) !important;
+  --Others-SubLayerBg-active: var(--theme-raised-active) !important;
+  --Others-LightBlueBg: rgba(50, 103, 214, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(50, 103, 214, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(50, 103, 214, 0.16) !important;
+
+  --Colors-KMBlue: var(--theme-focus) !important;
+  --Colors-KMBlue-hover: var(--theme-focus) !important;
+  --Colors-KMBlue-active: var(--theme-focus) !important;
 }
 
 #kimi-skin-bg {
