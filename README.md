@@ -16,7 +16,7 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 
 `.command` 是对应 CLI 命令的双击包装，复用 Kimi 自带的签名 Node 运行时，不要求普通用户安装 Node.js 或注册全局命令。首次从普通模式启用主题需要重启 Kimi；之后再次运行应用入口会直接热切换，无需先恢复。
 
-仓库当前包含三个主题：
+仓库当前包含四个主题：
 
 - **Dark Side · 月之暗面**：黑白半调点阵、月相序列和 ECG 心跳线
 ![Dark Side 主题动态效果](docs/images/dark-side-preview.gif)
@@ -27,6 +27,10 @@ kimi-skin 通过本机 Chrome DevTools Protocol 向 Kimi Work Renderer 注入受
 - **哞哞牧场 · MooMoo Meadow**：蓝天白云下的绿色牧场，双击首页切换昼夜，含飘动云朵、萤火虫和眨眼奶牛
 
 ![哞哞牧场主题动态效果](docs/images/pasture-preview.gif)
+
+- **CRT**：复古未来专辑封面——消失点放射彩虹光束、霓虹地平线、透视网格地板，主页整体 CRT 屏幕质感
+
+![Sweet Trip 主题动态效果](docs/images/sweet-trip-preview.gif)
 
 也支持自定义主题：下载 `skills/kimi-skin-theme/` 技能，让 AI Agent 帮你完成主题创作与调试。首次使用时 Kimi 会把该技能同步到官方 skill 目录（`~/Library/Application Support/kimi-desktop/daimon-share/daimon/skills/`），之后每次在仓库中工作都会通过 `scripts/sync-skill.sh` 自动再同步，保证 Kimi 加载的始终是仓库里的最新版本。
 
