@@ -44,7 +44,8 @@ test("skips unresolvable color values", () => {
     .box * { color: inherit !important; }
     .box { background: #2a251b; }
   `);
-  assert.equal(findings.length, 0);
+  // 不产生比值类告警；unpaired 单边声明提醒另算
+  assert.equal(findings.filter((f) => f.via !== "unpaired").length, 0);
 });
 
 test("semi-transparent ink on semi-transparent ink is caught via canvas compositing", () => {
@@ -68,7 +69,40 @@ test("comma selectors are skipped for inheritance matching", () => {
     .card, .panel { color: #2a251b; }
     .card .badge { background: #2a251b; }
   `);
-  assert.equal(findings.length, 0);
+  // 逗号选择器不做继承匹配；unpaired 单边声明提醒另算
+  assert.equal(findings.filter((f) => f.via !== "unpaired").length, 0);
+});
+
+test("unpaired: dark block without color declaration is flagged", () => {
+  const findings = analyzeContrast(`
+    .box { background: #1b1e4e; }
+  `);
+  const unpaired = findings.filter((f) => f.via === "unpaired");
+  assert.equal(unpaired.length, 1);
+  assert.equal(unpaired[0].selector, ".box");
+});
+
+test("unpaired: paired dark block is not flagged", () => {
+  const findings = analyzeContrast(`
+    .box { color: #f5f6f2; background: #1b1e4e; }
+  `);
+  assert.equal(findings.filter((f) => f.via === "unpaired").length, 0);
+});
+
+test("unpaired: light background is not flagged", () => {
+  const findings = analyzeContrast(`
+    .box { background: #f5f6f2; }
+  `);
+  assert.equal(findings.filter((f) => f.via === "unpaired").length, 0);
+});
+
+test("unpaired: pseudo-element and scrollbar selectors are skipped", () => {
+  const findings = analyzeContrast(`
+    .box::before { background: #1b1e4e; }
+    .box::-webkit-scrollbar-thumb { background: #1b1e4e; }
+    .page:has(> .home-view) { background: #1b1e4e; }
+  `);
+  assert.equal(findings.filter((f) => f.via === "unpaired").length, 0);
 });
 
 test("hover state inherits color from the same element's base rule", () => {

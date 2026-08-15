@@ -570,15 +570,26 @@ async function checkTheme(): Promise<void> {
   if (!contrastFindings.length) {
     console.log(`  ✓ 未发现文字与底色过近的规则`);
   } else {
-    console.log(`  ⚠ ${contrastFindings.length} 处文字与底色对比度低于 ${CONTRAST_MIN_RATIO}:1：`);
-    for (const finding of contrastFindings.slice(0, 10)) {
-      console.log(
-        `    - [${finding.via}] ${finding.selector}：对比度 ${finding.ratio.toFixed(2)}:1` +
-        `（color: ${finding.color} / background: ${finding.background}）`,
-      );
+    const paired = contrastFindings.filter((f) => f.via !== "unpaired");
+    const unpaired = contrastFindings.filter((f) => f.via === "unpaired");
+    if (paired.length) {
+      console.log(`  ⚠ ${paired.length} 处文字与底色对比度低于 ${CONTRAST_MIN_RATIO}:1：`);
+      for (const finding of paired.slice(0, 10)) {
+        console.log(
+          `    - [${finding.via}] ${finding.selector}：对比度 ${finding.ratio.toFixed(2)}:1` +
+          `（color: ${finding.color} / background: ${finding.background}）`,
+        );
+      }
+      if (paired.length > 10) console.log(`    … 其余 ${paired.length - 10} 处从略`);
     }
-    if (contrastFindings.length > 10) console.log(`    … 其余 ${contrastFindings.length - 10} 处从略`);
-    console.log(`  提示       告警仅供参考；继承自应用层样式的陷阱需用运行时计算样式探测`);
+    if (unpaired.length) {
+      console.log(`  ⚠ ${unpaired.length} 处深色块只声明背景未声明文字色（墨压墨候选）：`);
+      for (const finding of unpaired.slice(0, 10)) {
+        console.log(`    - [unpaired] ${finding.selector}（background: ${finding.background}）`);
+      }
+      if (unpaired.length > 10) console.log(`    … 其余 ${unpaired.length - 10} 处从略`);
+    }
+    console.log(`  提示       告警仅供参考；继承自应用层样式的陷阱需用运行时探测（skills 目录下 probe-contrast.mjs）`);
   }
 
   const catalog = await loadSurfaceCatalog(compatibilityDirectory, baseline.version);

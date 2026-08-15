@@ -13,12 +13,15 @@ import { parseCss, type CssStyleRule } from "./safe-css.js";
 
 export const CONTRAST_MIN_RATIO = 3;
 
+/** 有效底色亮度低于该值视为"深色块" */
+export const DARK_BLOCK_MAX_LUMINANCE = 0.25;
+
 export interface ContrastFinding {
   selector: string;
   color: string;
   background: string;
   ratio: number;
-  via: "same-rule" | "inherited";
+  via: "same-rule" | "inherited" | "unpaired";
 }
 
 interface Rgba {
@@ -247,6 +250,28 @@ export function analyzeContrast(css: string, minRatio: number = CONTRAST_MIN_RAT
       if (!baseSelector.startsWith(`${candidateBase} `)) continue;
       if (!ancestor || candidateBase.length > stripStatePseudos(ancestor.selector).length) ancestor = candidate;
     }
+
+    // 深色块单边声明：底色很暗但整条规则链（同规则/基础规则/主题内祖先）
+    // 都没声明文字色，文字色只能由应用层决定——token 重映射后极易墨压墨。
+    // 装饰域（伪元素、背景层、滚动条）与 :has() 容器跳过：前者不含文字，
+    // 后者的文字色由子元素规则覆盖，前缀匹配不可靠。
+    if (!ancestor && relativeLuminance(backgroundEff) < DARK_BLOCK_MAX_LUMINANCE) {
+      const isDecorative =
+        /::|-webkit-scrollbar/.test(selector) ||
+        selector.includes(":has(") ||
+        selector === "#kimi-skin-bg";
+      if (!isDecorative) {
+        findings.push({
+          selector,
+          color: "（未声明，将由应用层/token 层叠决定）",
+          background: background.raw,
+          ratio: 0,
+          via: "unpaired",
+        });
+      }
+      continue;
+    }
+
     if (!ancestor) continue;
     const ratio = contrastRatio(compositeOver(ancestor.color, backgroundEff), backgroundEff);
     if (ratio < minRatio) {
