@@ -1,5 +1,10 @@
 # kimi-skin
 
+> [!IMPORTANT]
+> **项目已停止维护。** kimi-skin 最后验证支持 Kimi 3.1.7、3.1.8。Kimi 3.1.9 的打包主进程会拒绝本项目依赖的 `--remote-debugging-port`，使现有 CDP 注入方案失效。CLI 已改为在重启 Kimi 前安全停止，不会尝试绕过限制或修改 Kimi.app。后续版本也默认拒绝运行，避免误操作。
+>
+> 这不代表 Kimi 官方明确禁止自定义主题，只能确认其正式版本收紧了调试入口。仓库保留为实验记录，下面的使用说明是历史文档，不再建议为使用主题而降级 Kimi。完整结论见 [项目收尾记录](./docs/PROJECT-CLOSURE.md)。
+
 
 为 Kimi macOS 桌面端提供可恢复、低侵入的自定义主题能力。想换风格不必手写 CSS——下载 [kimi-skin-theme 技能](./skills/kimi-skin-theme/SKILL.md) 交给 Kimi，让它帮你创作和调试自己的主题。
 

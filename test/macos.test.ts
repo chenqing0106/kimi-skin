@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { classifyCodeSignatureFailure, kimiIdentityIssue, processStartTime } from "../src/platform/macos.js";
+import { classifyCodeSignatureFailure, kimiDebugLaunchIssue, kimiIdentityIssue, processStartTime } from "../src/platform/macos.js";
 
 const appPath = "/Applications/Kimi.app";
 const pythonCache = `${appPath}/Contents/Resources/resources/daimon-bundle/runtime/python/cpython-3.12/lib/python3.12/json/__pycache__/decoder.cpython-312.pyc`;
@@ -9,6 +9,13 @@ test("accepts only the expected Kimi bundle and signing team", () => {
   assert.equal(kimiIdentityIssue({ bundleId: "com.moonshot.kimichat", teamId: "2J9472RW75" }), null);
   assert.match(kimiIdentityIssue({ bundleId: "com.moonshot.kimichat", teamId: "OTHER" }) ?? "", /Team ID/);
   assert.match(kimiIdentityIssue({ bundleId: "example.invalid", teamId: "2J9472RW75" }) ?? "", /Bundle ID/);
+});
+
+test("allows only verified CDP versions after maintenance has ended", () => {
+  assert.equal(kimiDebugLaunchIssue("3.1.7"), null);
+  assert.equal(kimiDebugLaunchIssue("3.1.8"), null);
+  assert.match(kimiDebugLaunchIssue("3.1.9") ?? "", /--remote-debugging-port/);
+  assert.match(kimiDebugLaunchIssue("3.1.10") ?? "", /停止维护/);
 });
 
 test("allows only Python caches generated inside Kimi's bundled runtime", () => {

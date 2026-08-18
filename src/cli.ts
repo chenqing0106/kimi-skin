@@ -4,7 +4,7 @@ import path from "node:path";
 import { readdir, stat } from "node:fs/promises";
 import readline from "node:readline/promises";
 import process from "node:process";
-import { inspectKimiBaseline, isRecordedProcess, kimiIdentityIssue, launchJobPid, launchKimiDebug, launchKimiNormal, listKimiPids, portBelongsToProcessFamily, processStartTime, quitKimi, chooseLoopbackPort, listenerPids, removeLaunchJob, submitLaunchJob } from "./platform/macos.js";
+import { inspectKimiBaseline, isRecordedProcess, kimiDebugLaunchIssue, kimiIdentityIssue, launchJobPid, launchKimiDebug, launchKimiNormal, listKimiPids, portBelongsToProcessFamily, processStartTime, quitKimi, chooseLoopbackPort, listenerPids, removeLaunchJob, submitLaunchJob } from "./platform/macos.js";
 import { CdpSession, isCdpReady, waitForCdp } from "./cdp.js";
 import { probeTargets, waitForAcceptedTarget } from "./adapter.js";
 import { injectTheme, restoreTarget, themeIsApplied } from "./injector.js";
@@ -245,8 +245,10 @@ async function doctor(): Promise<boolean> {
   }
   await doctorSurfaceCheck(await readRuntimeState(), baseline.version);
   const identityIssue = kimiIdentityIssue(baseline);
+  const debugLaunchIssue = kimiDebugLaunchIssue(baseline.version);
   if (identityIssue) console.log(`身份       ${identityIssue}`);
-  const supported = identityIssue === null && baseline.signatureValid;
+  if (debugLaunchIssue) console.log(`调试模式   ${debugLaunchIssue}`);
+  const supported = identityIssue === null && debugLaunchIssue === null && baseline.signatureValid;
   console.log(`\n结论       ${supported ? "可以进入 apply 前置检查" : "阻止 apply，请先处理基线问题"}`);
   return supported;
 }
@@ -318,6 +320,8 @@ async function apply(): Promise<void> {
   const identityIssue = kimiIdentityIssue(baseline);
   if (identityIssue) throw new Error(identityIssue);
   if (!baseline.signatureValid) throw new Error(`Kimi 签名基线异常，拒绝启动调试模式：${baseline.signatureMessage}`);
+  const debugLaunchIssue = kimiDebugLaunchIssue(baseline.version);
+  if (debugLaunchIssue) throw new Error(debugLaunchIssue);
   const explicitTheme = argument("--theme");
   const themePath = explicitTheme ? path.resolve(explicitTheme) : await chooseBundledTheme(baseline.version);
   const theme = await loadTheme(themePath, baseline.version);

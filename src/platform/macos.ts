@@ -12,6 +12,7 @@ const execFileAsync = promisify(execFile);
 const PLIST_BUDDY = "/usr/libexec/PlistBuddy";
 const EXPECTED_KIMI_BUNDLE_ID = "com.moonshot.kimichat";
 const EXPECTED_KIMI_TEAM_ID = "2J9472RW75";
+const VERIFIED_CDP_KIMI_VERSIONS = new Set(["3.1.7", "3.1.8"]);
 
 export function kimiIdentityIssue(identity: Pick<KimiBaseline, "bundleId" | "teamId">): string | null {
   if (identity.bundleId !== EXPECTED_KIMI_BUNDLE_ID) {
@@ -21,6 +22,16 @@ export function kimiIdentityIssue(identity: Pick<KimiBaseline, "bundleId" | "tea
     return `Team ID 不符合预期：${identity.teamId ?? "无法读取"}`;
   }
   return null;
+}
+
+// 项目停止维护后只允许实际验证过的版本，避免未知新版再次重启 Kimi 后才失败。
+// Kimi 3.1.9 的打包主进程已确认会检查 argv，并在发现 --remote-debugging-port 时直接退出。
+export function kimiDebugLaunchIssue(version: string): string | null {
+  if (VERIFIED_CDP_KIMI_VERSIONS.has(version)) return null;
+  if (version === "3.1.9") {
+    return `Kimi ${version} 会在打包运行时拒绝 kimi-skin 所需的 --remote-debugging-port，当前基于 CDP 的主题模式不可用。已在重启前停止操作，未改动 Kimi.app`;
+  }
+  return `Kimi ${version} 未经 kimi-skin 验证。项目已停止维护，为避免影响正常 Kimi，已在重启前停止操作；最后验证支持的版本为 3.1.7、3.1.8`;
 }
 
 interface CodeSignatureFailure {
