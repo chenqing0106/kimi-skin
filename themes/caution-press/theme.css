@@ -1,0 +1,690 @@
+/* kimi-skin · caution-press 主题 · 警示印刷
+ * 视觉：丝网印刷警示海报——暖纸底上洋红 × 黑双色套印，
+ * 半调网点 + 45° 排线 + 警示条纹带 + 描边 CAUTION 角标。
+ * 错版感来自硬性偏移阴影（实色错位 3–6px），不用模糊投影。
+ * 骨架沿用 halftone-star 已验证的 token 重映射与选择器结构。 */
+
+:root {
+  color-scheme: light;
+  --paper: #f5f1e8;
+  --card: #fdfbf7;
+  --paper-deep: #ece5d5;
+  --magenta: #e6007e;
+  --magenta-deep: #a8005c;
+  --magenta-tint: rgba(230, 0, 126, 0.08);
+  --ink: #17140f;
+  --ink-soft: #57503f;
+  --ink-faint: #96897a;
+  --press-line: rgba(23, 20, 15, 0.18);
+  /* 错版阴影：黑版 / 洋红版错位 */
+  --offset-ink: 4px 4px 0 rgba(23, 20, 15, 0.9);
+  --offset-magenta: 4px 4px 0 rgba(230, 0, 126, 0.85);
+
+  /* Kimi neutral surfaces：暖纸系，hover/active 相对加深 */
+  --Bg-GroundPC: var(--paper) !important;
+  --Bg-GroundPC-hover: rgba(236, 229, 213, 0.6) !important;
+  --Bg-GroundPC-active: rgba(236, 229, 213, 0.85) !important;
+
+  --Bg-Primary: var(--card) !important;
+  --Bg-Primary-hover: #f5f1e8 !important;
+  --Bg-Primary-active: #ece5d5 !important;
+  --Bg-Primary70: rgba(253, 251, 247, 0.94) !important;
+  --Bg-Primary70-hover: rgba(245, 241, 232, 0.94) !important;
+  --Bg-Primary70-active: rgba(236, 229, 213, 0.95) !important;
+  --Bg-Primary90: rgba(253, 251, 247, 0.98) !important;
+  --Bg-Primary90-hover: rgba(245, 241, 232, 0.98) !important;
+  --Bg-Primary90-active: rgba(236, 229, 213, 0.98) !important;
+
+  --Bg-Secondary: rgba(236, 229, 213, 0.96) !important;
+  --Bg-Secondary-hover: rgba(230, 221, 203, 0.96) !important;
+  --Bg-Secondary-active: rgba(224, 214, 194, 0.97) !important;
+  --Bg-Secondary90: rgba(236, 229, 213, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(230, 221, 203, 0.98) !important;
+  --Bg-Secondary90-active: rgba(224, 214, 194, 0.98) !important;
+
+  --Bg-Tertiary: rgba(224, 214, 194, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(216, 205, 182, 0.96) !important;
+  --Bg-Tertiary-active: rgba(208, 196, 170, 0.97) !important;
+  --Bg-Tertiary90: rgba(224, 214, 194, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(216, 205, 182, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(208, 196, 170, 0.98) !important;
+
+  --Bg-Quaternary: #d0c4aa !important;
+  --Bg-Quaternary-hover: #c3b596 !important;
+  --Bg-Quaternary-active: #b6a682 !important;
+
+  --BgGp-Primary: rgba(236, 229, 213, 0.96) !important;
+  --BgGp-Primary-hover: rgba(230, 221, 203, 0.96) !important;
+  --BgGp-Primary-active: rgba(224, 214, 194, 0.97) !important;
+  --BgGp-Primary90: rgba(236, 229, 213, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(230, 221, 203, 0.98) !important;
+  --BgGp-Primary90-active: rgba(224, 214, 194, 0.98) !important;
+  --BgGp-Secondary: rgba(224, 214, 194, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(216, 205, 182, 0.96) !important;
+  --BgGp-Secondary-active: rgba(208, 196, 170, 0.97) !important;
+  --BgGp-Secondary90: rgba(224, 214, 194, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(216, 205, 182, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(208, 196, 170, 0.98) !important;
+  --BgGp-Tertiary: #d0c4aa !important;
+  --BgGp-Tertiary-hover: #c3b596 !important;
+  --BgGp-Tertiary-active: #b6a682 !important;
+
+  /* Kimi text hierarchy：墨色梯度 */
+  --Labels-Primary: rgba(23, 20, 15, 0.94) !important;
+  --Labels-Primary-hover: var(--ink) !important;
+  --Labels-Primary-active: rgba(23, 20, 15, 0.88) !important;
+  --Labels-Secondary: rgba(87, 80, 63, 0.9) !important;
+  --Labels-Secondary-hover: rgba(87, 80, 63, 0.96) !important;
+  --Labels-Secondary-active: rgba(87, 80, 63, 0.78) !important;
+  --Labels-Tertiary: rgba(150, 137, 122, 0.78) !important;
+  --Labels-Tertiary-hover: rgba(150, 137, 122, 0.88) !important;
+  --Labels-Tertiary-active: rgba(150, 137, 122, 0.62) !important;
+  --Labels-Quaternary: rgba(150, 137, 122, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(150, 137, 122, 0.78) !important;
+  --Labels-Quaternary-active: rgba(150, 137, 122, 0.72) !important;
+
+  --Separators-S1: var(--press-line) !important;
+  --Separators-S1-hover: rgba(23, 20, 15, 0.24) !important;
+  --Separators-S1-active: rgba(23, 20, 15, 0.3) !important;
+  --Fills-F1: rgba(23, 20, 15, 0.04) !important;
+  --Fills-F1-hover: rgba(23, 20, 15, 0.07) !important;
+  --Fills-F1-active: rgba(23, 20, 15, 0.11) !important;
+  --Fills-F2: rgba(23, 20, 15, 0.07) !important;
+  --Fills-F2-hover: rgba(23, 20, 15, 0.11) !important;
+  --Fills-F2-active: rgba(23, 20, 15, 0.15) !important;
+  --Fills-F3: rgba(23, 20, 15, 0.11) !important;
+  --Fills-F3-hover: rgba(23, 20, 15, 0.15) !important;
+  --Fills-F3-active: rgba(23, 20, 15, 0.19) !important;
+  --Fills-F4: rgba(23, 20, 15, 0.16) !important;
+  --Fills-F4-hover: rgba(23, 20, 15, 0.2) !important;
+  --Fills-F4-active: rgba(23, 20, 15, 0.24) !important;
+  --Others-SubLayerBg: rgba(23, 20, 15, 0.05) !important;
+  --Others-SubLayerBg-hover: rgba(23, 20, 15, 0.09) !important;
+  --Others-SubLayerBg-active: rgba(23, 20, 15, 0.13) !important;
+
+  /* 品牌蓝色位 → 警示洋红 */
+  --Colors-KMBlue: var(--magenta) !important;
+  --Colors-KMBlue-hover: #cc0070 !important;
+  --Colors-KMBlue-active: var(--magenta-deep) !important;
+  --Others-LightBlueBg: rgba(230, 0, 126, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(230, 0, 126, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(230, 0, 126, 0.16) !important;
+}
+
+/* ============================================
+   根背景：暖纸底 + 洋红网点 + 黑色排线斜角
+   ============================================ */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--paper);
+}
+
+/* 网点层 A：洋红 20px 网格，缓慢对角漂移；
+   中心叠纸色径向渐隐，把网点密度推向四角 */
+#kimi-skin-bg::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at 50% 42%, rgba(245, 241, 232, 0.94) 26%, rgba(245, 241, 232, 0) 60%),
+    radial-gradient(circle, rgba(230, 0, 126, 0.26) 1.6px, transparent 2.1px);
+  background-size: 100% 100%, 20px 20px;
+  animation: press-drift-a 44s linear infinite;
+}
+
+/* 网点层 B：黑色 9px 细网反向漂移（套版错位）；
+   再用 120° 纸色斜切盖住中部，让 45° 排线只露在左上三角区 */
+#kimi-skin-bg::after {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(120deg, rgba(245, 241, 232, 0) 0%, rgba(245, 241, 232, 0) 22%, rgba(245, 241, 232, 0.96) 46%),
+    repeating-linear-gradient(45deg, rgba(23, 20, 15, 0.2) 0 2px, transparent 2px 9px),
+    radial-gradient(circle, rgba(23, 20, 15, 0.14) 1px, transparent 1.4px);
+  background-size: 100% 100%, 100% 100%, 9px 9px;
+  animation: press-drift-b 31s linear infinite;
+}
+
+@keyframes press-drift-a {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(20px, 20px, 0); }
+}
+
+@keyframes press-drift-b {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-9px, 9px, 0); }
+}
+
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+body {
+  accent-color: var(--magenta);
+}
+
+/* 侧栏：暖纸实色 + 2px 墨线右边框（印刷规矩线） */
+aside.sidebar {
+  position: relative;
+  color: var(--ink) !important;
+  background: #faf5ea !important;
+  border-right: 2px solid var(--ink) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 标志性警示带①：侧栏顶部洋红/黑 45° 斜杠走带 */
+aside.sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 9px;
+  z-index: 2;
+  pointer-events: none;
+  border-bottom: 2px solid var(--ink);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--magenta) 0 12px,
+    var(--ink) 12px 24px
+  );
+  background-size: 34px 100%;
+  animation: press-tape-run 9s linear infinite;
+}
+
+@keyframes press-tape-run {
+  from { background-position: 0 0; }
+  to { background-position: 34px 0; }
+}
+
+aside.sidebar .sidebar-footer {
+  position: relative;
+}
+
+/* 侧栏 footer 右侧一枚洋红六角记号（footer 不滚动，不会与列表重叠） */
+aside.sidebar .sidebar-footer::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpolygon points='10,1 18,5.5 18,14.5 10,19 2,14.5 2,5.5' fill='none' stroke='%2317140f' stroke-width='2'/%3E%3Cpolygon points='10,6 13.5,8 13.5,12 10,14 6.5,12 6.5,8' fill='%23e6007e'/%3E%3C/svg%3E") no-repeat center / contain;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 4px !important;
+}
+
+/* 侧栏选中项：洋红色块反白 + 黑版错位硬阴影，本主题的套印签名 */
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"] {
+  color: #ffffff !important;
+  background: var(--magenta) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] * {
+  color: inherit !important;
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: var(--ink) !important;
+  background: var(--paper-deep) !important;
+  border-radius: 4px !important;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, #faf5ea) !important;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(250, 245, 234, 0.88) 42%,
+    rgba(250, 245, 234, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, #faf5ea) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: var(--magenta-deep) !important;
+  background: var(--card) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+  box-shadow: 2px 2px 0 var(--ink) !important;
+}
+
+/* 主内容：白卡 + 2px 墨框 + 洋红硬偏移阴影（色版与黑版错位） */
+main.main-pane {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: var(--card) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--offset-magenta) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-view {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: transparent !important;
+}
+
+/* 标志性警示带②：首页右上角海报角标，拆两层伪元素——
+   ::after 是洋红描边 CAUTION 大字 + 错版黑影（内联 SVG），
+   ::before 是它下方的洋红/黑警示条纹带；整体倾斜 -6°，呼吸错版 */
+.home-view::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  right: 36px;
+  width: 240px;
+  height: 70px;
+  transform: rotate(-6deg);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='70' viewBox='0 0 240 70'%3E%3Ctext x='7' y='52' font-family='Arial Black,Arial,sans-serif' font-size='44' font-weight='900' letter-spacing='1' fill='%2317140f'%3ECAUTION%3C/text%3E%3Ctext x='3' y='48' font-family='Arial Black,Arial,sans-serif' font-size='44' font-weight='900' letter-spacing='1' fill='%23e6007e' stroke='%2317140f' stroke-width='1.6'%3ECAUTION%3C/text%3E%3C/svg%3E") no-repeat center / contain;
+  animation: press-mark-breathe 6s ease-in-out infinite;
+  opacity: 0.96;
+  pointer-events: none;
+}
+
+.home-view::before {
+  content: "";
+  position: absolute;
+  top: 104px;
+  right: 46px;
+  width: 216px;
+  height: 18px;
+  transform: rotate(-6deg);
+  border: 2px solid var(--ink);
+  background-color: var(--card);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--magenta) 0 12px,
+    var(--ink) 12px 24px
+  );
+  background-size: 34px 100%;
+  animation: press-tape-run 9s linear infinite;
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+@keyframes press-mark-breathe {
+  0%,
+  100% {
+    opacity: 0.88;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(-3px, 2px, 0);
+  }
+}
+
+main.main-pane > .canvas-view,
+main.main-pane > section {
+  color: var(--ink) !important;
+  background-color: var(--card) !important;
+  border-radius: 8px !important;
+}
+
+/* 页面级标题：海报式大写 + 字距（只动功能页，不动聊天内容） */
+.cron-jobs-page h1,
+.plugins-hub .market-header h1,
+.plugins-hub .hub-header h1 {
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* 定时任务页 */
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--ink) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--ink-soft) !important;
+  opacity: 0.9 !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--magenta-deep) !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(168, 0, 92, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.cron-jobs-page button {
+  color: #ffffff !important;
+  background: var(--magenta) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+.cron-jobs-page button:hover {
+  background: #cc0070 !important;
+  box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--magenta-deep) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(168, 0, 92, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 插件页 */
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--ink) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--ink-soft) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--ink) !important;
+  background: var(--paper) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--ink) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--ink) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.plugins-hub .plugin-card {
+  color: var(--ink) !important;
+  background: var(--card) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--offset-ink) !important;
+}
+
+/* 「使用」按钮：洋红色块 + 黑版错位，修复文字继承导致同色压同色 */
+.plugins-hub .plugin-card .plugin-use-btn {
+  color: #ffffff !important;
+  background: var(--magenta) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 4px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn * {
+  color: inherit !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn:hover {
+  background: #cc0070 !important;
+  box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+/* 输入框：白卡 + 墨框 + 黑色硬偏移；聚焦时换成洋红版错位 */
+.composer {
+  color: var(--ink) !important;
+  caret-color: var(--magenta-deep) !important;
+  background: var(--card) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--offset-ink) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.composer:focus-within {
+  background: var(--card) !important;
+  border-color: var(--magenta) !important;
+  box-shadow:
+    var(--offset-magenta),
+    0 0 0 3px rgba(230, 0, 126, 0.18) !important;
+}
+
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--ink) !important;
+  caret-color: var(--magenta-deep) !important;
+  background: transparent !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.composer-editor::before {
+  color: var(--ink-faint) !important;
+}
+
+.composer button,
+.composer [role="button"] {
+  color: var(--ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: var(--magenta-tint) !important;
+}
+
+/* 发送键：洋红色块 + 黑版错位 */
+.composer .send-btn {
+  color: #ffffff !important;
+  background: var(--magenta) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 6px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+}
+
+.composer .send-btn:hover {
+  background: #cc0070 !important;
+  box-shadow: 5px 5px 0 var(--ink) !important;
+}
+
+/* 代码块：纸底 + 墨框 + 细错位 */
+pre {
+  color: var(--ink) !important;
+  background: #efe9da !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 6px !important;
+  box-shadow: 3px 3px 0 rgba(23, 20, 15, 0.35) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--magenta-deep) !important;
+  background: rgba(230, 0, 126, 0.08) !important;
+  border: 1px solid rgba(230, 0, 126, 0.3) !important;
+  border-radius: 4px !important;
+}
+
+/* 用户消息气泡：洋红满版反白 + 黑版错位，最大胆的一印 */
+.bubble.role-user {
+  color: #ffffff !important;
+  background: var(--magenta) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--offset-ink) !important;
+}
+
+.bubble.role-user * {
+  color: inherit !important;
+}
+
+.bubble.role-user a {
+  color: #ffffff !important;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+}
+
+blockquote {
+  border-left-color: var(--magenta) !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: rgba(23, 20, 15, 0.28) !important;
+}
+
+a {
+  color: var(--magenta-deep);
+  text-decoration-color: rgba(168, 0, 92, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 弹层兜底：统一白卡 + 墨框 + 错位 */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  color: var(--ink) !important;
+  background-color: var(--card) !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--offset-magenta) !important;
+}
+
+/* 选区：洋红底白字 */
+::selection {
+  color: #ffffff;
+  background: var(--magenta-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--magenta-deep) !important;
+  outline-offset: 2px !important;
+}
+
+* {
+  scrollbar-color: rgba(230, 0, 126, 0.5) var(--paper);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(230, 0, 126, 0.45);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(230, 0, 126, 0.65);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .home-view::after {
+    width: 170px;
+    height: 50px;
+    top: 22px;
+    right: 20px;
+    opacity: 0.8;
+  }
+
+  .home-view::before {
+    width: 150px;
+    height: 14px;
+    top: 74px;
+    right: 28px;
+    opacity: 0.8;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg::before,
+  #kimi-skin-bg::after,
+  aside.sidebar::before,
+  .home-view::before,
+  .home-view::after {
+    animation: none;
+  }
+}

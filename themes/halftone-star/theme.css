@@ -1,0 +1,597 @@
+/* kimi-skin · halftone-star 主题 · 半调星
+ * 视觉：浅色通透的"数字印刷"——近白冰蓝基底、双层半调网点缓慢漂移、
+ * 青紫水彩色晕、四芒星微光呼吸。Y2K 式的轻盈未来感。
+ * 骨架沿用 paper 已验证的 token 重映射；网点、色晕、星形全部 CSS/SVG 程序生成。 */
+
+:root {
+  color-scheme: light;
+  --halftone-ground: #f2fafe;
+  --halftone-card: #ffffff;
+  --halftone-raised: #e6f3fb;
+  --halftone-deep: #d6eaf8;
+  --ink: #23404f;
+  --ink-soft: #557184;
+  --ink-faint: #94adbc;
+  --cyan: #29b6f6;
+  --cyan-deep: #1d8fd1;
+  --violet: #7c4dff;
+  --violet-deep: #5e35d1;
+  --halftone-line: rgba(35, 64, 79, 0.14);
+
+  /* Kimi neutral surfaces：冰蓝系，近不透明，hover/active 相对加深 */
+  --Bg-GroundPC: var(--halftone-ground) !important;
+  --Bg-GroundPC-hover: rgba(214, 234, 248, 0.6) !important;
+  --Bg-GroundPC-active: rgba(214, 234, 248, 0.85) !important;
+
+  --Bg-Primary: var(--halftone-card) !important;
+  --Bg-Primary-hover: #f2fafe !important;
+  --Bg-Primary-active: #e6f3fb !important;
+  --Bg-Primary70: rgba(255, 255, 255, 0.94) !important;
+  --Bg-Primary70-hover: rgba(242, 250, 254, 0.94) !important;
+  --Bg-Primary70-active: rgba(230, 243, 251, 0.95) !important;
+  --Bg-Primary90: rgba(255, 255, 255, 0.98) !important;
+  --Bg-Primary90-hover: rgba(242, 250, 254, 0.98) !important;
+  --Bg-Primary90-active: rgba(230, 243, 251, 0.98) !important;
+
+  --Bg-Secondary: rgba(230, 243, 251, 0.96) !important;
+  --Bg-Secondary-hover: rgba(222, 238, 249, 0.96) !important;
+  --Bg-Secondary-active: rgba(214, 234, 248, 0.97) !important;
+  --Bg-Secondary90: rgba(230, 243, 251, 0.98) !important;
+  --Bg-Secondary90-hover: rgba(222, 238, 249, 0.98) !important;
+  --Bg-Secondary90-active: rgba(214, 234, 248, 0.98) !important;
+
+  --Bg-Tertiary: rgba(214, 234, 248, 0.96) !important;
+  --Bg-Tertiary-hover: rgba(204, 227, 244, 0.96) !important;
+  --Bg-Tertiary-active: rgba(194, 220, 240, 0.97) !important;
+  --Bg-Tertiary90: rgba(214, 234, 248, 0.98) !important;
+  --Bg-Tertiary90-hover: rgba(204, 227, 244, 0.98) !important;
+  --Bg-Tertiary90-active: rgba(194, 220, 240, 0.98) !important;
+
+  --Bg-Quaternary: #c2dcf0 !important;
+  --Bg-Quaternary-hover: #b2d1ec !important;
+  --Bg-Quaternary-active: #a2c6e8 !important;
+
+  --BgGp-Primary: rgba(230, 243, 251, 0.96) !important;
+  --BgGp-Primary-hover: rgba(222, 238, 249, 0.96) !important;
+  --BgGp-Primary-active: rgba(214, 234, 248, 0.97) !important;
+  --BgGp-Primary90: rgba(230, 243, 251, 0.98) !important;
+  --BgGp-Primary90-hover: rgba(222, 238, 249, 0.98) !important;
+  --BgGp-Primary90-active: rgba(214, 234, 248, 0.98) !important;
+  --BgGp-Secondary: rgba(214, 234, 248, 0.96) !important;
+  --BgGp-Secondary-hover: rgba(204, 227, 244, 0.96) !important;
+  --BgGp-Secondary-active: rgba(194, 220, 240, 0.97) !important;
+  --BgGp-Secondary90: rgba(214, 234, 248, 0.98) !important;
+  --BgGp-Secondary90-hover: rgba(204, 227, 244, 0.98) !important;
+  --BgGp-Secondary90-active: rgba(194, 220, 240, 0.98) !important;
+  --BgGp-Tertiary: #c2dcf0 !important;
+  --BgGp-Tertiary-hover: #b2d1ec !important;
+  --BgGp-Tertiary-active: #a2c6e8 !important;
+
+  /* Kimi text hierarchy：深青灰梯度 */
+  --Labels-Primary: rgba(35, 64, 79, 0.94) !important;
+  --Labels-Primary-hover: var(--ink) !important;
+  --Labels-Primary-active: rgba(35, 64, 79, 0.88) !important;
+  --Labels-Secondary: rgba(85, 113, 132, 0.88) !important;
+  --Labels-Secondary-hover: rgba(85, 113, 132, 0.96) !important;
+  --Labels-Secondary-active: rgba(85, 113, 132, 0.78) !important;
+  --Labels-Tertiary: rgba(124, 148, 164, 0.72) !important;
+  --Labels-Tertiary-hover: rgba(124, 148, 164, 0.84) !important;
+  --Labels-Tertiary-active: rgba(124, 148, 164, 0.6) !important;
+  --Labels-Quaternary: rgba(148, 173, 188, 0.85) !important;
+  --Labels-Quaternary-hover: rgba(124, 148, 164, 0.72) !important;
+  --Labels-Quaternary-active: rgba(148, 173, 188, 0.72) !important;
+
+  --Separators-S1: rgba(35, 64, 79, 0.14) !important;
+  --Separators-S1-hover: rgba(35, 64, 79, 0.2) !important;
+  --Separators-S1-active: rgba(35, 64, 79, 0.26) !important;
+  --Fills-F1: rgba(35, 64, 79, 0.04) !important;
+  --Fills-F1-hover: rgba(35, 64, 79, 0.07) !important;
+  --Fills-F1-active: rgba(35, 64, 79, 0.11) !important;
+  --Fills-F2: rgba(35, 64, 79, 0.07) !important;
+  --Fills-F2-hover: rgba(35, 64, 79, 0.11) !important;
+  --Fills-F2-active: rgba(35, 64, 79, 0.15) !important;
+  --Fills-F3: rgba(35, 64, 79, 0.11) !important;
+  --Fills-F3-hover: rgba(35, 64, 79, 0.15) !important;
+  --Fills-F3-active: rgba(35, 64, 79, 0.19) !important;
+  --Fills-F4: rgba(35, 64, 79, 0.16) !important;
+  --Fills-F4-hover: rgba(35, 64, 79, 0.2) !important;
+  --Fills-F4-active: rgba(35, 64, 79, 0.24) !important;
+  --Others-SubLayerBg: rgba(35, 64, 79, 0.05) !important;
+  --Others-SubLayerBg-hover: rgba(35, 64, 79, 0.09) !important;
+  --Others-SubLayerBg-active: rgba(35, 64, 79, 0.13) !important;
+
+  /* 品牌蓝色位 → 半调青 */
+  --Colors-KMBlue: var(--cyan) !important;
+  --Colors-KMBlue-hover: #23a3e2 !important;
+  --Colors-KMBlue-active: var(--cyan-deep) !important;
+  --Others-LightBlueBg: rgba(41, 182, 246, 0.08) !important;
+  --Others-LightBlueBg-hover: rgba(41, 182, 246, 0.12) !important;
+  --Others-LightBlueBg-active: rgba(41, 182, 246, 0.16) !important;
+}
+
+/* ============================================
+   根背景：冰蓝底 + 青/紫/粉水彩色晕（参考图背景的柔和渐变）
+   ============================================ */
+#kimi-skin-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--halftone-ground);
+  background-image:
+    radial-gradient(circle at 14% 16%, rgba(124, 77, 255, 0.16), transparent 42%),
+    radial-gradient(circle at 86% 78%, rgba(41, 182, 246, 0.2), transparent 46%),
+    radial-gradient(circle at 22% 88%, rgba(240, 166, 255, 0.12), transparent 40%),
+    radial-gradient(circle at 78% 12%, rgba(41, 182, 246, 0.1), transparent 38%);
+}
+
+/* 网点层 A：青色 18px 网格，缓慢对角漂移；
+   顶部叠一层近白径向渐隐，让网点密度偏向四角、中心留给内容 */
+#kimi-skin-bg::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at 50% 42%, rgba(242, 250, 254, 0.94) 26%, rgba(242, 250, 254, 0) 60%),
+    radial-gradient(circle, rgba(41, 182, 246, 0.22) 1.4px, transparent 1.9px);
+  background-size: 100% 100%, 18px 18px;
+  animation: halftone-drift-a 40s linear infinite;
+}
+
+/* 网点层 B：紫色 11px 细网，反向漂移，形成印刷套版错位感 */
+#kimi-skin-bg::after {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse at 50% 42%, rgba(242, 250, 254, 0.9) 24%, rgba(242, 250, 254, 0) 58%),
+    radial-gradient(circle, rgba(124, 77, 255, 0.16) 1.1px, transparent 1.5px);
+  background-size: 100% 100%, 11px 11px;
+  animation: halftone-drift-b 28s linear infinite;
+}
+
+@keyframes halftone-drift-a {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(18px, 18px, 0); }
+}
+
+@keyframes halftone-drift-b {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-11px, 11px, 0); }
+}
+
+html,
+body,
+.page,
+.conversation-view {
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+body {
+  accent-color: var(--cyan);
+}
+
+/* 侧栏：冰蓝实色，右边一条浅青线 */
+aside.sidebar {
+  position: relative;
+  color: var(--ink) !important;
+  background: #eaf6fd !important;
+  border-right: 1px solid var(--halftone-line) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+aside.sidebar .sidebar-footer {
+  position: relative;
+}
+
+/* 侧栏 footer 右侧一颗青色小四芒星（footer 不滚动，不会与列表重叠） */
+aside.sidebar .sidebar-footer::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'%3E%3Cpath d='M11 1 C12 7 13 8 21 11 C13 14 12 15 11 21 C10 15 9 14 1 11 C9 8 10 7 11 1 Z' fill='%2329b6f6' opacity='0.8'/%3E%3C/svg%3E") no-repeat center / contain;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+aside.sidebar button,
+aside.sidebar [role="button"],
+aside.sidebar a {
+  color: inherit !important;
+  border-radius: 6px !important;
+}
+
+/* 侧栏选中项：青→紫渐变反白，本主题的双色签名 */
+aside.sidebar [aria-current="page"],
+aside.sidebar [aria-selected="true"],
+aside.sidebar [data-state="active"] {
+  color: #ffffff !important;
+  background: linear-gradient(120deg, var(--cyan), var(--violet)) !important;
+  box-shadow: 0 2px 8px rgba(41, 182, 246, 0.3) !important;
+}
+
+aside.sidebar [aria-current="page"] *,
+aside.sidebar [aria-selected="true"] *,
+aside.sidebar [data-state="active"] * {
+  color: inherit !important;
+}
+
+aside.sidebar .conversation-row:hover,
+aside.sidebar .conversation-row:focus-within {
+  color: var(--ink) !important;
+  background: var(--halftone-deep) !important;
+  border-radius: 6px !important;
+}
+
+aside.sidebar .conversation-title-marquee::after {
+  background: linear-gradient(90deg, transparent, #eaf6fd) !important;
+}
+
+aside.sidebar .sidebar-scroll-top-mask::after {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    rgba(234, 246, 253, 0.86) 42%,
+    rgba(234, 246, 253, 0.36) 72%,
+    transparent 100%
+  ) !important;
+}
+
+aside.sidebar .sidebar-footer::before {
+  background: linear-gradient(180deg, transparent, #eaf6fd) !important;
+}
+
+aside.sidebar .membership-badge {
+  color: var(--cyan-deep) !important;
+  background: var(--halftone-card) !important;
+  border: 1px solid rgba(41, 182, 246, 0.4) !important;
+  border-radius: 6px !important;
+}
+
+/* 主内容：白卡浮在网点背景上，细青灰描边 */
+main.main-pane {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: var(--halftone-card) !important;
+  border: 1px solid var(--halftone-line) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 20px rgba(41, 182, 246, 0.08) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.home-view {
+  position: relative;
+  color: var(--ink) !important;
+  background-color: transparent !important;
+}
+
+/* 四芒星：首页右上角的标志元素——青色描边主星 + 紫色错位小星，
+   对应参考图左侧的星形几何；带克制的微光呼吸 */
+.home-view::after {
+  content: "";
+  position: absolute;
+  top: 40px;
+  right: 48px;
+  width: 110px;
+  height: 110px;
+  transform: rotate(-4deg);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cpath d='M64 6 C69 36 77 45 105 53 C77 61 69 70 64 100 C59 70 51 61 23 53 C51 45 59 36 64 6 Z' fill='none' stroke='%2329b6f6' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M30 70 C32 80 35 84 44 86 C35 88 32 92 30 102 C28 92 25 88 16 86 C25 84 28 80 30 70 Z' fill='%237c4dff' opacity='0.85'/%3E%3Ccircle cx='92' cy='18' r='3.5' fill='%2329b6f6' opacity='0.7'/%3E%3Ccircle cx='14' cy='26' r='2.2' fill='%237c4dff' opacity='0.6'/%3E%3C/svg%3E") no-repeat center / contain;
+  animation: halftone-star-breathe 5s ease-in-out infinite;
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+@keyframes halftone-star-breathe {
+  0%,
+  100% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 5px rgba(41, 182, 246, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 13px rgba(124, 77, 255, 0.4));
+  }
+}
+
+main.main-pane > .canvas-view,
+main.main-pane > section {
+  color: var(--ink) !important;
+  background-color: var(--halftone-card) !important;
+  border-radius: 10px !important;
+}
+
+/* 定时任务页 */
+.cron-jobs-page h1,
+.cron-jobs-page h2,
+.cron-jobs-page h3,
+.cron-jobs-page p,
+.cron-jobs-page [class*="empty"] {
+  color: var(--ink) !important;
+}
+
+.cron-jobs-page .page-subtitle {
+  color: var(--ink-soft) !important;
+  opacity: 0.88 !important;
+}
+
+.cron-jobs-page [class*="empty"] * {
+  color: inherit !important;
+}
+
+.cron-jobs-page a {
+  color: var(--cyan-deep) !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(29, 143, 209, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+.cron-jobs-page button {
+  color: #ffffff !important;
+  background: linear-gradient(120deg, var(--cyan), var(--violet)) !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+}
+
+.cron-jobs-page .empty-link {
+  color: var(--cyan-deep) !important;
+  background: transparent !important;
+  border: 0 !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(29, 143, 209, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 插件页 */
+.plugins-hub .hub-header,
+.plugins-hub .hub-header *,
+.plugins-hub .market-header,
+.plugins-hub .market-heading,
+.plugins-hub .market-header h1,
+.plugins-hub .market-header h2,
+.plugins-hub .market-header h3 {
+  color: var(--ink) !important;
+}
+
+.plugins-hub .market-subtitle {
+  color: var(--ink-soft) !important;
+}
+
+.plugins-hub input,
+.plugins-hub [role="searchbox"] {
+  color: var(--ink) !important;
+  background: var(--halftone-ground) !important;
+  border-color: var(--halftone-line) !important;
+  border-radius: 6px !important;
+}
+
+.plugins-hub [role="tab"] {
+  color: var(--ink) !important;
+}
+
+.plugins-hub [class*="tab"],
+.plugins-hub [class*="tab"] * {
+  color: var(--ink) !important;
+}
+
+.plugins-hub input::placeholder,
+.plugins-hub [role="searchbox"]::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.plugins-hub .plugin-card {
+  color: var(--ink) !important;
+  background: var(--halftone-card) !important;
+  border: 1px solid var(--halftone-line) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgba(41, 182, 246, 0.1) !important;
+}
+
+/* 「使用」按钮：青紫渐变反白，修复文字继承导致同色压同色 */
+.plugins-hub .plugin-card .plugin-use-btn {
+  color: #ffffff !important;
+  background: linear-gradient(120deg, var(--cyan), var(--violet)) !important;
+  border: 1px solid transparent !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn * {
+  color: inherit !important;
+}
+
+.plugins-hub .plugin-card .plugin-use-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* 输入框：白卡 + 青描边，聚焦时青色光晕带一点紫 */
+.composer {
+  color: var(--ink) !important;
+  caret-color: var(--cyan-deep) !important;
+  background: var(--halftone-card) !important;
+  border: 1px solid rgba(41, 182, 246, 0.35) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px rgba(41, 182, 246, 0.1) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.composer:focus-within {
+  background: var(--halftone-card) !important;
+  border-color: var(--cyan) !important;
+  box-shadow:
+    0 0 0 3px rgba(41, 182, 246, 0.16),
+    0 6px 24px rgba(124, 77, 255, 0.1) !important;
+}
+
+.composer :focus-visible {
+  outline: none !important;
+}
+
+.composer * {
+  color: inherit !important;
+}
+
+.composer input,
+.composer textarea,
+.composer [contenteditable="true"] {
+  color: var(--ink) !important;
+  caret-color: var(--cyan-deep) !important;
+  background: transparent !important;
+}
+
+.composer input::placeholder,
+.composer textarea::placeholder {
+  color: var(--ink-faint) !important;
+  opacity: 1;
+}
+
+.composer-editor::before {
+  color: var(--ink-faint) !important;
+}
+
+.composer button,
+.composer [role="button"] {
+  color: var(--ink) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.composer button:hover,
+.composer [role="button"]:hover {
+  background: rgba(41, 182, 246, 0.1) !important;
+}
+
+/* 发送键：青紫渐变 */
+.composer .send-btn {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--cyan), var(--violet)) !important;
+  border-color: transparent !important;
+}
+
+.composer .send-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* 代码块：冰蓝底 + 青描边 */
+pre {
+  color: var(--ink) !important;
+  background: #f0f8fd !important;
+  border: 1px solid rgba(41, 182, 246, 0.35) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(41, 182, 246, 0.08) !important;
+}
+
+code,
+kbd,
+samp,
+time {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace !important;
+}
+
+:not(pre) > code,
+kbd {
+  color: var(--violet-deep) !important;
+  background: rgba(124, 77, 255, 0.08) !important;
+  border: 1px solid rgba(124, 77, 255, 0.22) !important;
+  border-radius: 4px !important;
+}
+
+/* 用户消息气泡：淡青白 + 青描边，与主面板区分 */
+.bubble.role-user {
+  background: #eaf6ff !important;
+  color: var(--ink) !important;
+  border: 1px solid rgba(41, 182, 246, 0.3) !important;
+}
+
+blockquote {
+  border-left-color: var(--cyan) !important;
+}
+
+hr,
+table,
+th,
+td {
+  border-color: rgba(35, 64, 79, 0.22) !important;
+}
+
+a {
+  color: var(--cyan-deep);
+  text-decoration-color: rgba(29, 143, 209, 0.45);
+  text-underline-offset: 0.2em;
+}
+
+/* 弹层兜底：统一白卡 */
+[role="dialog"],
+[role="alertdialog"],
+[class*="modal"],
+[class*="Modal"] {
+  background-color: var(--halftone-card) !important;
+  color: var(--ink) !important;
+  border-color: rgba(35, 64, 79, 0.25) !important;
+}
+
+/* 选区：青底白字 */
+::selection {
+  color: #ffffff;
+  background: var(--cyan-deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan-deep) !important;
+  outline-offset: 2px !important;
+}
+
+* {
+  scrollbar-color: rgba(41, 182, 246, 0.45) var(--halftone-ground);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(41, 182, 246, 0.4);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(41, 182, 246, 0.6);
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .home-view::after {
+    width: 76px;
+    height: 76px;
+    top: 30px;
+    right: 26px;
+    opacity: 0.7;
+  }
+
+  aside.sidebar .sidebar-footer::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kimi-skin-bg::before,
+  #kimi-skin-bg::after,
+  .home-view::after {
+    animation: none;
+  }
+}

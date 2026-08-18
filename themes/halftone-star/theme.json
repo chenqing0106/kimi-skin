@@ -1,0 +1,7 @@
+{
+  "id": "halftone-star",
+  "name": "Halftone Star · 半调星",
+  "version": "0.1.0",
+  "compatibleKimi": ["3.1.*"],
+  "capabilities": ["safe-css"]
+}

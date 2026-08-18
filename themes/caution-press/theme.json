@@ -1,0 +1,7 @@
+{
+  "id": "caution-press",
+  "name": "Caution Press · 警示印刷",
+  "version": "0.1.0",
+  "compatibleKimi": ["3.1.*"],
+  "capabilities": ["safe-css"]
+}
