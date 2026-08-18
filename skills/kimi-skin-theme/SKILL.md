@@ -35,20 +35,18 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 
 ### A. 创建新主题
 
-1. 读取 [themes/README.md](themes/README.md) 和 [themes/_template/](themes/_template/)，了解主题结构、theme.json 字段和 safe-css 声明。
-2. 先从用户描述中提取已经明确的复杂程度、背景、动效、交互、组件和页面范围。只对仍缺失且会明显改变成品的事项提问；不要重复询问已经明确的内容，也不要发送固定长问卷。具体选择与推荐规则见 [references/creation-options.md](references/creation-options.md)。
-3. 通常集中询问 2–3 个问题。用户说“你决定”时直接给出推荐，不继续追问。给出一段简短设计摘要，包含复杂程度、背景方案和可选增强，得到用户确认后再创建或修改主题文件。
-4. 用户确认设计摘要后，确认 `themes/<theme-id>/` 不存在，再复制 `themes/_template/` 到目标目录；不得覆盖已有目录。
-5. 修改 `theme.json`，并把已确认的视觉系统写入 `DESIGN.md`，包括核心概念、语义颜色、字体、表面层级、主要材质、辨识度元素、视觉来源映射和明确不做的内容。用户选择 AI 图片时，按 creation-options 中的素材流程生成、落盘并记录来源。
-6. 按层实现：根背景 → 页面外壳/侧栏/主内容 → 输入框/按钮/交互状态 → 内容页/代码块/弹层 → 装饰/动效 → 小窗口/reduced-motion。
-7. 每轮只改一个假设，运行 `validate` 和 `check-theme`，等热重载后截图复核。
-8. 用户确认视觉方向成立后，报告已检查范围与已知遗漏。
+1. 从用户输入中提取视觉概念、复杂程度、参考素材和明确排除项。只补问会明显改变结果的问题，通常不超过 2 个；具体选择见 [references/creation-options.md](references/creation-options.md)。
+2. 给出简短设计提案：一句核心概念、主色与材质、一个标志性视觉动作、背景或素材方案、动效与交互强度。用户说“你决定”时直接给出推荐；用户确认前不创建文件。
+3. 读取 [themes/README.md](themes/README.md)、[themes/_template/](themes/_template/) 和 [references/pitfalls.md](references/pitfalls.md)，确认目标目录不存在后复制模板。已有主题可以用于理解技术接口和已验证选择器，但不要把任何成品主题作为默认视觉起点，也不要整段复制其 CSS。
+4. 根据已确认的方向自主实现字体、CSS 构图、本地素材、伪元素、动效和受控交互。表现型主题应形成至少一个不依赖换色的标志性视觉，例如背景构图、字体系统、插画素材、独特材质或状态变化。只有遇到基础模板未覆盖的状态 token 时，才读取 [references/token-map.md](references/token-map.md)。
+5. 运行 `validate` 和 `check-theme`，在真实页面截图检查可读性、层级和标志性视觉；根据实际画面决定局部调整或整体重构，不以工程校验通过代替视觉完成。
+6. 用户确认后，报告已检查页面、未检查状态和已知限制。
 
 ### B. 修改现有主题
 
 1. 读取目标主题的 `DESIGN.md` 和现有 CSS，确认当前视觉方向。
-2. 写下本轮明确的修改假设（如"侧栏与主内容明度太接近，本轮只调整两者的背景与边界"）。
-3. 只改一件事，运行 `validate` + `check-theme`，验证假设。
+2. 根据实际画面判断适合局部修正还是整体重构，不把明显的方向问题拆成机械的小改动。
+3. 运行 `validate` + `check-theme`，并用真实页面截图验证结果。
 4. 迭代至用户满意，报告变更范围和未验证状态。
 
 ### C. 诊断问题（效果没出来 / 效果不对）
@@ -87,7 +85,7 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 |------|----------|
 | 主题目录结构、theme.json 字段说明、`interactions` 和 `widgets` 声明 | `themes/README.md` |
 | 新主题模板 | `themes/_template/`（`theme.json`、`theme.css`、`DESIGN.md`、`ASSETS.md`） |
-| 交互和 widget 的完整示例 | `themes/dark-side/README.md` |
+| 完整状态 token 名称 | `references/token-map.md`，基础模板不够时按需读取 |
 | safe-css 契约白名单、限制值、违规类型 | `src/policy/safe-css.ts` |
 | CLI 全部命令和用法 | `src/cli.ts` 中的 help 输出，或直接运行 `kimi-skin --help` |
 | 安装、构建、基本用法 | `README.md` |
@@ -100,7 +98,8 @@ description: Create, modify, diagnose, and visually iterate themes for kimi-skin
 - 主题默认纯 CSS。需要交互时，只使用 `themes/README.md` 中声明的受控能力（如 `rootStateToggle`），**禁止添加主题级 JavaScript**。
 - 可选交互不要放进共享模板，除非用户明确要求。每个启用的交互要在该主题自己的 README 中说明触发元素、状态名和视觉含义。
 - 功能组件只能从 `themes/README.md` 已列出的内置 widget 中选择。可以按主题语境推荐，但不要为每个主题固定询问，也不要通过主题文件发明新组件、数据源或脚本。
-- **风格推导只从用户本次输入和用户确认的设计摘要出发**（参考图、描述、概念，或用户授权“你决定”后确认的原创提案），不从其他主题的风格出发。骨架（token 重映射、已验证选择器、安全约束）可以复用，但配色气质、装饰构图、签名元素必须当次原创：既有主题只是当前环境里恰好存在的案例，新环境未必有它们；以它们为风格起点，所有主题都会长成同一张脸。不要把 Dark Side 或任何已有主题当作默认模板，除非用户明确要求延续。
+- 已有主题可以作为技术参考，但不要默认继承其视觉方向；复用明显的视觉方案时向用户说明。
+- 主题保留 Kimi 原生信息架构，但可以自由重塑视觉层级、材质、背景构图、字体、状态和受控装饰。真正需要重排原生页面时，将其报告为 harness 能力缺口。
 - 不修改 Kimi.app、`src/`、`macos/`、其他主题或原始用户素材。
 - 不提取、持久化或在报告中复述聊天文本、凭证或其他私有数据；视觉检查只观察容器、状态、布局和计算样式。
 - 把 harness、兼容性、CDP、进程和校验器失败当作系统问题报告，不要改系统代码。
